@@ -1,12 +1,17 @@
 const WebSocket = require('ws');
 
+// Randomly generates a 4 letter hex code (eg. "4d8j", "ac9e", etc.)
+function randomHex() {
+  return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+}
+
 // Generate a "Universal Unique IDentifier" (ie. ID for our websockets)
 function generateUUID() {
-  const randomHex = () => {
-    return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-  };
+  const p1 = randomHex();
+  const p2 = randomHex();
+  const p3 = randomHex();
 
-  return `${randomHex()}-${randomHex()}-${randomHex()}`;
+  return `${p1}-${p2}-${p3}`;
 }
 
 // Compare two unix timestamps to see if the `received` is within `seconds`
@@ -60,6 +65,7 @@ function broadcastTo(wss, ids, msg) {
 }
 
 module.exports = {
+  randomHex,
   generateUUID,
   withinTimeframe,
   send,
