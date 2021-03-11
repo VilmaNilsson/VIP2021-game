@@ -6,11 +6,12 @@ function Box(el) {
   `;
 
   const input = el.querySelector('#message');
-  const send = el.querySelector('#send');
+  const button = el.querySelector('#send');
   const text = el.querySelector('#text');
 
-  send.addEventListener('click', () => {
+  button.addEventListener('click', () => {
     const message = input.value;
+    // The `.send` functions sends our message to the WebSocket server
     el.send('player:echo', { message });
     input.value = '';
   });

@@ -109,8 +109,8 @@ function create(wss, ws) {
       utils.sendTo(wss, id, { event, payload });
     },
     // Broadcast a message to all clients
-    broadcast: (event, payload, self) => {
-      utils.broadcast(wss, ws, { event, payload }, self);
+    broadcast: (event, payload, exclude) => {
+      utils.broadcast(wss, ws, { event, payload }, exclude);
     },
     // Broadcast a message to all clients with `ids`
     broadcastTo: (ids, event, payload) => {
