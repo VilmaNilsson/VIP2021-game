@@ -1,3 +1,5 @@
+import PubSub from './pubsub';
+
 // Our Router that checks the browser URL and then inserts to correct HTML node
 // into the `root` element. We can also call `.navigate` to manually go from one
 // URL to another.
@@ -41,6 +43,9 @@ const Router = {
       return false;
     }
 
+    // Before entering a new route we'll clear the existing listeners
+    PubSub.unsubscribeAll();
+
     // Extract our route handler;
     // this should always contain a `view` (function that returns a element)
     // and might contain `before` and `after` functions
@@ -79,10 +84,14 @@ const Router = {
   },
   // Mount a view into our HTML (ie. the root node)
   mount: function mount(view) {
-    // `view` would be one of the functions within "views/"
-    const el = view();
-    this.root.textContent = '';
-    this.root.appendChild(el);
+    try {
+      // `view` would be one of the functions within "views/"
+      const el = view();
+      this.root.textContent = '';
+      this.root.appendChild(el);
+    } catch (err) {
+      console.warn(`Unable to mount the view [${view.name}]`, err.message);
+    }
   },
   // Set our root node
   setRoot: function setRoot(el) {
@@ -92,11 +101,10 @@ const Router = {
 
 // Listen to `popstate` (when a user presses back/forward in the browser)
 window.addEventListener('popstate', (event) => {
-  if (event.state === null) {
-    Router.resolve('/');
-  } else {
-    // TODO: more testing
+  if (event.state !== null && event.state.path !== undefined) {
     Router.resolve(event.state.path);
+  } else {
+    Router.resolve('/');
   }
 });
 
@@ -104,5 +112,8 @@ window.addEventListener('popstate', (event) => {
 HTMLElement.prototype.navigate = function navigate(path) {
   Router.navigate(path);
 };
+
+// NOTE: Only for testing purposes!
+window.Router = Router;
 
 export default Router;

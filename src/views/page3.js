@@ -1,5 +1,4 @@
-import Router from '../router';
-// NOTE: we only want to import `Navigation` (hence the destructuring)
+import Context from '../context';
 import { Navigation } from '../components';
 
 function Page3() {
@@ -12,26 +11,16 @@ function Page3() {
     <p>Some random content</p>
   `;
 
+  el.querySelector('p').addEventListener('click', () => {
+    console.log(Context.getState());
+  });
+
   Navigation(el.querySelector('#navigation'));
 
   return el;
 }
 
-const path = '/page-3';
-
-const before = () => {
-  console.log('Before handler of Page3');
-  // We can redirect the user away from this route, in this case we'll just
-  // check for a global variable `testar`
-  if (window.testar === 1) {
-    console.log('Redirecting!');
-    // If the `before` handler returns this, it will redirect the user
-    return Router.redirect('/');
-  }
-};
-
 export default {
-  path,
-  before,
+  path: '/page-3',
   view: Page3,
 };

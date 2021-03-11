@@ -4,13 +4,12 @@ const PubSub = {
   socket: null,
   // Object of events and their listeners, { 'player:connected': [...], ... }
   listeners: {},
-  // Adds another element to the array of listeners for `event`
-  subscribe: function subscribe(event, element) {
-    // TODO: check that it doesnt exists
+  // Adds another element/callback to the array of listeners for `event`
+  subscribe: function subscribe(event, listener) {
     if (this.listeners[event] === undefined) {
-      this.listeners[event] = [element];
+      this.listeners[event] = [listener];
     } else {
-      this.listeners[event] = [...this.listeners[event], element];
+      this.listeners[event] = [...this.listeners[event], listener];
     }
   },
   // Publishes `event` with a `payload`,
@@ -23,27 +22,41 @@ const PubSub = {
 
     // Otherwise we'll go through each listener (element) and dispatch it
     this.listeners[event].forEach((listener) => {
-      const e = new CustomEvent(event, { detail: payload });
-      listener.dispatchEvent(e);
+      // If the listener is a function we'll just invoke it
+      if (typeof listener === 'function') {
+        listener(payload);
+      } else {
+        // Otherwise we'll dispatch a CustomEvent
+        const e = new CustomEvent(event, { detail: payload });
+        listener.dispatchEvent(e);
+      }
     });
   },
-  // Unsubscribe `element` from listening to `event`
-  unsubscribe: function unsubscribe(event, element) {
+  // Unsubscribe `listener` from listening to `event`
+  unsubscribe: function unsubscribe(event, listener) {
     // If no one is listening we'll do nothing
     if (this.listeners[event] === undefined) {
       return;
     }
 
-    // Otherwise we'll filter out the element form the array of listeners
-    this.listeners[event] = this.listeners[event].filter((listener) => {
-      return listener !== element;
+    // Otherwise we'll filter out the listener from the array of listeners
+    this.listeners[event] = this.listeners[event].filter((currentListener) => {
+      if (typeof currentListener === 'function') {
+        return currentListener.name !== listener.name;
+      }
+
+      return currentListener !== listener;
     });
+  },
+  // Clears all subscribed listeners
+  unsubscribeAll: function unsubscribeAll() {
+    this.listeners = {};
   },
   // Establish a WebSocket connection, and set the listeners
   connect: function connect(url) {
     this.socket = new WebSocket(url);
     // We invoke ".bind(this)" so these function can call the `PubSub` functions
-    // via using `this`
+    // via `this`
     this.socket.addEventListener('open', this.connectionOpened.bind(this));
     this.socket.addEventListener('close', this.connectionClosed.bind(this));
     this.socket.addEventListener('message', this.incomingMessage.bind(this));
@@ -51,18 +64,24 @@ const PubSub = {
   // When the WebSocket connection is established
   connectionOpened: function connectionOpened() {
     // TODO: start pinging the websocket server
-    console.log('WebSocket connection established');
+    console.info('%cWebSocket connection established', 'color: #35b51a;');
   },
   // When the WebSocket connection is closed
   connectionClosed: function connectionClosed() {
     // TODO: try reconnecting when the connection closes
-    console.log('WebSocket connection closed');
+    console.info('%cWebSocket connection closed', 'color: red;');
   },
   // When we receive a message from our WebSocket
   incomingMessage: function incomingMessage(e) {
     try {
       const { event, payload } = JSON.parse(e.data);
-      console.log(`Received: ${event}`, payload);
+
+      // Grouped logging for readability
+      console.group('WebSocket Message Received');
+      console.log(`%c${event}`, 'color: red;');
+      console.log(payload);
+      console.groupEnd();
+
       this.publish(event, payload);
     } catch (err) {
       console.warn('Unable to parse JSON', e.data);
@@ -79,7 +98,6 @@ const PubSub = {
 
 // Make our HTML elements be able to subscribe to events
 HTMLElement.prototype.subscribe = function subscribe(event, callback) {
-  // TODO: check that it doesnt exists
   PubSub.subscribe(event, this);
   this.addEventListener(event, callback);
 };

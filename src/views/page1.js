@@ -17,19 +17,7 @@ function Page1() {
   return el;
 }
 
-const path = '/';
-
-const before = () => {
-  console.log('Before handler of Page1');
-};
-
-const after = () => {
-  console.log('After handler of Page1');
-};
-
 export default {
-  path,
-  before,
-  after,
+  path: '/',
   view: Page1,
 };

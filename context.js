@@ -117,7 +117,7 @@ function create(wss, ws) {
       utils.broadcastTo(wss, ids, { event, payload });
     },
     // TODO: Broadcast a message to all players within a game
-    broadcastToGame: (msg) => {
+    broadcastToGame: () => {
       // TBD
     },
     // Gets the player connected to the websocket,

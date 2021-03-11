@@ -1,3 +1,4 @@
+import Context from '../context';
 import { Navigation, Box } from '../components';
 
 function Page2() {
@@ -15,6 +16,10 @@ function Page2() {
   h1.subscribe('player:echo', (e) => {
     const { message } = e.detail;
     h1.innerHTML = `Cool page nr 2 received ${message}`;
+
+    Context.setState((previousState) => {
+      return { ...previousState, received: message };
+    });
   });
 
   // This creates our navigation component
