@@ -11,7 +11,7 @@ All of the `npm run` commands can be found within [package.json](package.json) u
 ### Installation
 
 ``` bash
-$ npm install               # Install all dependencies
+$ npm install     # Install all dependencies
 ```
 
 ### Compiling the code
@@ -42,7 +42,7 @@ Check your JavaScript for syntax or styling errors (this should always be done
 before publishing changes):
 
 ``` bash
-$ npm run check         # Default way of checking the whole repository
+$ npm run check   # Default way of checking the whole repository
 ```
 
 *Ignore errors in files you haven't been working on.*
