@@ -58,7 +58,7 @@ $ npm run check   # Default way of checking the whole repository
 
 *Ignore errors in files you haven't been working on.*
 
-**Manually check files**
+#### Check files manually
 
 ``` bash
 $ npx eslint .          # Check the repository with Warnings
