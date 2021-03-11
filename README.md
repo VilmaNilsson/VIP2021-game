@@ -16,7 +16,7 @@ $ npm install     # Install all dependencies
 
 ### Compiling the code
 
-The client code needs to be compiled into one JavaScript and one CSS file respectively. This is done by either doing it once or *watching* your code for changes and then automatically compiling the code.
+The client code needs to be compiled into one JavaScript and one CSS file respectively. This is done by either doing it once or *watching* your code for changes and then automatically compiling the code. The compiled code will be saved to the folder `dist/` (short for *distribution*).
 
 ``` bash
 $ npm run build   # Compiles the code once
