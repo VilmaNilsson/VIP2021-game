@@ -38,6 +38,15 @@ $ npm run ws      # Starts the WebSocket server
 
 *Start these in two different terminal windows in order to properly view the logs.*
 
+#### Custom Ports
+
+The HTTP server defaults to port `7000` and the WebSocket server to `7001`. This can easily be changed via the environment variables `HTTP_PORT` and `WS_PORT`.
+
+``` bash
+$ HTTP_PORT=7070 npm run http   # Sets the HTTP port to 7070
+$ WS_PORT=8080 npm run ws       # Sets the WebSocket port to 8080
+```
+
 ### Analyze the code
 
 Check your JavaScript for syntax or styling errors (this should always be done
