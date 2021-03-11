@@ -2,8 +2,6 @@
 
 :exclamation: **THIS REPOSITORY IS UNDER ACTIVE DEVELOPMENT**
 
-Repository for the VIP2021 game.
-
 ## Getting Started
 
 All of the `npm run` commands can be found within [package.json](package.json) under `"scripts": { ... }`.
