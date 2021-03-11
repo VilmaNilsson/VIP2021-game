@@ -4,7 +4,7 @@
 
 ## Documentation
 
-All of the documentation can be found in the [Project Wiki](/wiki).
+All of the documentation can be found in the [Project Wiki](https://github.com/VilmaNilsson/VIP2021-game/wiki).
 
 ## Getting Started
 
