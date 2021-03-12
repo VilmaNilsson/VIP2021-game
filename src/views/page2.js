@@ -17,9 +17,7 @@ function Page2() {
     const { message } = e.detail;
     h1.innerHTML = `Cool page nr 2 received ${message}`;
 
-    Context.setState((previousState) => {
-      return { received: message };
-    });
+    Context.setState({ received: message });
   });
 
   // This creates our navigation component
