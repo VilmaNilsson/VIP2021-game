@@ -18,7 +18,7 @@ function Page2() {
     h1.innerHTML = `Cool page nr 2 received ${message}`;
 
     Context.setState((previousState) => {
-      return { ...previousState, received: message };
+      return { received: message };
     });
   });
 

@@ -48,9 +48,18 @@ const PubSub = {
       return currentListener !== listener;
     });
   },
-  // Clears all subscribed listeners
-  unsubscribeAll: function unsubscribeAll() {
-    this.listeners = {};
+  // Clears all subscribed element listeners, `force` clears everything
+  unsubscribeAll: function unsubscribeAll(force = false) {
+    if (force) {
+      this.listeners = {};
+    } else {
+      for (const event in this.listeners) {
+        this.listeners[event] = this.listeners[event].filter((listener) => {
+          // Keep the listener if it's a function (ie. not an HTML element)
+          return typeof listener === 'function';
+        });
+      }
+    }
   },
   // Establish a WebSocket connection, and set the listeners
   connect: function connect(url) {
