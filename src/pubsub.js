@@ -1,5 +1,6 @@
 // A lightweight implementation of the Publish/Subscribe (pub/sub) pattern
 const PubSub = {
+  url: null,
   // Our WebSocket connection
   socket: null,
   // Object of events and their listeners, { 'player:connected': [...], ... }
@@ -17,8 +18,14 @@ const PubSub = {
   // Publishes `event` with a `payload`,
   // `CustomEvent` is a way of creating our own "click"-like events
   publish: function publish(event, payload) {
+    // Grouped logging for readability
+    console.group(`Event dispatched: %c${event}`, 'color: #177503;');
+    console.log(payload);
+    console.groupEnd();
+
     // If we have no listeners for the `event` we'll do nothing
     if (this.listeners[event] === undefined) {
+      console.info(`Event [${event}] has no listeners`);
       return;
     }
 
@@ -66,6 +73,9 @@ const PubSub = {
   },
   // Establish a WebSocket connection, and set the listeners
   connect: function connect(url) {
+    // Save the URL
+    this.url = url;
+    // Try to connect to our websocket server
     this.socket = new WebSocket(url);
     // We invoke ".bind(this)" so these function can call the `PubSub` functions
     // via `this`
@@ -75,38 +85,31 @@ const PubSub = {
   },
   // When the WebSocket connection is established
   connectionOpened: function connectionOpened() {
-    console.info('%cWebSocket connection established', 'color: #35b51a;');
-    // Connection established means we just opened the connection
+    // Dispatch an event for established connection
+    this.publish('connection:open', {});
+    console.log('%cWebSocket connection established', 'color: #177503;');
+    // We'll store the timestamp of the our connection (for pinging)
     this.lastPing = Date.now();
 
     // Every 10 seconds we'll "ping" the server to keep the connection alive
-    window.setInterval(() => {
-      const now = Date.now();
-      const elapsed = new Date(now - this.lastPing);
-
-      // If more then 40 seconds has passed since our last activity
-      if (elapsed.getSeconds() > 40) {
-        // We'll "ping" our server
-        this.send('ping', {});
-      }
-    }, 1000 * 10);
+    window.setInterval(this.ping.bind(this), 1000 * 10);
   },
   // When the WebSocket connection is closed
   connectionClosed: function connectionClosed() {
-    // TODO: try reconnecting when the connection closes
-    console.info('%cWebSocket connection closed', 'color: red;');
+    // Dispatch an event for closed connection
+    this.publish('connection:close', {});
+    console.log('%cWebSocket connection closed', 'color: red;');
+
+    // Try to reconnect 5 seconds after the connection closed
+    window.setTimeout(() => {
+      this.connect(this.url);
+    }, 1000 * 5);
   },
   // When we receive a message from our WebSocket
   incomingMessage: function incomingMessage(e) {
     try {
       const { event, payload } = JSON.parse(e.data);
-
-      // Grouped logging for readability
-      console.group('WebSocket Message Received');
-      console.log(`%c${event}`, 'color: #35b51a;');
-      console.log(payload);
-      console.groupEnd();
-
+      // Publish the received event and payload
       this.publish(event, payload);
     } catch (err) {
       console.warn('Unable to parse JSON', e.data);
@@ -118,16 +121,20 @@ const PubSub = {
       // Send our message to the server as { event, payload }
       const message = JSON.stringify({ event, payload });
       this.socket.send(message);
-
-      // Grouped logging for readability
-      console.group('Sending message');
-      console.log(`%c${event}`, 'color: #35b51a;');
-      console.log(payload);
-      console.groupEnd();
-
       // Whenever we send a message we'll update the "ping" timestamp, so we
       // only "ping" the server when we haven't had any activity for a while
       this.lastPing = Date.now();
+    }
+  },
+  // If no activity has happened for 40 seconds we'll "ping" the server
+  ping: function ping() {
+    const now = Date.now();
+    const elapsed = new Date(now - this.lastPing);
+
+    // If more then 40 seconds has passed since our last activity
+    if (elapsed.getSeconds() > 40) {
+      // We'll "ping" our server
+      this.send('ping', {});
     }
   },
 };

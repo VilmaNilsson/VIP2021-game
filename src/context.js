@@ -22,9 +22,9 @@ const Context = {
 
     // Lets log what state we had, the updates and the new state
     console.group('State Updated');
-    console.log('%cPrevious', 'color: red;', currentState);
-    console.log('Update with', next);
-    console.log('%cNew state', 'color: #35b51a;', newState);
+    console.log('%cPrev', 'color: #888;', currentState);
+    console.log('With', next);
+    console.log('%cNext', 'color: #177503;', newState);
     console.groupEnd();
 
     // Set the new state
