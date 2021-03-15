@@ -9,25 +9,30 @@ const wss = new WebSocket.Server({ port });
 
 // When a websocket opens a connection
 wss.on('connection', (ws) => {
+  // Time of connection
+  const connectedAt = Date.now();
+  // Generate a unique ID for all of our websocket connetions
   ws._id = utils.generateUUID();
   // Add the connection to our global state (of players)
-  // TODO: Might want to add a timestamp for the connection
-  Context.addPlayer(ws._id);
+  Context.addPlayer(ws._id, { connectedAt });
 
   // Create the state context object, which is the way our event handlers
   // operate on our global state
   const context = Context.create(wss, ws);
 
   // Manually emit the `player:connected` event
-  Dispatcher.dispatch('player:connect', context);
+  Dispatcher.dispatch('player:connect', context, { connectedAt });
   console.log(`[WS]: Player connected (${ws._id})`);
 
   // When a websocket receives a message
   ws.on('message', (message) => {
     try {
-      // TODO: Might want to add a timestamp (Date.now()) for all messages
+      // Timestamp for when the message was received
+      const receivedAt = Date.now();
+      // Extract the event name and the payload
       const { event, payload } = JSON.parse(message);
-      Dispatcher.dispatch(event, context, payload);
+      // Dispatch the event to our event handlers
+      Dispatcher.dispatch(event, context, { receivedAt, ...payload });
     } catch (err) {
       console.log('[WS]: Unable to parse JSON');
     }
@@ -35,8 +40,10 @@ wss.on('connection', (ws) => {
 
   // When the websocket closes the connection
   ws.on('close', () => {
+    // Time of disconnect
+    const disconnectedAt = Date.now();
     // Manually emit the `player:disconnected` event
-    Dispatcher.dispatch('player:disconnect', context);
+    Dispatcher.dispatch('player:disconnect', context, { disconnectedAt });
     console.log(`[WS]: Player disconnected (${ws._id})`);
   });
 });

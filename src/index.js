@@ -18,3 +18,10 @@ PubSub.connect('ws://localhost:7001');
 PubSub.subscribe('player:echo', (payload) => {
   Context.setState(payload);
 });
+
+// NOTE: for debugging purposes we'll make our objects globally available
+window.DEBUG = {
+  PubSub,
+  Router,
+  Context,
+};

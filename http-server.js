@@ -1,5 +1,7 @@
 const path = require('path');
 const express = require('express');
+const morgan = require('morgan');
+const minify = require('express-minify');
 
 // Set a default port unless invoked with `$ HTTP_PORT=XXXX node http-server.js`
 const port = process.env.HTTP_PORT || 7000;
@@ -8,8 +10,9 @@ const app = express();
 // All of our routes (ie. endpoint + router)
 const routes = require('./routes');
 
-// TODO: add a logger
+app.use(minify());
 app.use(express.static('dist'));
+app.use(morgan('combined'));
 
 // `routes` is an object of { endpoint: router, ... }
 Object.entries(routes).forEach((entry) => {

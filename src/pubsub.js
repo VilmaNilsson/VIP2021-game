@@ -4,6 +4,8 @@ const PubSub = {
   socket: null,
   // Object of events and their listeners, { 'player:connected': [...], ... }
   listeners: {},
+  // Last time we pinged the WebSocket server (to keep it alive)
+  lastPing: null,
   // Adds another element/callback to the array of listeners for `event`
   subscribe: function subscribe(event, listener) {
     if (this.listeners[event] === undefined) {
@@ -53,12 +55,13 @@ const PubSub = {
     if (force) {
       this.listeners = {};
     } else {
-      for (const event in this.listeners) {
+      // Go through all of our registered events and their listeners
+      Object.keys(this.listeners).forEach((event) => {
         this.listeners[event] = this.listeners[event].filter((listener) => {
           // Keep the listener if it's a function (ie. not an HTML element)
           return typeof listener === 'function';
         });
-      }
+      });
     }
   },
   // Establish a WebSocket connection, and set the listeners
@@ -72,8 +75,21 @@ const PubSub = {
   },
   // When the WebSocket connection is established
   connectionOpened: function connectionOpened() {
-    // TODO: start pinging the websocket server
     console.info('%cWebSocket connection established', 'color: #35b51a;');
+    // Connection established means we just opened the connection
+    this.lastPing = Date.now();
+
+    // Every 10 seconds we'll "ping" the server to keep the connection alive
+    window.setInterval(() => {
+      const now = Date.now();
+      const elapsed = new Date(now - this.lastPing);
+
+      // If more then 40 seconds has passed since our last activity
+      if (elapsed.getSeconds() > 40) {
+        // We'll "ping" our server
+        this.send('ping', {});
+      }
+    }, 1000 * 10);
   },
   // When the WebSocket connection is closed
   connectionClosed: function connectionClosed() {
@@ -87,7 +103,7 @@ const PubSub = {
 
       // Grouped logging for readability
       console.group('WebSocket Message Received');
-      console.log(`%c${event}`, 'color: red;');
+      console.log(`%c${event}`, 'color: #35b51a;');
       console.log(payload);
       console.groupEnd();
 
@@ -99,8 +115,19 @@ const PubSub = {
   // Sends a message to our WebSocket
   send: function send(event, payload) {
     if (this.socket !== null && this.socket.readyState === WebSocket.OPEN) {
+      // Send our message to the server as { event, payload }
       const message = JSON.stringify({ event, payload });
       this.socket.send(message);
+
+      // Grouped logging for readability
+      console.group('Sending message');
+      console.log(`%c${event}`, 'color: #35b51a;');
+      console.log(payload);
+      console.groupEnd();
+
+      // Whenever we send a message we'll update the "ping" timestamp, so we
+      // only "ping" the server when we haven't had any activity for a while
+      this.lastPing = Date.now();
     }
   },
 };
@@ -125,8 +152,5 @@ HTMLElement.prototype.publish = function publish(event, payload) {
 HTMLElement.prototype.send = function send(event, payload) {
   PubSub.send(event, payload);
 };
-
-// NOTE: Only for testing purposes!
-window.PubSub = PubSub;
 
 export default PubSub;

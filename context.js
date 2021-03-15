@@ -3,6 +3,11 @@ const utils = require('./utils');
 // The global state
 const STATE = { players: {}, games: {} };
 
+// Returns the whole state (used for debugging purposes)
+function getState() {
+  return STATE;
+}
+
 // Returns the state of a player by `id`
 function getPlayerState(id) {
   if (STATE.players[id] === undefined) {
@@ -116,9 +121,29 @@ function create(wss, ws) {
     broadcastTo: (ids, event, payload) => {
       utils.broadcastTo(wss, ids, { event, payload });
     },
-    // TODO: Broadcast a message to all players within a game
-    broadcastToGame: () => {
-      // TBD
+    // Broadcast a message to all players within a game
+    broadcastToGame: (event, payload, gameId = null) => {
+      if (gameId === null) {
+        const player = getPlayerState(websocketID);
+
+        // TODO: logging
+        if (player === null) {
+          return;
+        }
+
+        // If no game ID was given we'll extract it from the current player
+        gameId = player.gameId;
+      }
+
+      const game = getGameState(gameId);
+
+      // TODO: logging
+      if (game === null) {
+        return;
+      }
+
+      const playerIds = game.players;
+      utils.broadcastTo(wss, playerIds, { event, payload });
     },
     // Gets the player connected to the websocket,
     // or any player if invoked with a `playedId`
@@ -163,6 +188,10 @@ function create(wss, ws) {
       }
 
       return updateGameState(nextGameState.id, nextGameState);
+    },
+    // Returns the whole state (used for debugging purposes)
+    getState: () => {
+      return getState();
     },
   };
 }

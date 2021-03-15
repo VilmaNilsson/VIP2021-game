@@ -113,7 +113,4 @@ HTMLElement.prototype.navigate = function navigate(path) {
   Router.navigate(path);
 };
 
-// NOTE: Only for testing purposes!
-window.Router = Router;
-
 export default Router;
