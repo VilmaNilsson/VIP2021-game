@@ -1,6 +1,6 @@
 // All event handlers gets called with `context` and `payload`
 function playerConnect(context) {
-  context.updatePlayerState({ online: true, id: context.id });
+  context.updatePlayerState({ online: true });
   context.send('player:connected', { message: 'Got it!' });
 }
 

@@ -15,8 +15,7 @@ const PubSub = {
       this.listeners[event] = [...this.listeners[event], listener];
     }
   },
-  // Publishes `event` with a `payload`,
-  // `CustomEvent` is a way of creating our own "click"-like events
+  // Publishes `event` with a `payload`
   publish: function publish(event, payload) {
     // Grouped logging for readability
     console.group(`Event dispatched: %c${event}`, 'color: #177503;');
@@ -35,7 +34,8 @@ const PubSub = {
       if (typeof listener === 'function') {
         listener(payload);
       } else {
-        // Otherwise we'll dispatch a CustomEvent
+        // Otherwise we'll dispatch a CustomEvent, `CustomEvent` is a way of
+        // creating our own "click"-like events
         const e = new CustomEvent(event, { detail: payload });
         listener.dispatchEvent(e);
       }

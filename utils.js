@@ -10,7 +10,6 @@ function generateUUID() {
   const p1 = randomHex();
   const p2 = randomHex();
   const p3 = randomHex();
-
   return `${p1}-${p2}-${p3}`;
 }
 

@@ -10,6 +10,7 @@ const app = express();
 // All of our routes (ie. endpoint + router)
 const routes = require('./routes');
 
+// Middleware
 app.use(minify());
 app.use(express.static('dist'));
 app.use(morgan('combined'));
