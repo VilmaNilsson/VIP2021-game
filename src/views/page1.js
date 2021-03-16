@@ -5,6 +5,8 @@ function Page1() {
   const el = document.createElement('div');
   el.id = 'page-1';
 
+  console.log(process.env.NODE_ENV);
+
   el.innerHTML = `
     <h1>This is Page 1</h1>
     <div id="navigation"></div>
