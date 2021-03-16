@@ -18,7 +18,7 @@ const PubSub = {
   // Publishes `event` with a `payload`
   publish: function publish(event, payload) {
     // Grouped logging for readability
-    console.group(`Event dispatched: %c${event}`, 'color: #177503;');
+    console.groupCollapsed(`Event dispatched: %c${event}`, 'color: #177503;');
     console.log(payload);
     console.groupEnd();
 
@@ -121,6 +121,10 @@ const PubSub = {
       // Send our message to the server as { event, payload }
       const message = JSON.stringify({ event, payload });
       this.socket.send(message);
+      // Log all messages being sent to the websocket server
+      console.groupCollapsed(`Sending message: %c${event}`, 'color: #177503;');
+      console.log(payload);
+      console.groupEnd();
       // Whenever we send a message we'll update the "ping" timestamp, so we
       // only "ping" the server when we haven't had any activity for a while
       this.lastPing = Date.now();

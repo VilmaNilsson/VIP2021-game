@@ -21,7 +21,7 @@ const Context = {
     const newState = { ...this.state, ...next };
 
     // Lets log what state we had, the updates and the new state
-    console.group('State Updated');
+    console.groupCollapsed('State updated');
     console.log('%cPrev', 'color: #888;', currentState);
     console.log('With', next);
     console.log('%cNext', 'color: #177503;', newState);

@@ -8,7 +8,13 @@ function ping() {
   console.log('[WS]: Ping received');
 }
 
+// Echoes back whatever it receives
+function echo(context, payload) {
+  context.send('debug:echo', payload);
+}
+
 module.exports = {
   'debug:state': debugState,
+  'debug:echo': echo,
   ping,
 };
