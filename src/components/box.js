@@ -12,11 +12,11 @@ function Box(el) {
   button.addEventListener('click', () => {
     const message = input.value;
     // The `.send` functions sends our message to the WebSocket server
-    el.send('player:echo', { message });
+    el.send('debug:echo', { message });
     input.value = '';
   });
 
-  text.subscribe('player:echo', (e) => {
+  text.subscribe('debug:echo', (e) => {
     // All elements that receive data from `subscribe` has the payload stored
     // within `e.detail`
     const { message } = e.detail;

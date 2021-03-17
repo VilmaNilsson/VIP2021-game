@@ -1,6 +1,7 @@
 @import "./variables.css";
 
 body {
+    margin: 0;
     background-color: var(--bg);
 }
 
@@ -25,3 +26,4 @@ body {
 #navigation a.active {
     background-color: #15ac2d;
 }
+

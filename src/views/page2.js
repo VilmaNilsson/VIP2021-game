@@ -13,7 +13,7 @@ function Page2() {
 
   const h1 = el.querySelector('h1');
 
-  h1.subscribe('player:echo', (e) => {
+  h1.subscribe('debug:echo', (e) => {
     const { message } = e.detail;
     h1.innerHTML = `Cool page nr 2 received ${message}`;
 

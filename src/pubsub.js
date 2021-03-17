@@ -50,10 +50,13 @@ const PubSub = {
 
     // Otherwise we'll filter out the listener from the array of listeners
     this.listeners[event] = this.listeners[event].filter((currentListener) => {
+      // If they're unsubscribing a listener which is a function, we'll compare
+      // the function names
       if (typeof currentListener === 'function') {
         return currentListener.name !== listener.name;
       }
 
+      // HTML elements can be compared normally
       return currentListener !== listener;
     });
   },
@@ -73,10 +76,13 @@ const PubSub = {
   },
   // Establish a WebSocket connection, and set the listeners
   connect: function connect(url) {
-    // Save the URL
-    this.url = url;
+    if (this.url === null || url === undefined) {
+      // Save the URL
+      this.url = url;
+    }
+
     // Try to connect to our websocket server
-    this.socket = new WebSocket(url);
+    this.socket = new WebSocket(this.url);
     // We invoke ".bind(this)" so these function can call the `PubSub` functions
     // via `this`
     this.socket.addEventListener('open', this.connectionOpened.bind(this));
@@ -101,9 +107,7 @@ const PubSub = {
     console.log('%cWebSocket connection closed', 'color: red;');
 
     // Try to reconnect 5 seconds after the connection closed
-    window.setTimeout(() => {
-      this.connect(this.url);
-    }, 1000 * 5);
+    window.setTimeout(this.connect.bind(this), 1000 * 5);
   },
   // When we receive a message from our WebSocket
   incomingMessage: function incomingMessage(e) {
