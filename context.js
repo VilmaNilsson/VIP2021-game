@@ -106,23 +106,23 @@ function create(wss, ws) {
   return {
     id: websocketID,
     // Send a message to the connected client
-    send: (event, payload) => {
+    send: (event, payload = {}) => {
       utils.send(ws, { event, payload });
     },
     // Send a message to a client by `id`
-    sendTo: (id, event, payload) => {
+    sendTo: (id, event, payload = {}) => {
       utils.sendTo(wss, id, { event, payload });
     },
     // Broadcast a message to all clients
-    broadcast: (event, payload, exclude) => {
+    broadcast: (event, payload = {}, exclude = false) => {
       utils.broadcast(wss, ws, { event, payload }, exclude);
     },
     // Broadcast a message to all clients with `ids`
-    broadcastTo: (ids, event, payload) => {
+    broadcastTo: (ids, event, payload = {}) => {
       utils.broadcastTo(wss, ids, { event, payload });
     },
     // Broadcast a message to all players within a game
-    broadcastToGame: (event, payload, gameId = null) => {
+    broadcastToGame: (event, payload = {}, gameId = null) => {
       if (gameId === null) {
         const player = getPlayerState(websocketID);
 
