@@ -120,7 +120,7 @@ const PubSub = {
     }
   },
   // Sends a message to our WebSocket
-  send: function send(event, payload) {
+  send: function send(event, payload = {}) {
     if (this.socket !== null && this.socket.readyState === WebSocket.OPEN) {
       // Send our message to the server as { event, payload }
       const message = JSON.stringify({ event, payload });
