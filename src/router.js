@@ -65,6 +65,8 @@ const Router = {
     // Check to see that our route actually has a `view`
     if (handler.view === undefined) {
       throw new Error(`No view was assigned to the path: ${path}`);
+    } else if (typeof handler.view !== 'function') {
+      throw new Error(`The View for [${path}] is not a function`);
     }
 
     // Mount it into our HTML
