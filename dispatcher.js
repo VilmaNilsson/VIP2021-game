@@ -7,7 +7,7 @@ const eventHandlers = Object.values(events).reduce((acc, next) => {
 }, {});
 
 // `events` is an object of { 'event:name': eventHandler, ... }
-function dispatch(event, context, payload) {
+function dispatch(event, context, payload = {}) {
   if (eventHandlers[event] !== undefined) {
     try {
       const eventHandler = eventHandlers[event];
