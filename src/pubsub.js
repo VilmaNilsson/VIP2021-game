@@ -75,8 +75,8 @@ const PubSub = {
     }
   },
   // Establish a WebSocket connection, and set the listeners
-  connect: function connect(url) {
-    if (this.url === null || url === undefined) {
+  connect: function connect(url = null) {
+    if (url !== null) {
       // Save the URL
       this.url = url;
     }
