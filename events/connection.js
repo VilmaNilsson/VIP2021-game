@@ -18,25 +18,8 @@ function playerDisconnect(context) {
   }
 }
 
-// Whenever a player wants to reconnect (by a username)
-function playerReconnect(context, payload) {
-  const { username } = payload;
-  // We'll try to fetch the player with `username`
-  const player = context.getPlayerState({ username });
-
-  // If the player exists
-  if (player !== null) {
-    // We'll assign this connection to the player (since they reconnected)
-    context.connectToPlayer(player.id);
-  }
-
-  // Set the online status to true
-  context.updatePlayerState({ online: true });
-  // Get the current game state
-  const game = context.getGameState();
-  // And send both the player and game info to the connected client
-  context.send('player:info', player);
-  context.send('game:info', game);
+function playerReconnect() {
+  // TBD
 }
 
 module.exports = {
