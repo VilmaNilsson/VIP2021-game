@@ -1,29 +1,8 @@
 @import "./variables.css";
-
-body {
-    margin: 0;
-    background-color: var(--bg);
-}
-
-#navigation {
-    display: flex;
-    align-items: center;
-}
-
-#navigation a {
-    font-family: Helvetica;
-    padding: 10px 20px;
-    background-color: #0088cc;
-    color: white;
-    text-decoration: none;
-    border: 1px solid #0066aa;
-}
-
-#navigation a:hover {
-    background-color: #22aadd;
-}
-
-#navigation a.active {
-    background-color: #15ac2d;
-}
-
+@import "./common.css";
+@import "./welcome.css";
+@import "./login.css";
+@import "./home.css";
+@import "./create.css";
+@import "./join.css";
+@import "./chatroom.css";

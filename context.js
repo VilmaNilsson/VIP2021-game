@@ -8,6 +8,13 @@ function getState() {
   return STATE;
 }
 
+// Clears the whole state (used for debugging purposes)
+function clearState() {
+  STATE.players = {};
+  STATE.games = {};
+  return STATE;
+}
+
 // Returns the state of a player by `id`
 function getPlayerState(id) {
   if (STATE.players[id] === undefined) {
@@ -15,6 +22,12 @@ function getPlayerState(id) {
   }
 
   return STATE.players[id];
+}
+
+// Returns the state of a player by equal `properties`
+function getPlayerStateByProps(properties) {
+  const players = Object.values(STATE.players);
+  return utils.findObjectByProperties(players, properties);
 }
 
 // Updates the state of a player by `id`
@@ -40,6 +53,12 @@ function getGameState(id) {
   }
 
   return STATE.games[id];
+}
+
+// Returns the state of a game by equal `properties`
+function getGameStateByProps(properties) {
+  const games = Object.values(STATE.games);
+  return utils.findObjectByProperties(games, properties);
 }
 
 // Updates the state of a game by `id`
@@ -100,11 +119,11 @@ function removeGame(id) {
 
 // Creates a context based on the connected websocket id
 function create(wss, ws) {
-  // The connected websocket id (see `ws-server.js`)
-  const websocketID = ws._id;
-
   return {
-    id: websocketID,
+    // Returns the current client ID
+    id: () => {
+      return ws._id;
+    },
     // Send a message to the connected client
     send: (event, payload = {}) => {
       utils.send(ws, { event, payload });
@@ -124,82 +143,101 @@ function create(wss, ws) {
     // Broadcast a message to all players within a game
     broadcastToGame: (event, payload = {}, gameId = null) => {
       if (gameId === null) {
-        const player = getPlayerState(websocketID);
-
-        // TODO: logging
-        if (player === null) {
-          return;
-        }
-
+        const player = getPlayerState(ws._id);
         // If no game ID was given we'll extract it from the current player
         gameId = player.gameId;
       }
 
       const game = getGameState(gameId);
-
-      // TODO: logging
-      if (game === null) {
-        return;
-      }
-
-      const playerIds = game.players;
+      // Make an array of player IDs
+      const playerIds = game.players.map((player) => player.id);
+      // Then broadcast the message to all those IDs
       utils.broadcastTo(wss, playerIds, { event, payload });
     },
-    // Gets the player connected to the websocket,
-    // or any player if invoked with a `playedId`
+    // Add a new player to the server state
+    addPlayer: (id, state = {}) => {
+      return addPlayer(id, { username: id, ...state });
+    },
+    // Remove a player from the server state
+    removePlayer: (id) => {
+      return removePlayer(id);
+    },
+    // Connect to an existing player in the state
+    connectToPlayer: (id) => {
+      // Remove the old player
+      removePlayer(ws._id);
+      // And connect this websocket to the existing player
+      ws._id = id;
+    },
+    // Get the state of a player by: the current connected client, a `playerId`
+    // or by an object of properties
     getPlayerState: (playerId = null) => {
       if (playerId === null) {
-        return getPlayerState(websocketID);
+        return getPlayerState(ws._id);
+      }
+
+      if (typeof playerId === 'object') {
+        return getPlayerStateByProps(playerId);
       }
 
       return getPlayerState(playerId);
     },
-    // Updates the player connected to the websocket,
-    // or any player if `nextPlayerState` contains `id`
-    updatePlayerState: (nextPlayerState) => {
-      if (nextPlayerState.id === undefined) {
-        return updatePlayerState(websocketID, nextPlayerState);
+    // Update the player state by: the current connected client or by `playerId`
+    updatePlayerState: (nextPlayerState, playerId = null) => {
+      if (playerId === null) {
+        return updatePlayerState(ws._id, nextPlayerState);
       }
 
-      return updatePlayerState(nextPlayerState.id, nextPlayerState);
+      return updatePlayerState(playerId, nextPlayerState);
     },
-    // Gets the game state (based on the connected websocket),
-    // or any game state if invoked with a `gameId`
+    // Adds a game to the server state
+    addGame: (id, state = {}) => {
+      return addGame(id, state);
+    },
+    // Remove a game from the server state
+    removeGame: (id) => {
+      return removeGame(id);
+    },
+    // Gets the state of a game by: the current connected client, a `gameId` or
+    // by an object of properties
     getGameState: (gameId = null) => {
       if (gameId === null) {
-        const player = getPlayerState(websocketID);
+        const player = getPlayerState(ws._id);
+        return getGameState(player.gameId);
+      }
 
-        if (player !== null) {
-          return getGameState(player.gameId);
-        }
+      if (typeof gameId === 'object') {
+        return getGameStateByProps(gameId);
       }
 
       return getGameState(gameId);
     },
-    // Updates the game state (based on the connected websocket),
-    // or any game state if `nextGameState` contains `id`
-    updateGameState: (nextGameState) => {
-      if (nextGameState.id === undefined) {
-        const player = getPlayerState(websocketID);
-
-        if (player !== null) {
-          return updateGameState(player.gameId, nextGameState);
-        }
+    // Updates the game state by: the current connected client or by `gameId`
+    updateGameState: (nextGameState, gameId = null) => {
+      if (gameId === null) {
+        const player = getPlayerState(ws._id);
+        return updateGameState(player.gameId, nextGameState);
       }
 
-      return updateGameState(nextGameState.id, nextGameState);
+      return updateGameState(gameId, nextGameState);
     },
     // Returns the whole state (used for debugging purposes)
     getState: () => {
       return getState();
     },
+    // Clears the whole state (used for debugging purposes)
+    clearState: () => {
+      return clearState();
+    },
   };
 }
 
 module.exports = {
-  create,
+  getState,
+  clearState,
   addPlayer,
   removePlayer,
   addGame,
   removeGame,
+  create,
 };

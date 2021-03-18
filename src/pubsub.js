@@ -1,3 +1,5 @@
+import Context from './context';
+
 // A lightweight implementation of the Publish/Subscribe (pub/sub) pattern
 const PubSub = {
   url: null,
@@ -30,9 +32,10 @@ const PubSub = {
 
     // Otherwise we'll go through each listener (element) and dispatch it
     this.listeners[event].forEach((listener) => {
-      // If the listener is a function we'll just invoke it
+      // If the listener is a function we'll invoke it with `Context` and the
+      // payload
       if (typeof listener === 'function') {
-        listener(payload);
+        listener(Context, payload);
       } else {
         // Otherwise we'll dispatch a CustomEvent, `CustomEvent` is a way of
         // creating our own "click"-like events
@@ -106,8 +109,8 @@ const PubSub = {
     this.publish('connection:close', {});
     console.log('%cWebSocket connection closed', 'color: red;');
 
-    // Try to reconnect 5 seconds after the connection closed
-    window.setTimeout(this.connect.bind(this), 1000 * 5);
+    // Try to reconnect 10 seconds after the connection closed
+    window.setTimeout(this.connect.bind(this), 1000 * 10);
   },
   // When we receive a message from our WebSocket
   incomingMessage: function incomingMessage(e) {
@@ -116,7 +119,7 @@ const PubSub = {
       // Publish the received event and payload
       this.publish(event, payload);
     } catch (err) {
-      console.warn('Unable to parse JSON', e.data);
+      console.warn(err.message);
     }
   },
   // Sends a message to our WebSocket
@@ -146,6 +149,10 @@ const PubSub = {
     }
   },
 };
+
+// Transfer the `send` method to the `Context` object, this makes it so the
+// event handlers doesnt have to import `PubSub`
+Context.send = PubSub.send.bind(PubSub);
 
 // Make our HTML elements be able to subscribe to events
 HTMLElement.prototype.subscribe = function subscribe(event, callback) {

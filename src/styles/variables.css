@@ -1,3 +1,10 @@
 :root {
-    --bg: ghostwhite;
+    --bg: rgb(55, 57, 62);
+    --fg1: rgb(220, 221, 222);
+    --fg2: rgb(143, 146, 150);
+    --button-shadow: rgb(26, 27, 30);
+    --button-shadow-hover: black;
+    --button-bg-hover: rgb(238, 239, 240);
+    --input-bg: rgb(65, 68, 74);
+    --input-fg: rgb(220, 221, 222);
 }

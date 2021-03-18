@@ -1,0 +1,34 @@
+body {
+    margin: 0;
+    height: 100vh;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.4;
+    background: var(--bg);
+    color: var(--fg1);
+    display: flex;
+}
+
+#root {
+    flex-grow: 1;
+}
+
+button {
+    border: 0;
+    border-radius: 6px;
+    background: var(--fg1);
+    color: var(--bg);
+    font-weight: bold;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 10px 20px;
+    box-shadow: 0 4px 4px var(--button-shadow);
+    cursor: pointer;
+    transition: box-shadow 120ms ease, background 120ms ease;
+}
+
+button:hover {
+    background: var(--button-bg-hover);
+    box-shadow: 0 4px 6px var(--button-shadow-hover);
+}

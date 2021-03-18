@@ -20,6 +20,23 @@ function withinTimeframe(seconds, start, received) {
   return elapsed <= seconds;
 }
 
+// Searches an array of objects for an object that contains the keys and values
+// from another object (`properties`)
+function findObjectByProperties(objects, properties) {
+  return objects.reduce((notFound, object) => {
+    const isFound = Object.entries(properties).every((entry) => {
+      const [key, value] = entry;
+      return object[key] === value;
+    });
+
+    if (isFound) {
+      return object;
+    }
+
+    return notFound;
+  }, null);
+}
+
 // Sends a `msg` to a websocket (if the connection is opened)
 function send(ws, msg) {
   if (ws.readyState !== WebSocket.OPEN) {
@@ -31,6 +48,7 @@ function send(ws, msg) {
     ws.send(msg);
   } else {
     ws.send(JSON.stringify(msg));
+    console.log('[WS]: Sending', msg);
   }
 }
 
@@ -67,6 +85,7 @@ module.exports = {
   randomHex,
   generateUUID,
   withinTimeframe,
+  findObjectByProperties,
   send,
   sendTo,
   broadcast,

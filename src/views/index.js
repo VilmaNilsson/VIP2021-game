@@ -1,9 +1,15 @@
-import page1 from './page1';
-import page2 from './page2';
-import page3 from './page3';
+import Welcome from './welcome';
+import Login from './login';
+import Home from './home';
+import Join from './join';
+import Create from './create';
+import Chatroom from './chatroom';
 
 export default {
-  page1,
-  page2,
-  page3,
+  Welcome,
+  Login,
+  Home,
+  Join,
+  Create,
+  Chatroom,
 };

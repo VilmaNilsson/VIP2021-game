@@ -30,6 +30,14 @@ const Context = {
     // Set the new state
     this.state = newState;
   },
+  // Wrapper function for storing values in localStorage
+  setCache: (key, value) => {
+    return window.localStorage.setItem(key, value);
+  },
+  // Wrapper function for fetching values from localStorage
+  getCache: (key) => {
+    return window.localStorage.getItem(key);
+  },
 };
 
 export default Context;
