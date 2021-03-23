@@ -5,6 +5,8 @@ function HomeView() {
   el.innerHTML = `
     <h1>Home</h1>
   `;
+
+  return el;
 }
 
 export default {
