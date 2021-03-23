@@ -1,7 +1,9 @@
 // All of our event handlers
 const events = require('./events');
-// Reduce the `events` object into something more managable
-const eventHandlers = Object.values(events).reduce((acc, next) => {
+const spells = require('./spells');
+const handlers = { ...events, ...spells };
+// Reduce the `events` and `spells` objects into something more managable
+const eventHandlers = Object.values(handlers).reduce((acc, next) => {
   acc = { ...acc, ...next };
   return acc;
 }, {});
