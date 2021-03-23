@@ -1,8 +1,3 @@
-@import "./variables.css";
-@import "./common.css";
-@import "./welcome.css";
-@import "./login.css";
-@import "./home.css";
-@import "./create.css";
-@import "./join.css";
-@import "./chatroom.css";
+body {
+    margin: 0;
+}
