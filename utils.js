@@ -118,7 +118,7 @@ function createStation(state = {}) {
       loginMultiplier: 1,
       salaryMultiplier: 1,
     },
-    racks: [],
+    racks: [],
     ...state,
   };
 
@@ -133,7 +133,7 @@ function createRacks(nrOfTeams, nrOfTokens) {
     return {
       tokens: Array.from({ length: nrOfTokens }).map(() => {
         return Math.floor(Math.random() * nrOfTokens);
-      })
+      }),
     };
   });
 }

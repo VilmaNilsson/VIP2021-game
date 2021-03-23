@@ -1,6 +1,8 @@
 // All of our event handlers
 const events = require('./events');
 const spells = require('./spells');
+
+// Our spell and event handlers
 const handlers = { ...events, ...spells };
 // Reduce the `events` and `spells` objects into something more managable
 const eventHandlers = Object.values(handlers).reduce((acc, next) => {

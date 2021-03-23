@@ -229,7 +229,7 @@ function create(wss, ws) {
     clearState: () => {
       return clearState();
     },
-    // Add a callback to be invoked on the next game tick    
+    // Add a callback to be invoked on the next game tick
     onNextGameTick: (cb) => {
       const player = getPlayerState(ws._id);
       const game = getGameState(player.gameId);
