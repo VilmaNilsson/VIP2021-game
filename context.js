@@ -150,7 +150,7 @@ function create(wss, ws) {
 
       const game = getGameState(gameId);
       // Make an array of player IDs
-      const playerIds = game.players.map((player) => player.id);
+      const playerIds = Object.keys(game.players);
       // Then broadcast the message to all those IDs
       utils.broadcastTo(wss, playerIds, { event, payload });
     },
@@ -228,6 +228,13 @@ function create(wss, ws) {
     // Clears the whole state (used for debugging purposes)
     clearState: () => {
       return clearState();
+    },
+    // Add a callback to be invoked on the next game tick    
+    onNextGameTick: (cb) => {
+      const player = getPlayerState(ws._id);
+      const game = getGameState(player.gameId);
+      game.callbacks = [...game.callbacks, cb];
+      return updateGameState(player.gameId, game);
     },
   };
 }
