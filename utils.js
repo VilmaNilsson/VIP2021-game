@@ -81,6 +81,104 @@ function broadcastTo(wss, ids, msg) {
   });
 }
 
+// Creates the base object for a Game
+function createGame(state = {}) {
+  const id = generateUUID();
+  const game = {
+    id,
+    name: '',
+    intervalId: 0,
+    callbacks: [],
+    defaults: {
+      planPhaseDuration: 30,
+      playPhaseDuration: 60 * 5,
+      nrOfSalaries: 10,
+      phase: { type: 0, start: 0 },
+    },
+    tokens: [],
+    stations: [],
+    teams: [],
+    players: {},
+    ...state,
+  };
+
+  // Make properties a copy of defaults
+  game.properties = { ...game.defaults };
+
+  return game;
+}
+
+// Creates the base object for a Station
+function createStation(state = {}) {
+  const station = {
+    name: '',
+    defaults: {
+      locked: false,
+      loginTime: 5,
+      loginMultiplier: 1,
+      salaryMultiplier: 1,
+    },
+    racks: [],
+    ...state,
+  };
+
+  station.properties = { ...station.defaults };
+
+  return station;
+}
+
+// Create racks for a station based on the number of teams and tokens
+function createRacks(nrOfTeams, nrOfTokens) {
+  return Array.from({ length: nrOfTeams }).map(() => {
+    return {
+      tokens: Array.from({ length: nrOfTokens }).map(() => {
+        return Math.floor(Math.random() * nrOfTokens);
+      })
+    };
+  });
+}
+
+// Creates the base object for a Team
+function createTeam(state = {}) {
+  const team = {
+    name: '',
+    crew: -1,
+    defaults: {
+      score: 0,
+      locked: false,
+      loginMultiplier: 1,
+      salaryMultiplier: 1,
+    },
+    ...state,
+  };
+
+  team.properties = { ...team.defaults };
+
+  return team;
+}
+
+// Creates the base object for a Player
+function createPlayer(state = {}) {
+  const player = {
+    team: -1,
+    defaults: {
+      locked: false,
+      immune: false,
+      silenced: false,
+      loginTimeMultiplier: 1,
+      inStation: -1,
+      pocket: 0,
+      temporaryPocket: -1,
+      spells: [],
+    },
+    ...state,
+  };
+
+  player.properties = { ...player.defaults };
+
+  return player;
+}
+
 module.exports = {
   randomHex,
   generateUUID,
@@ -90,4 +188,9 @@ module.exports = {
   sendTo,
   broadcast,
   broadcastTo,
+  createGame,
+  createStation,
+  createRacks,
+  createTeam,
+  createPlayer,
 };
