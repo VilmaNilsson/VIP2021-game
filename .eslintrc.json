@@ -14,7 +14,8 @@
   "rules": {
     "no-underscore-dangle": "off",
     "no-param-reassign": "off",
-    "arrow-body-style": "off"
+    "arrow-body-style": "off",
+    "no-shadow": "off"
   },
   "ignorePatterns": [
     "**/dist/**"
