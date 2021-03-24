@@ -15,6 +15,7 @@ function playerDisconnect(context) {
   } else {
     // Otherwise we'll set their online status to false
     context.updatePlayerState({ online: false });
+    context.broadcastToGame('player:disconnect', { id: context.id() });
   }
 }
 
