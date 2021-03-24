@@ -236,7 +236,7 @@ function create(wss, ws) {
     onNextGameTick: (cb) => {
       const player = getPlayerState(ws._id);
       const game = getGameState(player.gameId);
-      
+
       if (game !== null) {
         game.callbacks = [...game.callbacks, cb];
         return updateGameState(player.gameId, game);
