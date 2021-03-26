@@ -169,7 +169,7 @@ function createPlayer(state = {}) {
       immune: false,
       silenced: false,
       loginMultiplier: 1,
-      inStation: -1,
+      inStation: null,
       pocket: -1,
       pocketLocked: false,
       temporaryPocket: -1,
