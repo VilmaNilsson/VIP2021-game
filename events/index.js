@@ -2,10 +2,12 @@
 const debug = require('./debug');
 const connection = require('./connection');
 const gameCreation = require('./game-creation.js');
+const game = require('./game');
 
 // And then combine them into one object
 module.exports = {
   debug,
   connection,
   gameCreation,
+  game,
 };
