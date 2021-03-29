@@ -87,7 +87,8 @@ function createGame(state = {}) {
   const game = {
     id,
     name: '',
-    intervalId: 0,
+    code: '',
+    currentTick: 0,
     callbacks: [],
     defaults: {
       planPhaseDuration: 30,
@@ -131,8 +132,10 @@ function createStation(state = {}) {
 function createRacks(nrOfTeams, nrOfTokens) {
   return Array.from({ length: nrOfTeams }).map(() => {
     return {
-      tokens: Array.from({ length: nrOfTokens }).map(() => {
-        return Math.floor(Math.random() * nrOfTokens);
+      slots: Array.from({ length: nrOfTokens }).map(() => {
+        return {
+          token: Math.floor(Math.random() * nrOfTokens),
+        };
       }),
     };
   });
@@ -165,10 +168,12 @@ function createPlayer(state = {}) {
       locked: false,
       immune: false,
       silenced: false,
-      loginTimeMultiplier: 1,
-      inStation: -1,
-      pocket: 0,
+      loginMultiplier: 1,
+      inStation: null,
+      pocket: -1,
+      pocketLocked: false,
       temporaryPocket: -1,
+      temporaryPockedLocked: true,
       spells: [],
     },
     ...state,

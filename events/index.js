@@ -1,8 +1,10 @@
 // This is where we `require` all of our event handlers ('event:name': handler)
 const debug = require('./debug');
 const connection = require('./connection');
-const gameCreation = require('./game-creation.js');
 const gameLeave = require('./gameLeave.js');
+const gameCreation = require('./game-creation');
+const spells = require('./spells');
+const playerJoinGame = require('./player-join-game');
 
 // And then combine them into one object
 module.exports = {
@@ -10,4 +12,6 @@ module.exports = {
   connection,
   gameCreation,
   gameLeave,
+  spells,
+  playerJoinGame,
 };

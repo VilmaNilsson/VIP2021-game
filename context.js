@@ -149,10 +149,13 @@ function create(wss, ws) {
       }
 
       const game = getGameState(gameId);
-      // Make an array of player IDs
-      const playerIds = Object.keys(game.players);
-      // Then broadcast the message to all those IDs
-      utils.broadcastTo(wss, playerIds, { event, payload });
+
+      if (game !== null) {
+        // Make an array of player IDs
+        const playerIds = Object.keys(game.players);
+        // Then broadcast the message to all those IDs
+        utils.broadcastTo(wss, playerIds, { event, payload });
+      }
     },
     // Add a new player to the server state
     addPlayer: (id, state = {}) => {
@@ -233,8 +236,13 @@ function create(wss, ws) {
     onNextGameTick: (cb) => {
       const player = getPlayerState(ws._id);
       const game = getGameState(player.gameId);
-      game.callbacks = [...game.callbacks, cb];
-      return updateGameState(player.gameId, game);
+
+      if (game !== null) {
+        game.callbacks = [...game.callbacks, cb];
+        return updateGameState(player.gameId, game);
+      }
+
+      return null;
     },
   };
 }
