@@ -37,4 +37,6 @@ function swapTeamRack(payload){
     context.broadcastToGame('rack:swap', {station, playerTeam, team}, gameState.id);
 }
 
-module.exports = {swapTeamRack};
+module.exports = {
+    'spell:rack:swap': swapTeamRack
+  };
