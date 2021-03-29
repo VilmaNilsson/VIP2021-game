@@ -1,27 +1,30 @@
 function gameLeave(context, payload) {
 
-    // Get the game's ID
-    const {gameID} = payload;
-
     // Get the game
-    const game = context.getGameState({gameID});
+    const game = context.getGameState();
 
-    // Get the player's ID
-    const playerID = context.id();
+    if (game !== null) {
+        // Get the player's ID
+        const playerID = context.id();
 
-    // Filter away all players that aren't the one who is leaving
-    let otherPlayers = game.players.filter(function(player) {
-        return player != playerID;
-    });
+        // Delete the player from the game's players-object
+        delete game.players[playerID];
 
-    // Put all other players in the game's player-array
-    game.players = otherPlayers;
+        // Uptade the game with the new player-object
+        context.updateGameState(game);
 
-    // Uptade the game with the new player-array
-    context.updateGameState(game, gameID);
+        // Get the player's state
+        const player = context.getPlayerState(playerID);
 
-    // Broadcast to all players in the affected game that one has left
-    context.broadcastToGame('player:left', {playerID, name:''}, gameID);
+        // Set the player's gameId to none since they aren't in a game
+        player.gameId = null;
+
+        // Update the player's state
+        context.updatePlayerState(player);
+
+        // Broadcast to all players in the affected game that one has left
+        context.broadcastToGame('player:left', {playerID, name:''}, gameID);
+    }
 }
 
 module.exports = {
