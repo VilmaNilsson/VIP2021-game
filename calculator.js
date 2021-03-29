@@ -9,7 +9,7 @@ function getTickDuration(game) {
   return tickDuration;
 }
 
-function calculateScore(game) {
+function getTeamSalaries(game) {
   const { teams, stations, tokens } = game;
 
   // Contain the total of each token that each team have in a station
@@ -106,5 +106,5 @@ function calculateScore(game) {
 
 module.exports = {
   getTickDuration,
-  calculateScore,
+  getTeamSalaries,
 };
