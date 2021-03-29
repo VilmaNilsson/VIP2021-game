@@ -3,7 +3,7 @@ function teamLeave(context, payload) {
     const playerState = context.getPlayerState();
     const { id } = playerState;
     const gameState = context.getGameState();
-    const { team } = payload;
+    const { team } = gameState.players[id];
     const teamName = gameState.teams[team];
 
     // Update player, -1 for no team
