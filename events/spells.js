@@ -6,14 +6,14 @@ function activateTemporaryPocket(context) {
 
   players[playerId].properties.temporaryPockedLocked = false;
   const newGameState = { ...game };
-  context.updateGameState(newGameState, id);
+  context.updateGameState(newGameState);
 
   context.send('player:activated:temporary-pocket', { duration });
 
   setTimeout(() => {
     players[playerId].properties.temporaryPockedLocked = true;
     const newGameState = { ...game };
-    context.updateGameState(newGameState, id);
+    context.updateGameState(newGameState);
     context.send('player:locked:temporary-pocket', {});
   }, duration);
 }
