@@ -4,7 +4,7 @@ function teamLeave(context, payload) {
     const { id } = playerState;
     const gameState = context.getGameState();
     const { team } = gameState.players[id];
-    const teamName = gameState.teams[team];
+    const { name } = gameState.teams[team];
 
     // Update player, -1 for no team
     playerState.team = -1;
@@ -15,7 +15,7 @@ function teamLeave(context, payload) {
     context.updateGameState(gameState);
 
     // Broadcast event
-    context.broadcast('team:left', { id, teamName });
+    context.broadcast('team:left', { id, name });
 }
 
 module.exports = {
