@@ -47,5 +47,5 @@ function halfSalaryStationSpell(context, payload) {
 }
 
 module.exports = {
-  'spell:station:half-salary': lockStationSpell,
+  'spell:station:half-salary': halfSalaryStationSpell,
 };
