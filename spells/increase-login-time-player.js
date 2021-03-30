@@ -1,10 +1,10 @@
 function increaseLoginTimePlayer(context, payload) {
   const duration = 60 * 1000;
+  const gameState = context.getGameState();
+  const targetedPlayerId = payload.playerId;
   // Change to a correct value later on, this is just a set value to make a change in state
   const LOGIN_MULTIPLIER = 1.5;
-  const DEFAULT_LOGIN_TIME = 1;
-  const targetedPlayerId = payload.playerId;
-  const gameState = context.getGameState();
+  const DEFAULT_LOGIN_TIME = gameState.players[targetedPlayerId].default.loginTimeMultiplier;
 
   gameState.players[targetedPlayerId].properties.loginTimeMultiplier *= LOGIN_MULTIPLIER;
 
