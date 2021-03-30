@@ -14,7 +14,7 @@ function teamLeave(context, payload) {
     context.updateGameState(gameState);
 
     // Broadcast event
-    context.broadcast('team:left', { playerId, name });
+    context.broadcastToGame('team:left', { playerId, team });
 }
 
 module.exports = {
