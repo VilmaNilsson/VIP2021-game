@@ -42,7 +42,7 @@ function doubleSalaryStationSpell(context, payload) {
         station.properties.salaryMultiplier = 1;
         game.stations[stationIndex] = station;
         context.updateGameState(game);
-        context.broadcastToGame('station:regular-salary', { station: stationIndex });
+        context.broadcastToGame('station:double-salary:faded', { station: stationIndex });
     });
 }
 
