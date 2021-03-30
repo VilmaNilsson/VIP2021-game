@@ -3,6 +3,7 @@ const lockSpells = require('./locks.js');
 const immuneToSpells = require('./immuneToSpells.js');
 const swapTeamRack = require('./swap-team-rack.js');
 const halfSalaryStation = require('./half_salary_station');
+const doubleSalaryStation = require('./double_salary_station.js');
 
 // And then combine them into one object
 module.exports = {
@@ -10,4 +11,5 @@ module.exports = {
   immuneToSpells,
   swapTeamRack,
   halfSalaryStation,
+  doubleSalaryStation,
 };
