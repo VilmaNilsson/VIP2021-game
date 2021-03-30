@@ -5,6 +5,9 @@ function swapTeamRack(payload){
     // Unpack the payload
     const {station, team} = payload;
 
+    // Change the name of the "team"-constant so that it is easier to understand
+    const teamTwo = team;
+
     //Some error-checking
     // We're not in a game
     if (game === null) {
@@ -29,25 +32,25 @@ function swapTeamRack(payload){
     let player = game.players[playerId];
 
     // Get the player's team's index
-    let playerTeamIndex = player.team;
+    let teamOne = player.team;
 
     // Get the opponent's rack
-    let opponentRack = game.stations[station].racks[team];
+    let opponentRack = game.stations[station].racks[teamTwo];
 
     // Place the player's rack in a temporary variable
-    let tempRack = game.stations[station].racks[playerTeamIndex];
+    let tempRack = game.stations[station].racks[teamOne];
 
     // Swap the player's rack
-    game.stations[station].racks[playerTeamIndex] = opponentRack;
+    game.stations[station].racks[teamOne] = opponentRack;
 
     // Swap the opponent's rack
     game.stations[station].racks[opponentRack] = tempRack;
 
     // Update the gamestate (which includes the racks)
-    context.updateGameState(game, game.id);
+    context.updateGameState(game);
 
     // Broadcast the event
-    context.broadcastToGame('rack:swap', {station, playerTeamIndex, team}, game.id);
+    context.broadcastToGame('rack:swap', {station, teamOne, teamTwo});
 }
 
 module.exports = {
