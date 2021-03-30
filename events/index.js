@@ -1,6 +1,7 @@
 // This is where we `require` all of our event handlers ('event:name': handler)
 const debug = require('./debug');
 const connection = require('./connection');
+const gameLeave = require('./gameLeave.js');
 const gameCreation = require('./game-creation');
 const spells = require('./spells');
 const playerJoinGame = require('./player-join-game');
@@ -10,6 +11,7 @@ module.exports = {
   debug,
   connection,
   gameCreation,
+  gameLeave,
   spells,
   playerJoinGame,
 };
