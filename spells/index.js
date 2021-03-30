@@ -5,6 +5,7 @@ const swapTeamRack = require('./swap-team-rack');
 const halfSalaryStation = require('./half_salary_station');
 const doubleSalaryStation = require('./double_salary_station');
 const activateTemporaryPocket = require('./activate-temporary-pocket');
+const increaseLoginTimePlayer = require('./increase-login-time-player');
 
 // And then combine them into one object
 module.exports = {
@@ -14,4 +15,5 @@ module.exports = {
   halfSalaryStation,
   doubleSalaryStation,
   activateTemporaryPocket,
+  increaseLoginTimePlayer,
 };
