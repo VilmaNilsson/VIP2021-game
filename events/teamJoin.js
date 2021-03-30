@@ -1,14 +1,15 @@
 function teamJoin(context, payload) {
   const playerState = context.getPlayerState();
-  const playerId = playerState.id;
+  const playerId = context.id;
   const game = context.getGameState();
+  const player = game.players[playerId];
+  const teamIndex = payload.team;
   const teamName = game.teams[payload];
 
-  playerState.team = payload;
+  playerState.team = teamIndex;
   context.updatePlayerState(playerState);
-  game.players[playerId] = playerState;
+  player.team = teamIndex;
   context.updateGameState(game);
-
   context.broadcast('team:joined', { playerId, teamName });
 }
 
