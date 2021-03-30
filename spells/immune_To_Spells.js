@@ -15,6 +15,9 @@ function immuneToSpells(context, payload) {
       return;
     }
 
+    // Have the duration of the spell in a constant for easy reuse
+    const duration = 30 * 1000;
+
     // Now we get the player's id so that we can reach them in the gamestate 
     const playerId = context.id();
   
@@ -25,7 +28,7 @@ function immuneToSpells(context, payload) {
     context.updateGameState(game);
 
     // Message the player about their immunity
-    context.send('player:immunity', {duration: '30 seconds'});
+    context.send('player:immunity', {duration});
 
     // Reset the player's immunity after 30 seconds
     setTimeout(function() {
@@ -35,7 +38,7 @@ function immuneToSpells(context, payload) {
 
         // Message the player that their immunity has ran out
         context.send('player:immunity:faded', {});
-    }, 30000);
+    }, duration);
   }
   
   module.exports = {
