@@ -56,7 +56,7 @@ function getTeamSalaries(game) {
   // Checking if a team have more amount of tokens than another team
   for (let i = 0; i < STATIONS_PER_TEAM.length; i += 1) {
     for (let j = 0; j < stations.length; j += 1) {
-      for (let k = 0; k < STATIONS_PER_TEAM[j][j].length; k += 1) {
+      for (let k = 0; k < STATIONS_PER_TEAM[i][j].length; k += 1) {
         // Check if a teams amount of tokens is more or equal to what the station counter have
         if (STATIONS_PER_TEAM[i][j][k] >= STATIONS_COUNTER[j][k].amount) {
           // If it is the same amount, we push that team into the team array
@@ -81,11 +81,11 @@ function getTeamSalaries(game) {
       // Checking if theres more than one team in the team array
       // If there is more none will get a point from that token
       if (STATIONS_COUNTER[i][token].team.length === 1) {
-        const { TEAM } = STATIONS_COUNTER[i][token];
+        const { team } = STATIONS_COUNTER[i][token];
         // Will get the amount of multiplication from the station
         const STATION_MULTIPLIER = stations[i].properties.salaryMultiplier;
         // Will get the amount of multiplication from the team
-        const TEAM_MULTIPLIER = teams[TEAM].properties.salaryMultiplier;
+        const TEAM_MULTIPLIER = teams[team].properties.salaryMultiplier;
 
         // The defualt score for having the most tokens is 1
         let score = 1;
@@ -96,7 +96,7 @@ function getTeamSalaries(game) {
         score *= TEAM_MULTIPLIER;
 
         // Add amount of score that the teams will get in total to our score counter
-        SCORE_COUNTER[TEAM] += score;
+        SCORE_COUNTER[team] += score;
       }
     }
   }
