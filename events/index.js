@@ -5,6 +5,7 @@ const gameLeave = require('./gameLeave.js');
 const gameCreation = require('./game-creation');
 const spells = require('./spells');
 const playerJoinGame = require('./player-join-game');
+const stationLogin = require('./station-login.js');
 
 // And then combine them into one object
 module.exports = {
@@ -14,4 +15,5 @@ module.exports = {
   gameLeave,
   spells,
   playerJoinGame,
+  stationLogin,
 };
