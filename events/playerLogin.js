@@ -4,6 +4,6 @@ function playerLogin(context, payload) {
   context.broadcast('player:login', { username });
 }
 
-export default {
+module.exports = {
   'player:login': playerLogin,
 };
