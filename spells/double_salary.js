@@ -22,6 +22,9 @@ function doubleSalary(){
     // Update the gamestate
     context.updateGameState(game);
 
+    // Broadcast the event to everyone
+    context.broadcastToGame('stations:double-salary', {});
+
     // Reset all multipliers after the next salaries have been given
     context.onNextGameTick(function() {
         const game = context.getGameState();
@@ -29,10 +32,9 @@ function doubleSalary(){
             station.properties.salaryMultiplier = 1;
         });
         context.updateGameState(game);
-    })
+        context.broadcastToGame('stations:double-salary:faded', {});
 
-    // Broadcast the event to everyone
-    context.broadcast('stations:double-salary', {});
+    });
 }
 
 module.exports = {
