@@ -11,9 +11,8 @@ function gameCreate(context, payload) {
   const nrOfStations = payload.nrOfStations || 6;
 
   // Our tokes (for now) is just a simple array of { name: letter }
-  const tokens = 'ABCDEFGH'.split('').map((letter) => {
-    return { name: letter };
-  });
+  // for now it dosnt take any arguments
+  const tokens = utils.createTokens();
 
   // Our teams (based off of `nrOfTeams`)
   const teams = Array.from({ length: nrOfTeams }).map((_, index) => {
