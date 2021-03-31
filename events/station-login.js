@@ -1,4 +1,7 @@
-function stationLogin(event, payload){
+// A function in calculator.js is required in this event
+const calc = require('../calculator.js');
+
+function stationLogin(context, payload){
 
     // Unload the payload into a constant
     const {station} = payload;
@@ -25,18 +28,19 @@ function stationLogin(event, payload){
         return;
     }
     // If the requested station didn't exist
-    if (stationObj == undefined){
+    if (stationObj === undefined){
         context.send('event:station:login:fail', { errorCode: 2 });
         return;
     }
-    // If the station is locked or the player is unable to do anything they shouldn't be able to log into the station
-    if (stationObj.properties.locked == true || player.properties.locked == true) {
+    // If the station is locked or the player is unable to do anything they shouldn't be able
+    // to log into the station
+    if (stationObj.properties.locked === true || player.properties.locked === true) {
         context.send('event:station:login:fail', {errorCode: 3});
         return;
     }
 
-    // Calculate the total login-time
-    const loginTime = ((stationObj.properties.loginTime * stationObj.properties.loginMultiplier) * player.properties.loginTimeMultiplier);
+    // Calculate the total login-time by calling a function in calculator.js
+    const loginTime = calc.getLoginTime(game, playerId, station);
 
     // Create a timestamp for the start of the login
     const start = Date.now();
