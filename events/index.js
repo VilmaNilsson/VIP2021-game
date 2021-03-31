@@ -5,6 +5,7 @@ const gameLeave = require('./gameLeave.js');
 const gameCreation = require('./game-creation');
 const spells = require('./spells');
 const playerJoinGame = require('./player-join-game');
+const stationLogin = require('./station-login.js');
 const playerLogin = require ('./playerLogin');
 const teamJoin = require ('./teamJoin');
 const teamLeave = require('./teamLeave.js');
@@ -17,6 +18,7 @@ module.exports = {
   gameLeave,
   spells,
   playerJoinGame,
+  stationLogin,
   playerLogin,
   teamJoin,
   teamLeave,
