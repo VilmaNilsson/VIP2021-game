@@ -6,9 +6,12 @@ function stationLogin(event, payload){
     // Get the gamestate
     const game = context.getGameState();
 
+    // Get the plyer's id
+    const playerId = context.id();
+
     // Get the station- and playerobject so that we can get their attributes
     const stationObj = game.stations[station];
-    const player = game.players[context.id()];
+    const player = game.players[playerId];
 
     //Some error checking
     // We're not in a game
@@ -18,12 +21,17 @@ function stationLogin(event, payload){
       }
     // We're not in the play phase
     if (game.properties.phase.type !== 2) {
-    context.send('event:station:login:fail', { errorCode: 1 });
-    return;
+        context.send('event:station:login:fail', { errorCode: 1 });
+        return;
+    }
+    // If the requested station didn't exist
+    if (stationObj == undefined){
+        context.send('event:station:login:fail', { errorCode: 2 });
+        return;
     }
     // If the station is locked or the player is unable to do anything they shouldn't be able to log into the station
     if (stationObj.properties.locked == true || player.properties.locked == true) {
-        context.send('event:station:login:fail', {errorCode: 2});
+        context.send('event:station:login:fail', {errorCode: 3});
         return;
     }
 
@@ -31,11 +39,10 @@ function stationLogin(event, payload){
     const loginTime = ((stationObj.properties.loginTime * stationObj.properties.loginMultiplier) * player.properties.loginTimeMultiplier);
 
     // Create a timestamp for the start of the login
-    const date = new Date();
-    const start = date.getTime();
+    const start = Date.now();
 
     // Change the player's inStation-property
-    game.players[context.id()].properties.inStation = {station, start, loginTime};
+    game.players[playerId].properties.inStation = {station, start, loginTime};
 
     // Update the gamestate (which includes the player)
     context.updateGameState(game);
