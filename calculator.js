@@ -107,7 +107,7 @@ function getTeamSalaries(game) {
 function getLoginTime(gameState, playerId, stationIndex) {
 
   // Unpack the needed properties from the gamestate
-  const {stations, players} = gameState;
+  const { stations, players}  = gameState;
 
   // Get the specified objects
   const station = stations[stationIndex];

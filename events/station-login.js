@@ -4,7 +4,7 @@ const calc = require('../calculator.js');
 function stationLogin(context, payload){
 
     // Unload the payload into a constant
-    const {station} = payload;
+    const { station } = payload;
 
     // Get the gamestate
     const game = context.getGameState();
