@@ -1,7 +1,7 @@
 // Unlocks a player that is targeted with a "locked spell" fx. annoy
-// Takes two params, context = object containing functions to operate on state, payload = data sent from client-side ex username or player-id for the targeted player
+// Takes two params, context = object containing functions to operate on state, 
+// payload = data sent from client-side ex username or player-id for the targeted player
 function unlockPlayer(context, payload){
-
   // First we'll get the game state
   const game = context.getGameState();
 
@@ -12,10 +12,10 @@ function unlockPlayer(context, payload){
   const player = game.players[playerId];
 
   // They tried targeting an unknown player
-    if (player === undefined) {
-        context.send('spell:unlock:player:fail', { errorCode: 0 });
-        return;
-    }
+  if (player === undefined) {
+      context.send('spell:unlock:player:fail', { errorCode: 0 });
+      return;
+  }
 
   // We always use the `properties` key for changing values
   // We want to unlock the player
@@ -29,8 +29,8 @@ function unlockPlayer(context, payload){
 
   // Do we want to broadcast it to all players? 
   //context.broadcastToGame('player:unlocked', { player: playerId });
-  
 };
+
 module.exports = {
-    'spell:unlock:player': unlockPlayer,
+  'spell:unlock:player': unlockPlayer,
 };
