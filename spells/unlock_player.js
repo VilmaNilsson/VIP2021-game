@@ -1,5 +1,5 @@
 // Unlocks a player that is targeted with a "locked spell" fx. annoy
-// Takes two params, context = object containing functions to operate on state, 
+// Takes two params, context = object containing functions to operate on state,
 // payload = data sent from client-side ex username or player-id for the targeted player
 function unlockPlayer(context, payload) {
   // First we'll get the game state
