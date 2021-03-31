@@ -7,6 +7,7 @@ const doubleSalary = require('./double_salary.js');
 const doubleSalaryStation = require('./double_salary_station');
 const activateTemporaryPocket = require('./activate-temporary-pocket');
 const increaseLoginTimePlayer = require('./increase-login-time-player');
+const lockPlayer = require('./lock_player.js');
 
 // And then combine them into one object
 module.exports = {
@@ -18,4 +19,5 @@ module.exports = {
   doubleSalaryStation,
   activateTemporaryPocket,
   increaseLoginTimePlayer,
+  lockPlayer
 };
