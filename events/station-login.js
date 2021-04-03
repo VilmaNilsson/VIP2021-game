@@ -63,4 +63,4 @@ function stationLogin(context, payload){
 
 module.exports = {
     'station:login': stationLogin,
-}
+};

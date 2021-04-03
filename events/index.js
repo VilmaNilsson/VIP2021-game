@@ -6,8 +6,8 @@ const gameCreation = require('./game-creation');
 const spells = require('./spells');
 const playerJoinGame = require('./player-join-game');
 const stationLogin = require('./station-login.js');
-const playerLogin = require ('./playerLogin');
-const teamJoin = require ('./teamJoin');
+const playerLogin = require('./playerLogin');
+const teamJoin = require('./teamJoin');
 const teamLeave = require('./teamLeave.js');
 
 // And then combine them into one object
