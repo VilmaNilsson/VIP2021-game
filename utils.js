@@ -130,13 +130,14 @@ function createStation(state = {}) {
 
 // Create racks for a station based on the number of teams and tokens
 function createRacks(nrOfTeams, nrOfTokens) {
+  const randomRack = Array.from({ length: nrOfTokens }).map(() => {
+    return {
+      token: Math.floor(Math.random() * nrOfTokens),
+    };
+  });
   return Array.from({ length: nrOfTeams }).map(() => {
     return {
-      slots: Array.from({ length: nrOfTokens }).map(() => {
-        return {
-          token: Math.floor(Math.random() * nrOfTokens),
-        };
-      }),
+      slots: randomRack,
     };
   });
 }
