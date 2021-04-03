@@ -188,16 +188,33 @@ function getSalaryByStation(game, station) {
   return SCORE_COUNTER;
 }
 
-function getCurrTeamScores(game){
+function getLoginTime(gameState, playerId, stationIndex) {
+
+  // Unpack the needed properties from the gamestate
+  const { stations, players}  = gameState;
+
+  // Get the specified objects
+  const station = stations[stationIndex];
+  const player = players[playerId];
+
+  // Calculate the logintime based on the station's and the player's properties
+  const loginTime = ((station.properties.loginTime * station.properties.loginMultiplier) *
+  player.properties.loginTimeMultiplier);
+
+  // Return it
+  return loginTime;
+}
+
+function getCurrTeamScores(game) {
   // Unpack the teams from the recieved gamestate
-  const {teams} = game;
+  const { teams } = game;
 
   // Create a empty object
-  let currTeamScores = {};
+  const currTeamScores = {};
 
   // Loop through all teams and add a property to the object for each team which
   // has the team's index as key and their score as value
-  for (let i = 0; i < teams.length; i++) {
+  for (let i = 0; i < teams.length; i + 1) {
     currTeamScores[i] = teams[i].properties.score;
   }
 
@@ -209,5 +226,6 @@ module.exports = {
   getTickDuration,
   getTeamSalaries,
   getSalaryByStation,
+  getLoginTime,
   getCurrTeamScores,
 };
