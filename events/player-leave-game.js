@@ -26,7 +26,7 @@ function gameLeave(context) {
   context.updatePlayerState(player);
 
   // Broadcast to all players in the affected game that one has left
-  context.broadcastToGame('team:left', { playerId });
+  context.broadcastToGame('team:left', { playerId }, game.id);
 }
 
 module.exports = {

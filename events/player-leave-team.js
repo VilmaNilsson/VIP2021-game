@@ -2,7 +2,7 @@ function teamLeave(context) {
   // Init variables
   const playerId = context.id();
   const game = context.getGameState();
-  const player = gameState.players[playerId];
+  const player = game.players[playerId];
   const { team } = player;
 
   // Update player, -1 for no team
