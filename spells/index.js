@@ -12,6 +12,7 @@ const activateTemporaryPocket = require('./activate-temporary-pocket');
 const increaseLoginTimePlayer = require('./increase-login-time-player');
 const lockPlayer = require('./lock_player.js');¨
 const halfSalaryAllStations = require('./half-salary-all-stations');
+const resetAll = require('./reset-all');
 
 // And then combine them into one object
 module.exports = {
