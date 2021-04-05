@@ -36,8 +36,10 @@ function gameCreate(context, payload) {
   const players = {};
   // We'll grab our own ID
   const id = context.id();
+  // Add our own username to our player
+  const { username } = context.getPlayerState();
   // And then add ourselves as the first player
-  players[id] = utils.createPlayer();
+  players[id] = utils.createPlayer({ username });
 
   // We'll create a new game with all of the above
   const newGame = utils.createGame({
