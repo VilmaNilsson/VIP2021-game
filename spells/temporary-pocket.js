@@ -8,16 +8,16 @@ function activateTemporaryPocket(context) {
   const newGameState = { ...game };
   context.updateGameState(newGameState);
 
-  context.send('player:activated:temporary-pocket', { duration });
+  context.send('player:temporary-pocket', { duration });
 
   setTimeout(() => {
     players[playerId].properties.temporaryPockedLocked = true;
     const newGameState = { ...game };
     context.updateGameState(newGameState);
-    context.send('player:locked:temporary-pocket', {});
+    context.send('player:temporary-pocket:faded', {});
   }, duration);
 }
 
 module.exports = {
-  'spell:activate:temporary-pocket': activateTemporaryPocket,
+  'spell:player:temporary-pocket': activateTemporaryPocket,
 };
