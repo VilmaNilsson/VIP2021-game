@@ -14,6 +14,7 @@ function teamLeave(context) {
 
   // Broadcast event
   context.broadcastToGame('team:left', { playerId, team });
+  context.send('team:yours', { team: -1 });
 }
 
 module.exports = {

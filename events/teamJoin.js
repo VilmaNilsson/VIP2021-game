@@ -11,6 +11,7 @@ function teamJoin(context, payload) {
   player.team = teamIndex;
   context.updateGameState(game);
   context.broadcastToGame('team:joined', { playerId, teamName });
+  context.send('team:yours', { team: game.teams[teamIndex] });
 }
 
 module.exports = {
