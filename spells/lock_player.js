@@ -37,7 +37,7 @@ function lockPlayer(context, payload) {
   context.updateGameState(game);
 
   // Send info to client about status=locked
-  context.sendTo('player:locked', { playerId, duration });
+  context.sendTo(playerId, 'player:locked', { duration });
 
   // Now: we want to make this spell last for as many seconds const duration is,
   // then we want to reset whatever we just did.
@@ -46,12 +46,11 @@ function lockPlayer(context, payload) {
   setTimeout(() => {
     // We'll just do the reverse for resetting
     const game = context.getGameState();
-    const playerId = payload.player;
     const player = game.players[playerId];
     player.properties.locked = false;
     game.players[playerId] = player;
     context.updateGameState(game);
-    context.sendTo('player:locked', { playerId });
+    context.sendTo(playerId, 'player:unlocked', {});
   }, duration * 1000); // Times are in milliseconds
 }
 
