@@ -20,7 +20,7 @@ function playerJoinGame(context, payload) {
 
   if (gameExists) {
     const newPlayer = Utils.createPlayer();
-    gameState.players[playerId] = 
+    gameState.players[playerId] = newPlayer;
 
     // Creating a new game state with the new player
     const newGameState = { ...gameState };
