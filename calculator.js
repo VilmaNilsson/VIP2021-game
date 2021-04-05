@@ -215,7 +215,7 @@ function getCurrTeamScores(game) {
 
   // Loop through all teams and add a property to the object for each team which
   // has the team's index as key and their score as value
-  for (let i = 0; i < teams.length; i + 1) {
+  for (let i = 0; i < teams.length; i++) {
     currTeamScores[i] = teams[i].properties.score;
   }
 
