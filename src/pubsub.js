@@ -21,6 +21,7 @@ const PubSub = {
   publish: function publish(event, payload) {
     // Grouped logging for readability
     console.groupCollapsed(`Event dispatched: %c${event}`, 'color: #177503;');
+    // TODO: .warn if it ends with :fail?
     console.log(payload);
     console.groupEnd();
 
