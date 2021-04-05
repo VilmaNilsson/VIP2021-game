@@ -189,17 +189,18 @@ function getSalaryByStation(game, station) {
 }
 
 function getLoginTime(gameState, playerId, stationIndex) {
-
   // Unpack the needed properties from the gamestate
-  const { stations, players}  = gameState;
+  const { stations, players } = gameState;
 
   // Get the specified objects
   const station = stations[stationIndex];
   const player = players[playerId];
 
   // Calculate the logintime based on the station's and the player's properties
-  const loginTime = ((station.properties.loginTime * station.properties.loginMultiplier) *
-  player.properties.loginTimeMultiplier);
+  const loginTime = (
+    (station.properties.loginTime * station.properties.loginMultiplier)
+    * player.properties.loginTimeMultiplier
+  );
 
   // Return it
   return loginTime;

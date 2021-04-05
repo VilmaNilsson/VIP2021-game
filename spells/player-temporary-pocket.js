@@ -1,7 +1,7 @@
 function activateTemporaryPocket(context) {
   const duration = 120 * 1000;
   const playerId = context.id();
-  const { id, players } = context.getGameState();
+  const { players } = context.getGameState();
   const game = context.getGameState();
 
   players[playerId].properties.temporaryPockedLocked = false;
