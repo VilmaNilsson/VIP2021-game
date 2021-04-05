@@ -28,7 +28,7 @@ function unlockPlayer(context, payload) {
   context.updateGameState(game);
 
   // Send a message to the targeted player
-  context.sendTo('player:unlocked', { player: playerId });
+  context.sendTo(playerId, 'player:unlocked', { player: playerId });
 }
 
 module.exports = {
