@@ -29,5 +29,5 @@ function tokenSwap(context, payload) {
 }
 
 module.exports = {
-  'token:swap': tokenSwap
+  'token:swap': tokenSwap,
 };

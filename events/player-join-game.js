@@ -9,13 +9,13 @@ function playerJoinGame(context, payload) {
   // Checks if game exits
   if (game === undefined) {
     context.send('game:joined:failed', { errorCode: 0 });
-    return; 
+    return;
   }
 
   // Game already started or ended
   if (game.properties.phase >= 2) {
     context.send('game:joined:failed', { errorCode: 1 });
-    return; 
+    return;
   }
 
   const { username } = player;
