@@ -13,6 +13,7 @@ const increaseLoginTimePlayer = require('./increase-login-time-player');
 const lockPlayer = require('./lock_player.js');¨
 const halfSalaryAllStations = require('./half-salary-all-stations');
 const resetAll = require('./reset-all');
+const temporaryPocket = require('./temporary-pocket');
 
 // And then combine them into one object
 module.exports = {
@@ -28,4 +29,5 @@ module.exports = {
   increaseLoginTimePlayer,
   lockPlayer,
   halfSalaryAllStations,
+  temporaryPocket,
 };
