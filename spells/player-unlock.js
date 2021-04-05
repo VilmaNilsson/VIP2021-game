@@ -32,5 +32,5 @@ function unlockPlayer(context, payload) {
 }
 
 module.exports = {
-  'spell:unlock:player': unlockPlayer,
+  'spell:player:unlock': unlockPlayer,
 };
