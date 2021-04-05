@@ -3,7 +3,6 @@ const debug = require('./debug');
 const connection = require('./connection');
 const gameLeave = require('./gameLeave.js');
 const gameCreation = require('./game-creation');
-const spells = require('./spells');
 const playerJoinGame = require('./player-join-game');
 const stationLogin = require('./station-login.js');
 const playerLogin = require('./playerLogin');
@@ -16,7 +15,6 @@ module.exports = {
   connection,
   gameCreation,
   gameLeave,
-  spells,
   playerJoinGame,
   stationLogin,
   playerLogin,
