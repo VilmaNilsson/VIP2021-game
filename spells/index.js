@@ -8,6 +8,7 @@ const doubleSalaryStation = require('./double_salary_station');
 const activateTemporaryPocket = require('./activate-temporary-pocket');
 const increaseLoginTimePlayer = require('./increase-login-time-player');
 const halfSalaryAllStations = require('./half-salary-all-stations');
+const getTheOneSpell = require('./get-the-one');
 
 // And then combine them into one object
 module.exports = {
@@ -20,4 +21,5 @@ module.exports = {
   activateTemporaryPocket,
   increaseLoginTimePlayer,
   halfSalaryAllStations,
+  getTheOneSpell,
 };
