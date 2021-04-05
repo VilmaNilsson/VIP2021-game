@@ -1,5 +1,7 @@
+/* eslint-disable linebreak-style */
 // This is where we `require` all of our spell handlers ('event:name': handler)
 const lockSpells = require('./locks.js');
+const unlockStationSpell = require('./unlock-station.js');´
 const unlockPlayer = require('./unlock_player.js');
 const immuneToSpells = require('./immune_To_Spells');
 const swapTeamRack = require('./swap-team-rack');
@@ -13,6 +15,7 @@ const halfSalaryAllStations = require('./half-salary-all-stations');
 // And then combine them into one object
 module.exports = {
   lockSpells,
+  unlockStationSpell,
   unlockPlayer,
   immuneToSpells,
   swapTeamRack,
