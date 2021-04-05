@@ -27,7 +27,7 @@ function getToken(context, payload) {
 
   // get the player and information about the player
   // connectedPlayer is an object with the keys id, connectedAt & gameId
-  let connectedPlayer = context.getPlayerState();
+  const connectedPlayer = context.getPlayerState();
 
   // we search the player within the current game and change the token
   gameState.players[connectedPlayer.id].defaults.pocket = payload.token;
