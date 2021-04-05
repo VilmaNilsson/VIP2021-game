@@ -199,7 +199,7 @@ function getLoginTime(gameState, playerId, stationIndex) {
   // Calculate the logintime based on the station's and the player's properties
   const loginTime = (
     (station.properties.loginTime * station.properties.loginMultiplier)
-    * player.properties.loginTimeMultiplier
+    * player.properties.loginMultiplier
   );
 
   // Return it
