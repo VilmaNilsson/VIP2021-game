@@ -142,6 +142,15 @@ function createRacks(nrOfTeams, nrOfTokens) {
   });
 }
 
+// Create tokens.....for now it dosnt take any arguments
+function createTokens() {
+  // Our tokes (for now) is just a simple array of { name: letter }
+  const tokens = 'ABCDEFGH'.split('').map((letter) => {
+    return { name: letter };
+  });
+  return tokens;
+}
+
 // Creates the base object for a Team
 function createTeam(state = {}) {
   const team = {
@@ -197,6 +206,7 @@ module.exports = {
   createGame,
   createStation,
   createRacks,
+  createTokens,
   createTeam,
   createPlayer,
 };
