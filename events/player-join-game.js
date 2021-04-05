@@ -19,13 +19,16 @@ function playerJoinGame(context, payload) {
   const gameExists = checkIfGameExist(gameState);
 
   if (gameExists) {
-    gameState.players[playerId] = Utils.createPlayer();
+    const newPlayer = Utils.createPlayer();
+    gameState.players[playerId] = 
 
     // Creating a new game state with the new player
     const newGameState = { ...gameState };
 
     context.updateGameState(gameId, newGameState);
-    context.broadcast('player:joined', { playerId, username });
+    context.broadcastToGame('player:joined', { playerId, username }, gameId);
+    context.send('game:joined', { game: newGameState });
+    context.send('player:you', { player: newPlayer });
   } else {
     context.send('game:joined:failed', { message: 'Unfortunatley, the game you were trying to join was not found.' });
   }
