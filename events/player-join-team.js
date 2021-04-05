@@ -1,17 +1,21 @@
 function teamJoin(context, payload) {
-  const playerState = context.getPlayerState();
   const playerId = context.id();
   const game = context.getGameState();
-  const player = game.players[playerId];
-  const teamIndex = payload.team;
-  const teamName = game.teams[teamIndex].name;
 
-  playerState.team = teamIndex;
-  context.updatePlayerState(playerState);
-  player.team = teamIndex;
+  const teamIndex = payload.team;
+  const team = game.teams[teamIndex];
+
+  // Team doesn't exist
+  if (team === undefined) {
+    context.send('team:join:failed', { errorCode: 0 });
+  }
+
+  // Update the player within the game
+  game.players[playerId].team = teamIndex;
   context.updateGameState(game);
-  context.broadcastToGame('team:joined', { playerId, teamName });
-  context.send('team:yours', { team: game.teams[teamIndex] });
+
+  context.broadcastToGame('team:joined', { playerId, team: teamIndex });
+  context.send('team:yours', { team });
 }
 
 module.exports = {
