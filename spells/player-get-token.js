@@ -27,16 +27,16 @@ function getToken(context, payload) {
 
   // get the player and information about the player
   // connectedPlayer is an object with the keys id, connectedAt & gameId
-  const connectedPlayer = context.getPlayerState();
+  const playerId = context.id();
 
   // we search the player within the current game and change the token
-  gameState.players[connectedPlayer.id].defaults.pocket = payload.token;
+  gameState.players[playerId].properties.pocket = payload.token;
 
   // save the changes
   context.updateGameState(gameState);
 
   // send back message to the player with the event and token as payload
-  context.sendTo('player:get-token', { token: payload.token });
+  context.send('player:pocket', { token: payload.token });
 }
 
 module.exports = {

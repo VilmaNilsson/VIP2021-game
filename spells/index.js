@@ -5,6 +5,7 @@ const playerIncLogin = require('./player-increased-login');
 const playerLocked = require('./player-locked');
 const playerTemporaryPocket = require('./player-temporary-pocket');
 const playerUnlock = require('./player-unlock');
+const playerGetToken = require('./player-get-token');
 const resetAll = require('./reset-all');
 const stationDoubleSalary = require('./station-double-salary');
 const stationHalfSalary = require('./station-half-salary');
@@ -21,6 +22,7 @@ module.exports = {
   playerLocked,
   playerTemporaryPocket,
   playerUnlock,
+  playerGetToken,
   resetAll,
   stationDoubleSalary,
   stationHalfSalary,
