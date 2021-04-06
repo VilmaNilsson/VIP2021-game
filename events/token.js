@@ -24,8 +24,21 @@ function tokenSwap(context, payload) {
 
   const { to, from } = payload;
 
-  // TODO: from: pocket, temp pocket, or rack+slot from curr station
-  // TODO: to: pocket, temp pocket, or rack+slot of a station
+  // The swap has to be from two separate places
+  if (to === from) {
+    context.send('token:swap:fail', { errorCode: 3 });
+    return;
+  }
+
+  // If the destination (pocket to slot) has a token, we'll replace them
+  //
+  // from (string) 'pocket'
+  // from (string) 'temporary-pocket'
+  // from (int)    0 (slot index)           - station from player
+  //
+  // to (string)   'pocket'
+  // to (string)   'temporary-pocket'
+  // to (int)      3 (slot index)           - station from player
 }
 
 module.exports = {
