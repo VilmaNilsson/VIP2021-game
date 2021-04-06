@@ -135,9 +135,12 @@ function createRacks(nrOfTeams, nrOfTokens) {
       token: Math.floor(Math.random() * nrOfTokens),
     };
   });
+
   return Array.from({ length: nrOfTeams }).map(() => {
     return {
-      slots: randomRack,
+      // NOTE: If we dont make a copy (spread) it will use the same rack for all
+      // teams within a station (ie. a reference)
+      slots: [...randomRack],
     };
   });
 }
