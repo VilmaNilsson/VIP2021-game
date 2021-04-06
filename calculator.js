@@ -44,7 +44,8 @@ function getTeamSalaries(game) {
   for (let i = 0; i < stations.length; i += 1) {
     for (let j = 0; j < stations[i].racks.length; j += 1) {
       stations[i].racks[j].slots.forEach((token) => {
-        if (token.token >= 0) {
+        // NOTE: fails if the slot is empty (null)
+        if (token !== null && token.token >= 0) {
           STATIONS_PER_TEAM[j][i][token.token] += 1;
         }
       });
