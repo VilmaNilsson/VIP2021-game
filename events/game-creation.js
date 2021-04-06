@@ -3,12 +3,12 @@ const calc = require('../calculator');
 
 // TODO: A player shouldnt be able to start a game if they're already inside of
 // one
-// TODO: Add plan and play durations (from the payload)
 function gameCreate(context, payload) {
   // Game name, number of teams and stations
   const name = payload.name || '';
   const nrOfTeams = payload.nrOfTeams || 4;
   const nrOfStations = payload.nrOfStations || 6;
+  const defaults = {};
 
   // Our tokes (for now) is just a simple array of { name: letter }
   // for now it dosnt take any arguments
@@ -88,6 +88,8 @@ function gameStart(context, payload) {
     return;
   }
 
+  // TODO: check to see that everyone is within a team
+
   const planDuration = game.properties.planPhaseDuration * 1000;
 
   // TODO: break into serparate functions (plan + play phases)
@@ -113,11 +115,19 @@ function gameStart(context, payload) {
         game.callbacks = [];
       }
 
+      // Calculate scores and salaries
+      const salary = calc.getTeamSalaries(game);
+      // For each of the "next salary" we'll add it to the teams score
+      Object.entries(salary).forEach((entry) => {
+        const [team, nextSalary] = entry;
+        game.teams[team].properties.score += nextSalary;
+      });
+
       // Update the game state (currentTick + callbacks)
       context.updateGameState(game);
-      // Calculate scores and salaries
+
+      // Get the current scores
       const score = calc.getCurrTeamScores(game);
-      const salary = calc.getTeamSalaries(game);
 
       // Stop our running interval when we've gone through all of the salaries
       if (game.currentTick >= game.properties.nrOfSalaries) {
@@ -139,6 +149,7 @@ function gameStart(context, payload) {
     }, tickDuration);
 
     // Calculate scores and salaries
+    // NOTE: this will always be 0 and no upcoming salary (ie. the first time)
     const initialScore = calc.getCurrTeamScores(game);
     const initialSalary = calc.getTeamSalaries(game);
 
@@ -163,6 +174,7 @@ function gameStart(context, payload) {
   context.broadcastToGame('game:phase', game.properties.phase);
 }
 
+// TODO: add delete game
 module.exports = {
   'game:create': gameCreate,
   'game:start': gameStart,
