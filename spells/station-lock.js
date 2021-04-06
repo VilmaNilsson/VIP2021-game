@@ -45,7 +45,7 @@ function lockStationSpell(context, payload) {
     station.properties.locked = false;
     game.stations[stationIndex] = station;
     context.updateGameState(game);
-    context.broadcastToGame('station:unlocked', { station: stationIndex });
+    context.broadcastToGame('station:locked:faded', { station: stationIndex });
   });
 }
 

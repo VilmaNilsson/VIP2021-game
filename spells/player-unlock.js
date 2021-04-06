@@ -6,7 +6,7 @@ function unlockPlayer(context, payload) {
   const game = context.getGameState();
 
   // In this spell we'll receive the player id (from frontend) (the player to be unlocked)
-  const playerId = payload.playerId;
+  const { playerId } = payload;
 
   // We'll extract the player from state.game
   const player = game.players[playerId];
@@ -32,5 +32,5 @@ function unlockPlayer(context, payload) {
 }
 
 module.exports = {
-  'spell:unlock:player': unlockPlayer,
+  'spell:player:unlock': unlockPlayer,
 };

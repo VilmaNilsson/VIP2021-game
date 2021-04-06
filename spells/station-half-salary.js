@@ -42,7 +42,7 @@ function halfSalaryStationSpell(context, payload) {
     station.properties.salaryMultiplier = 1;
     game.stations[stationIndex] = station;
     context.updateGameState(game);
-    context.broadcastToGame('station:regular-salary', { station: stationIndex });
+    context.broadcastToGame('station:half-salary:faded', { station: stationIndex });
   });
 }
 

@@ -48,5 +48,5 @@ function unlockStationSpell(context, payload) {
 }
 
 module.exports = {
-  'spell:unlock:station': unlockStationSpell,
+  'spell:station:unlock': unlockStationSpell,
 };

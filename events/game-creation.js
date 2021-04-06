@@ -36,8 +36,10 @@ function gameCreate(context, payload) {
   const players = {};
   // We'll grab our own ID
   const id = context.id();
+  // Add our own username to our player
+  const { username } = context.getPlayerState();
   // And then add ourselves as the first player
-  players[id] = utils.createPlayer();
+  players[id] = utils.createPlayer({ username });
 
   // We'll create a new game with all of the above
   const newGame = utils.createGame({
@@ -88,8 +90,10 @@ function gameStart(context, payload) {
 
   const planDuration = game.properties.planPhaseDuration * 1000;
 
+  // TODO: break into serparate functions (plan + play phases)
   // After our plan phase (1) we'll start the play phase (2)
   setTimeout(() => {
+    const game = context.getGameState();
     // Calculate the duration between salaries
     const tickDuration = calc.getTickDuration(game);
 
@@ -111,6 +115,9 @@ function gameStart(context, payload) {
 
       // Update the game state (currentTick + callbacks)
       context.updateGameState(game);
+      // Calculate scores and salaries
+      const score = calc.getCurrTeamScores(game);
+      const salary = calc.getTeamSalaries(game);
 
       // Stop our running interval when we've gone through all of the salaries
       if (game.currentTick >= game.properties.nrOfSalaries) {
@@ -119,29 +126,40 @@ function gameStart(context, payload) {
         // ===========================================
         game.properties.phase = { type: 3 };
         context.updateGameState(game);
-        // Broadcast the last salary and phase
-        context.broadcastToGame('game:salary', {});
+        // Broadcast the last phase
         context.broadcastToGame('game:phase', game.properties.phase);
+        context.broadcastToGame('game:score', { score });
+        context.broadcastToGame('game:salary', { salary });
         return;
       }
 
       // Broadcast the salary event (should contain the score of all teams)
-      context.broadcastToGame('game:salary', {});
+      context.broadcastToGame('game:score', { score });
+      context.broadcastToGame('game:salary', { salary });
     }, tickDuration);
+
+    // Calculate scores and salaries
+    const initialScore = calc.getCurrTeamScores(game);
+    const initialSalary = calc.getTeamSalaries(game);
 
     // Set our current game phase to 2 (Play)
     // ======================================
     const start = Date.now();
-    game.properties.phase = { type: 2, start };
+    const duration = game.properties.playPhaseDuration * 1000;
+    game.properties.phase = { type: 2, start, duration };
     context.updateGameState(game);
+    // Broadcast the second phase
     context.broadcastToGame('game:phase', game.properties.phase);
+    context.broadcastToGame('game:score', { score: initialScore });
+    context.broadcastToGame('game:salary', { salary: initialSalary });
   }, planDuration);
 
   // Set our current game phase to 1 (Plan)
   // ======================================
   const start = Date.now();
-  game.properties.phase = { type: 1, start };
+  game.properties.phase = { type: 1, start, duration: planDuration };
   context.updateGameState(game);
+  // Broadcast the first phase
   context.broadcastToGame('game:phase', game.properties.phase);
 }
 

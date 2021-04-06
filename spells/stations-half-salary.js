@@ -8,7 +8,7 @@ function halfSalaryAllStations(context) {
 
   const newGame = { ...GAME };
   context.updateGameState(newGame);
-  context.broadcast('stations:half-salary', {});
+  context.broadcastToGame('stations:half-salary', {});
 
   context.onNextGameTick(() => {
     for (let i = 0; i < stations.length; i += 1) {
@@ -20,7 +20,7 @@ function halfSalaryAllStations(context) {
     const newGame = { ...GAME };
     context.updateGameState(newGame);
 
-    context.broadcast('stations:half-salary:faded', {});
+    context.broadcastToGame('stations:half-salary:faded', {});
   });
 }
 

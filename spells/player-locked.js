@@ -50,7 +50,7 @@ function lockPlayer(context, payload) {
     player.properties.locked = false;
     game.players[playerId] = player;
     context.updateGameState(game);
-    context.sendTo(playerId, 'player:unlocked', {});
+    context.sendTo(playerId, 'player:locked:faded', {});
   }, duration * 1000); // Times are in milliseconds
 }
 
