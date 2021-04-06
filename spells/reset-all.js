@@ -6,13 +6,13 @@ function resetAll(context) {
   // Some error handling I totally wrote myself
   // We're not in a game
   if (game === null) {
-    context.send('spell:player:immune:fail', { errorCode: 0 });
+    context.send('spell:reset:all:fail', { errorCode: 0 });
     return;
   }
 
   // We're not in the play phase
   if (game.properties.phase.type !== 2) {
-    context.send('spell:player:immune:fail', { errorCode: 1 });
+    context.send('spell:reset:all:fail', { errorCode: 1 });
     return;
   }
 
@@ -23,7 +23,7 @@ function resetAll(context) {
   const nrOfTokens = game.tokens.length;
 
   // Empty out pocket(s)
-  for (let i = 0; i < nrOfPlayers; i + 1) {
+  for (let i = 0; i < nrOfPlayers; i += 1) {
     players[i].pocket = -1;
     if (players[i].temporaryPocketLocked !== true) {
       players[i].temporaryPocket = -1;
