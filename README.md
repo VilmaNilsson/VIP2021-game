@@ -1,6 +1,7 @@
 # VIP2021-game
 
-:exclamation: **THIS REPOSITORY IS UNDER ACTIVE DEVELOPMENT**
+![issues](https://img.shields.io/github/issues/VilmaNilsson/VIP2021-game)
+![issues-pr](https://img.shields.io/github/issues-pr/VilmaNilsson/VIP2021-game)
 
 ## Documentation
 
