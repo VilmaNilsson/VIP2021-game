@@ -24,6 +24,9 @@ function halfSalaryStationSpell(context, payload) {
     context.send('spell:station:half-salary:fail', { errorCode: 2 });
     return;
   }
+  
+  // 30 seconds
+  const duration = 30 * 1000;
 
   // We always use the `properties` key for changing values
   station.properties.salaryMultiplier = 0.5;
@@ -32,10 +35,10 @@ function halfSalaryStationSpell(context, payload) {
   // Save our changes
   context.updateGameState(game);
   // And broadcast it to all players
-  context.broadcastToGame('station:half-salary', { station: stationIndex });
+  context.broadcastToGame('station:half-salary', { station: stationIndex, duration });
 
   // Reset the station's salary on the next salary payout (ie. Tick)
-  context.onNextGameTick(() => {
+  setTimeout(() => {
     const game = context.getGameState();
     const stationIndex = payload.station;
     const station = game.stations[stationIndex];
@@ -43,7 +46,7 @@ function halfSalaryStationSpell(context, payload) {
     game.stations[stationIndex] = station;
     context.updateGameState(game);
     context.broadcastToGame('station:half-salary:faded', { station: stationIndex });
-  });
+  }, duration);
 }
 
 module.exports = {

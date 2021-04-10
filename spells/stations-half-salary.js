@@ -1,27 +1,27 @@
 function halfSalaryAllStations(context) {
-  const GAME = context.getGameState();
-  const { stations } = GAME;
+  const game = context.getGameState();
 
-  for (let i = 0; i < stations.length; i += 1) {
-    stations[i].properties.salaryMultiplier = 0.5;
-  }
-
-  const newGame = { ...GAME };
-  context.updateGameState(newGame);
-  context.broadcastToGame('stations:half-salary', {});
-
-  context.onNextGameTick(() => {
-    for (let i = 0; i < stations.length; i += 1) {
-      const defaultValue = stations[i].default.salaryMultiplier;
-
-      stations[i].properties.salaryMultiplier = defaultValue;
-    }
-
-    const newGame = { ...GAME };
-    context.updateGameState(newGame);
-
-    context.broadcastToGame('stations:half-salary:faded', {});
+  game.stations.forEach((station) => {
+    station.properties.salaryMultiplier = 0.5;
   });
+
+  // 30 seconds
+  const duration = 30 * 1000;
+
+  context.updateGameState(game);
+  context.broadcastToGame('stations:half-salary', { duration });
+
+  setTimeout(() => {
+    const game = context.getGameState();
+
+    game.stations.forEach((station) => {
+      const defaultMultiplier = station.defaults.salaryMultiplier;
+      station.properties.salaryMultiplier = defaultMultiplier;
+    });
+
+    context.updateGameState(newGame);
+    context.broadcastToGame('stations:half-salary:faded', {});
+  }, duration);
 }
 
 module.exports = {
