@@ -90,17 +90,18 @@ function createGame(state = {}) {
     code: '',
     currentTick: 0,
     callbacks: [],
-    defaults: {
-      planPhaseDuration: 30,
-      playPhaseDuration: 60 * 5,
-      nrOfSalaries: 10,
-      phase: { type: 0, start: 0 },
-    },
     tokens: [],
     stations: [],
     teams: [],
     players: {},
     ...state,
+    defaults: {
+      planPhaseDuration: 30,
+      playPhaseDuration: 60 * 5,
+      nrOfSalaries: 10,
+      phase: { type: 0, start: 0 },
+      ...state.defaults,
+    },
   };
 
   // Make properties a copy of defaults
@@ -113,14 +114,15 @@ function createGame(state = {}) {
 function createStation(state = {}) {
   const station = {
     name: '',
+    racks: [],
+    ...state,
     defaults: {
       locked: false,
       loginTime: 5,
       loginMultiplier: 1,
       salaryMultiplier: 1,
+      ...state.defaults,
     },
-    racks: [],
-    ...state,
   };
 
   station.properties = { ...station.defaults };
@@ -159,13 +161,14 @@ function createTeam(state = {}) {
   const team = {
     name: '',
     crew: -1,
+    ...state,
     defaults: {
       score: 0,
       locked: false,
       loginMultiplier: 1,
       salaryMultiplier: 1,
+      ...state.defaults,
     },
-    ...state,
   };
 
   team.properties = { ...team.defaults };
@@ -177,6 +180,7 @@ function createTeam(state = {}) {
 function createPlayer(state = {}) {
   const player = {
     team: -1,
+    ...state,
     defaults: {
       locked: false,
       immune: false,
@@ -188,8 +192,8 @@ function createPlayer(state = {}) {
       temporaryPocket: -1,
       temporaryPockedLocked: true,
       spells: [],
+      ...state.defaults,
     },
-    ...state,
   };
 
   player.properties = { ...player.defaults };
