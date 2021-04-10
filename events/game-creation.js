@@ -1,33 +1,62 @@
 const utils = require('../utils');
 const calc = require('../calculator');
 
-// TODO: A player shouldnt be able to start a game if they're already inside of
-// one
+// Event handler that creates a new game
 function gameCreate(context, payload) {
-  // Game name, number of teams and stations
-  const name = payload.name || '';
-  const nrOfTeams = payload.nrOfTeams || 4;
-  const nrOfStations = payload.nrOfStations || 6;
+  const {
+    name,
+    nrOfTeams,
+    nrOfStations,
+    planDuration,
+    playDuration
+  } = payload;
+
+  // A game must have a name
+  if (name === undefined || typeof name !== 'string' || name === '') {
+    context.send('game:create:fail', { errorCode: 0 });
+    return;
+  }
+
+  const player = context.getPlayerState();
+
+  // Can't start a game if you're in one
+  if (player.gameId !== null) {
+    context.send('game:create:fail', { errorCode: 1 });
+    return;
+  }
+
+  // Default game play properties
   const defaults = {};
+
+  if (planDuration !== undefined) {
+    defaults.planPhaseDuration = planDuration;
+  }
+
+  if (playDuration !== undefined) {
+    defaults.playPhaseDuration = playDuration;
+  }
 
   // Our tokes (for now) is just a simple array of { name: letter }
   // for now it dosnt take any arguments
   const tokens = utils.createTokens();
 
   // Our teams (based off of `nrOfTeams`)
-  const teams = Array.from({ length: nrOfTeams }).map((_, index) => {
+  const teams = Array.from({ length: nrOfTeams || 4 }).map((_, index) => {
     return utils.createTeam({
       name: `Team ${index + 1}`,
     });
   });
 
+  // Randomized array of station names
+  const stationNames = utils.getStationNames();
+
   // Our stations (based off of `nrOfStations`), the racks are based on the
   // number of teams and tokens
-  const stations = Array.from({ length: nrOfStations }).map((_, index) => {
+  const stations = Array.from({ length: nrOfStations || 6 }).map((_, index) => {
     const racks = utils.createRacks(teams.length, tokens.length);
 
     return utils.createStation({
-      name: `Station ${index + 1}`,
+      name: stationNames[index],
       racks,
     });
   });
@@ -49,6 +78,7 @@ function gameCreate(context, payload) {
     stations,
     teams,
     players,
+    defaults,
   });
 
   // Add the newly created game to the server state
@@ -56,19 +86,49 @@ function gameCreate(context, payload) {
   // Lets assign ourselves to the game
   context.updatePlayerState({ gameId: newGame.id });
   // Lets send back the newly created game
+  // TODO: filter out unecessary properties
   context.send('game:created', newGame);
 }
 
-function gameStart(context, payload) {
+function endPlayPhase(context) {
+  const game = context.getGameState();
+  const start = Date.now();
+  const score = calc.getTeamScores(game);
+
+  context.clearTimeouts();
+
+  // Set our current game phase to 3 (End)
+  // ======================================
+  game.properties.phase = { type: 3, start };
+  context.updateGameState(game);
+  // Broadcast the last phase
+  context.broadcastToGame('game:phase', game.properties.phase);
+  context.broadcastToGame('game:score', { score });
+}
+
+function startPlayPhase(context) {
   const game = context.getGameState();
 
-  // These two properties are mainly used for testing purposes
-  if (payload.planDuration !== undefined) {
-    game.properties.planPhaseDuration = payload.planDuration;
-  }
-  if (payload.playDuration !== undefined) {
-    game.properties.playPhaseDuration = payload.playDuration;
-  }
+  const start = Date.now();
+  const duration = game.properties.playPhaseDuration * 1000;
+
+  setTimeout(() => endPlayPhase(context), duration);
+  
+  // Calculate scores and salaries
+  const initialScore = calc.getTeamScores(game);
+
+  // Set our current game phase to 2 (Play)
+  // ======================================
+  game.properties.phase = { type: 2, start, duration };
+  context.updateGameState(game);
+  // Broadcast the second phase
+  context.broadcastToGame('game:phase', game.properties.phase);
+  context.broadcastToGame('game:score', { score: initialScore });
+}
+
+// Event handler that starts an existing game
+function gameStart(context) {
+  const game = context.getGameState();
 
   // No exists game, we can't start anything
   if (game === null) {
@@ -88,82 +148,16 @@ function gameStart(context, payload) {
     return;
   }
 
-  // TODO: check to see that everyone is within a team
+  // Make sure all players has joined a team
+  if (Object.values(game.players).some((player) => player.team === -1)) {
+    context.send('game:start:fail', { errorCode: 3 });
+    return;
+  }
 
   const planDuration = game.properties.planPhaseDuration * 1000;
 
-  // TODO: break into serparate functions (plan + play phases)
-  // After our plan phase (1) we'll start the play phase (2)
-  setTimeout(() => {
-    const game = context.getGameState();
-    // Calculate the duration between salaries
-    const tickDuration = calc.getTickDuration(game);
-
-    const interval = setInterval(() => {
-      const game = context.getGameState();
-      // Increment the tick counter
-      game.currentTick += 1;
-
-      const cbsLength = game.callbacks.length;
-      // If someone has queued callbacks for the next game tick
-      if (cbsLength > 0) {
-        // Call all of them
-        game.callbacks.forEach((cb) => cb());
-        // Let the console know we're clearing them (and how many)
-        console.log(`[WS]: Game (${game.id}) clearing callbacks [${cbsLength}]`);
-        // And then clear them
-        game.callbacks = [];
-      }
-
-      // Calculate scores and salaries
-      const salary = calc.getTeamSalaries(game);
-      // For each of the "next salary" we'll add it to the teams score
-      Object.entries(salary).forEach((entry) => {
-        const [team, nextSalary] = entry;
-        game.teams[team].properties.score += nextSalary;
-      });
-
-      // Update the game state (currentTick + callbacks)
-      context.updateGameState(game);
-
-      // Get the current scores
-      const score = calc.getCurrTeamScores(game);
-
-      // Stop our running interval when we've gone through all of the salaries
-      if (game.currentTick >= game.properties.nrOfSalaries) {
-        clearInterval(interval);
-        // Set our current game phase to 3 (Game Over)
-        // ===========================================
-        game.properties.phase = { type: 3 };
-        context.updateGameState(game);
-        // Broadcast the last phase
-        context.broadcastToGame('game:phase', game.properties.phase);
-        context.broadcastToGame('game:score', { score });
-        context.broadcastToGame('game:salary', { salary });
-        return;
-      }
-
-      // Broadcast the salary event (should contain the score of all teams)
-      context.broadcastToGame('game:score', { score });
-      context.broadcastToGame('game:salary', { salary });
-    }, tickDuration);
-
-    // Calculate scores and salaries
-    // NOTE: this will always be 0 and no upcoming salary (ie. the first time)
-    const initialScore = calc.getCurrTeamScores(game);
-    const initialSalary = calc.getTeamSalaries(game);
-
-    // Set our current game phase to 2 (Play)
-    // ======================================
-    const start = Date.now();
-    const duration = game.properties.playPhaseDuration * 1000;
-    game.properties.phase = { type: 2, start, duration };
-    context.updateGameState(game);
-    // Broadcast the second phase
-    context.broadcastToGame('game:phase', game.properties.phase);
-    context.broadcastToGame('game:score', { score: initialScore });
-    context.broadcastToGame('game:salary', { salary: initialSalary });
-  }, planDuration);
+  // Start the play phase after the plan phase
+  setTimeout(() => startPlayPhase(context), planDuration);
 
   // Set our current game phase to 1 (Plan)
   // ======================================
