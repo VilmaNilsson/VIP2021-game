@@ -1,6 +1,6 @@
 const spells = [
   {
-    event: 'spell:lock:station',
+    event: 'spell:station:lock',
     name: 'Lock Station',
     desc: 'Lock a station for 30 seconds',
     target: 'stations',
