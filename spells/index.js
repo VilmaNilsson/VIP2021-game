@@ -35,12 +35,12 @@ const spellHandlers = {
 };
 
 // Flatten the nested object `spells` onto one object
-const flattenedSpellHandlers = Object.value(spells).reduce((acc, next) => {
+const sphs = Object.values(spellHandlers).reduce((acc, next) => {
   acc = { ...acc, ...next };
   return acc;
 }, {});
 
 module.exports = {
   spells,
-  spellHandlers: flattenedSpellHandlers,,
+  spellHandlers: sphs,
 };
