@@ -206,21 +206,10 @@ function getLoginTime(gameState, playerId, stationIndex) {
   return loginTime;
 }
 
-function getCurrTeamScores(game) {
+function getTeamScores(game) {
   // Unpack the teams from the recieved gamestate
   const { teams } = game;
-
-  // Create a empty object
-  const currTeamScores = {};
-
-  // Loop through all teams and add a property to the object for each team which
-  // has the team's index as key and their score as value
-  for (let i = 0; i < teams.length; i += 1) {
-    currTeamScores[i] = teams[i].properties.score;
-  }
-
-  // Return the now filled object
-  return currTeamScores;
+  return teams.map((team) => team.properties.score);
 }
 
 function getTotalTeamTokens(game) {
@@ -314,6 +303,6 @@ module.exports = {
   getTeamSalaries,
   getSalaryByStation,
   getLoginTime,
-  getCurrTeamScores,
+  getTeamScores,
   getTotalTeamTokens,
 };
