@@ -239,6 +239,7 @@ module.exports = {
   generateUUID,
   withinTimeframe,
   findObjectByProperties,
+  shuffle,
   send,
   sendTo,
   broadcast,
@@ -249,4 +250,5 @@ module.exports = {
   createTokens,
   createTeam,
   createPlayer,
+  getStationNames,
 };
