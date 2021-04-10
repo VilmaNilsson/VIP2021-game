@@ -10,7 +10,7 @@ function activateTemporaryPocket(context) {
 
   context.send('player:temporary-pocket', { duration });
 
-  setTimeout(() => {
+  context.setTimeout(() => {
     const playerId = context.id();
     const game = context.getGameState();
     const player = game.players[playerId];

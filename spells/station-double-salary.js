@@ -38,7 +38,7 @@ function doubleSalaryStationSpell(context, payload) {
   context.broadcastToGame('station:double-salary', { station: stationIndex, duration });
 
   // Reset the station's salary on the next salary payout (ie. Tick)
-  setTimeout(() => {
+  context.setTimeout(() => {
     const game = context.getGameState();
     const stationIndex = payload.station;
     const station = game.stations[stationIndex];

@@ -30,7 +30,7 @@ function immuneToSpells(context) {
   context.send('player:immunity', { duration });
 
   // Reset the player's immunity after 30 seconds
-  setTimeout(() => {
+  context.setTimeout(() => {
     const game = context.getGameState();
     game.players[playerId].properties.immune = false;
     context.updateGameState(game);

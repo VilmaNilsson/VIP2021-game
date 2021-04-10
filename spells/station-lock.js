@@ -41,7 +41,7 @@ function lockStationSpell(context, payload) {
   context.broadcastToGame('station:locked', { station: stationIndex, duration });
 
   // Unlock the station on the next salary payout (ie. Tick)
-  setTimeout(() => {
+  context.setTimeout(() => {
     const game = context.getGameState();
     const stationIndex = payload.station;
     const station = game.stations[stationIndex];

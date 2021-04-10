@@ -11,7 +11,7 @@ function halfSalaryAllStations(context) {
   context.updateGameState(game);
   context.broadcastToGame('stations:half-salary', { duration });
 
-  setTimeout(() => {
+  context.setTimeout(() => {
     const game = context.getGameState();
 
     game.stations.forEach((station) => {

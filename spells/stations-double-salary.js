@@ -29,7 +29,7 @@ function doubleSalary(context) {
   context.broadcastToGame('stations:double-salary', { duration });
 
   // Reset all multipliers after the next salaries have been given
-  setTimeout(() => {
+  context.setTimeout(() => {
     const game = context.getGameState();
     game.stations.forEach((station) => {
       station.properties.salaryMultiplier = 1;
