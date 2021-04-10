@@ -108,8 +108,7 @@ function createGame(state = {}) {
     id,
     name: '',
     code: '',
-    currentTick: 0,
-    callbacks: [],
+    timeouts: [],
     tokens: [],
     stations: [],
     teams: [],
@@ -118,7 +117,6 @@ function createGame(state = {}) {
     defaults: {
       planPhaseDuration: 30,
       playPhaseDuration: 60 * 5,
-      nrOfSalaries: 10,
       phase: { type: 0, start: 0 },
       ...state.defaults,
     },
