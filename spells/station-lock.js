@@ -28,6 +28,9 @@ function lockStationSpell(context, payload) {
     return;
   }
 
+  // 30 seconds
+  const duration = 30 * 1000;
+
   // We always use the `properties` key for changing values
   station.properties.locked = true;
   // Then we'll insert the station once it has been modified
@@ -35,10 +38,10 @@ function lockStationSpell(context, payload) {
   // Save our changes
   context.updateGameState(game);
   // And broadcast it to all players
-  context.broadcastToGame('station:locked', { station: stationIndex });
+  context.broadcastToGame('station:locked', { station: stationIndex, duration });
 
   // Unlock the station on the next salary payout (ie. Tick)
-  context.onNextGameTick(() => {
+  setTimeout(() => {
     const game = context.getGameState();
     const stationIndex = payload.station;
     const station = game.stations[stationIndex];
@@ -46,7 +49,7 @@ function lockStationSpell(context, payload) {
     game.stations[stationIndex] = station;
     context.updateGameState(game);
     context.broadcastToGame('station:locked:faded', { station: stationIndex });
-  });
+  }, duration);
 }
 
 module.exports = {
