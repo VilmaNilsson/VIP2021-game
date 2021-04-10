@@ -136,7 +136,7 @@ function createStation(state = {}) {
     ...state,
     defaults: {
       locked: false,
-      loginTime: 5,
+      loginTime: 7,
       loginMultiplier: 1,
       salaryMultiplier: 1,
       ...state.defaults,
