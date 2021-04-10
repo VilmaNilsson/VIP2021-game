@@ -50,5 +50,5 @@ function lockStationSpell(context, payload) {
 }
 
 module.exports = {
-  'spell:lock:station': lockStationSpell,
+  'spell:station:lock': lockStationSpell,
 };
