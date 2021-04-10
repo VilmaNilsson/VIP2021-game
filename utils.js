@@ -37,6 +37,26 @@ function findObjectByProperties(objects, properties) {
   }, null);
 }
 
+// Courtesy of: https://stackoverflow.com/a/2450976
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
 // Sends a `msg` to a websocket (if the connection is opened)
 function send(ws, msg) {
   if (ws.readyState !== WebSocket.OPEN) {
@@ -130,6 +150,17 @@ function createStation(state = {}) {
   return station;
 }
 
+function getStationNames() {
+  return shuffle([
+    'Uranus',
+    'Urwilly',
+    'Urfanny',
+    'Urmom',
+    'Pluto',
+    'Moo',
+  ]);
+}
+
 // Create racks for a station based on the number of teams and tokens
 function createRacks(nrOfTeams, nrOfTokens) {
   const randomRack = Array.from({ length: nrOfTokens }).map(() => {
@@ -165,6 +196,8 @@ function createTeam(state = {}) {
     defaults: {
       score: 0,
       locked: false,
+      immune: false,
+      silenced: false,
       loginMultiplier: 1,
       salaryMultiplier: 1,
       ...state.defaults,
