@@ -34,7 +34,7 @@ const spellHandlers = {
   teamsSwapRack,
 };
 
-// Flatten the nested object `spells` onto one object
+// Flatten the nested object `spells` into one object
 const sphs = Object.values(spellHandlers).reduce((acc, next) => {
   acc = { ...acc, ...next };
   return acc;
