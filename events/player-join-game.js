@@ -27,13 +27,12 @@ function playerJoinGame(context, payload) {
   // Connect the player to the game as well as adding them as a new player
   player.gameId = game.id;
   context.updatePlayerState(player);
-  // The player is now connected to a game we dont need to specify a game id
-  // TODO: Broadcast to _all other players_
-  context.broadcastToGame('player:joined', { playerId, username });
-  // TODO: filter out unecessary properties
-  context.send('game:joined', { game });
-  // TODO: Do we need to filter out any keys?
+
+  // Send the game and player back
   context.send('player:you', { player: newPlayer });
+  context.send('game:yours', { game: utils.filterGame(game) });
+  // Let everyone know the player has joined
+  context.broadcastToGame('player:joined', { playerId, username });
 }
 
 module.exports = {
