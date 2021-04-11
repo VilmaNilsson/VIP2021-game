@@ -1,5 +1,4 @@
 const utils = require('../utils');
-const calc = require('../calculator');
 
 // Event handler that creates a new game
 function gameCreate(context, payload) {
@@ -85,15 +84,16 @@ function gameCreate(context, payload) {
   context.addGame(newGame.id, newGame);
   // Lets assign ourselves to the game
   context.updatePlayerState({ gameId: newGame.id });
+
   // Lets send back the newly created game
-  // TODO: filter out unecessary properties
-  context.send('game:created', newGame);
+  const game = utils.filterGame(newGame);
+  context.send('game:yours', { game });
 }
 
 function endPlayPhase(context) {
   const game = context.getGameState();
   const start = Date.now();
-  const score = calc.getTeamScores(game);
+  const score = utils.getTeamScores(game);
 
   context.clearTimeouts();
 
@@ -108,14 +108,13 @@ function endPlayPhase(context) {
 
 function startPlayPhase(context) {
   const game = context.getGameState();
-
   const start = Date.now();
   const duration = game.properties.playPhaseDuration * 1000;
 
   setTimeout(() => endPlayPhase(context), duration);
   
   // Calculate scores and salaries
-  const initialScore = calc.getTeamScores(game);
+  const initialScore = utils.getTeamScores(game);
 
   // Set our current game phase to 2 (Play)
   // ======================================

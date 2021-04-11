@@ -107,7 +107,6 @@ function createGame(state = {}) {
   const game = {
     id,
     name: '',
-    code: '',
     timeouts: [],
     tokens: [],
     stations: [],
@@ -117,7 +116,7 @@ function createGame(state = {}) {
     defaults: {
       planPhaseDuration: 30,
       playPhaseDuration: 60 * 5,
-      phase: { type: 0, start: 0 },
+      phase: { type: 0 },
       ...state.defaults,
     },
   };
@@ -146,17 +145,6 @@ function createStation(state = {}) {
   station.properties = { ...station.defaults };
 
   return station;
-}
-
-function getStationNames() {
-  return shuffle([
-    'Uranus',
-    'Urwilly',
-    'Urfanny',
-    'Urmom',
-    'Pluto',
-    'Moo',
-  ]);
 }
 
 // Create racks for a station based on the number of teams and tokens
@@ -232,6 +220,60 @@ function createPlayer(state = {}) {
   return player;
 }
 
+// Returns a shuffled array of station names
+function getStationNames() {
+  return shuffle([
+    'Uranus',
+    'Urwilly',
+    'Urfanny',
+    'Urmom',
+    'Pluto',
+    'Moo',
+  ]);
+}
+
+// Filter out unecessary keys
+function filterGame(game) {
+  // NOTE: Do we need to send out the players?
+  return {
+    id: game.id,
+    name: game.name,
+    tokens: game.tokens,
+    stations: game.stations.map((station) => {
+      const { name, properties } = station;
+      return { name, properties };
+    }),
+    teams: game.teams.map((team) => {
+      const { name, properties } = team;
+      return { name, properties };
+    }),
+  };
+}
+
+function getLoginTime(gameState, playerId, stationIndex) {
+  // Unpack the needed properties from the gamestate
+  const { stations, players } = gameState;
+
+  // Get the specified objects
+  const station = stations[stationIndex];
+  const player = players[playerId];
+
+  // Calculate the logintime based on the station's and the player's properties
+  const loginTime = (
+    (station.properties.loginTime * station.properties.loginMultiplier)
+    * player.properties.loginMultiplier
+  );
+
+  // Return it
+  return loginTime;
+}
+
+function getTeamScores(game) {
+  // Unpack the teams from the recieved gamestate
+  const { teams } = game;
+  return teams.map((team) => team.properties.score);
+}
+
 module.exports = {
   randomHex,
   generateUUID,
@@ -249,4 +291,6 @@ module.exports = {
   createTeam,
   createPlayer,
   getStationNames,
+  getLoginTime,
+  getTeamScores,
 };

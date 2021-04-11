@@ -1,5 +1,5 @@
 // A function in calculator.js is required in this event
-const calc = require('../calculator.js');
+const utils = require('../utils.js');
 
 function stationLogin(context, payload) {
   // Unload the payload into a constant
@@ -47,7 +47,7 @@ function stationLogin(context, payload) {
   }
 
   // Calculate the total login-time by calling a function in calculator.js
-  const loginTime = calc.getLoginTime(game, playerId, stationIndex);
+  const loginTime = utils.getLoginTime(game, playerId, stationIndex);
 
   // After the defined time the user is allowed into the station
   const loginTimeout = setTimeout(() => {

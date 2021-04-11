@@ -302,7 +302,6 @@ module.exports = {
   getTickDuration,
   getTeamSalaries,
   getSalaryByStation,
-  getLoginTime,
   getTeamScores,
   getTotalTeamTokens,
 };
