@@ -1,4 +1,5 @@
 const utils = require('../utils');
+const spells = require('../spells');
 
 // Event handler that creates a new game
 function gameCreate(context, payload) {
@@ -161,7 +162,12 @@ function gameStart(context) {
   // Set our current game phase to 1 (Plan)
   // ======================================
   const start = Date.now();
-  game.properties.phase = { type: 1, start, duration: planDuration };
+  game.properties.phase = {
+    type: 1,
+    start,
+    duration: planDuration,
+    spells: spells.spells,
+  };
   context.updateGameState(game);
   // Broadcast the first phase
   context.broadcastToGame('game:phase', game.properties.phase);
