@@ -1,3 +1,5 @@
+const utils = require('../utils');
+
 function swapTeamRack(context, payload) {
   // First, get the gamestate so that we can reach the neccesary attributes
   const game = context.getGameState();
@@ -49,8 +51,10 @@ function swapTeamRack(context, payload) {
   // Update the gamestate (which includes the racks)
   context.updateGameState(game);
 
-  // Broadcast the event
-  context.broadcastToGame('rack:swap', { station, teamOne, teamTwo });
+  // Broadcast the event (to everyone within a station)
+  const playerIds = utils.getPlayersInStation(game, station);
+  const racks = game.stations[station].racks;
+  context.broadcastTo(playerIds, 'station:rack', { station, racks });
 }
 
 module.exports = {
