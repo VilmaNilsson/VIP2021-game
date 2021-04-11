@@ -232,17 +232,31 @@ function create(wss, ws) {
     clearState: () => {
       return clearState();
     },
-    // Add a callback to be invoked on the next game tick
-    onNextGameTick: (cb) => {
+    // Store all timeouts within a game
+    setTimeout: (cb, ms) => {
       const player = getPlayerState(ws._id);
       const game = getGameState(player.gameId);
 
-      if (game !== null) {
-        game.callbacks = [...game.callbacks, cb];
-        return updateGameState(player.gameId, game);
+      if (game === null) {
+        return;
+      }
+      
+      const timeout = setTimeout(cb, ms);
+      game.timeouts = [...game.timeouts, timeout];
+      return updateGameState(player.gameId, game);
+    },
+    // Clear all timeouts within a game
+    clearTimeouts: () => {
+      const player = getPlayerState(ws._id);
+      const game = getGameState(player.gameId);
+
+      if (game === null) {
+        return;
       }
 
-      return null;
+      game.timeouts.forEach((timeout) => clearTimeout(timeout));
+      game.timeouts = [];
+      return updateGameState(player.gameId, game);
     },
   };
 }

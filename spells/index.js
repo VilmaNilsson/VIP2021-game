@@ -1,4 +1,5 @@
-/* eslint-disable linebreak-style */
+// The spells list
+const spells = require('./spells');
 // This is where we `require` all of our spell handlers ('event:name': handler)
 const playerImmune = require('./player-immune');
 const playerIncLogin = require('./player-increased-login');
@@ -15,8 +16,8 @@ const stationsDoubleSalary = require('./stations-double-salary');
 const stationsHalfSalary = require('./stations-half-salary');
 const teamsSwapRack = require('./teams-swap-rack');
 
-// And then combine them into one object
-module.exports = {
+// Combine the handlers
+const spellHandlers = {
   playerImmune,
   playerIncLogin,
   playerLocked,
@@ -31,4 +32,15 @@ module.exports = {
   stationsDoubleSalary,
   stationsHalfSalary,
   teamsSwapRack,
+};
+
+// Flatten the nested object `spells` into one object
+const sphs = Object.values(spellHandlers).reduce((acc, next) => {
+  acc = { ...acc, ...next };
+  return acc;
+}, {});
+
+module.exports = {
+  spells,
+  spellHandlers: sphs,
 };

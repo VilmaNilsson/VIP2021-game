@@ -19,21 +19,24 @@ function doubleSalary(context) {
     station.properties.salaryMultiplier = 2;
   });
 
+  // 30 seconds
+  const duration = 30 * 1000;
+
   // Update the gamestate
   context.updateGameState(game);
 
   // Broadcast the event to everyone
-  context.broadcastToGame('stations:double-salary', {});
+  context.broadcastToGame('stations:double-salary', { duration });
 
   // Reset all multipliers after the next salaries have been given
-  context.onNextGameTick(() => {
+  context.setTimeout(() => {
     const game = context.getGameState();
     game.stations.forEach((station) => {
       station.properties.salaryMultiplier = 1;
     });
     context.updateGameState(game);
     context.broadcastToGame('stations:double-salary:faded', {});
-  });
+  }, duration);
 }
 
 module.exports = {

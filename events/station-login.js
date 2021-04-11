@@ -1,5 +1,5 @@
 // A function in calculator.js is required in this event
-const calc = require('../calculator.js');
+const utils = require('../utils.js');
 
 function stationLogin(context, payload) {
   // Unload the payload into a constant
@@ -40,24 +40,38 @@ function stationLogin(context, payload) {
     return;
   }
 
+  // Clear the previous login timeout
+  if (player.properties.inStation !== null
+    && player.properties.inStation.loginTimeout !== undefined) {
+    clearTimeout(player.properties.inStation.loginTimeout);
+  }
+
   // Calculate the total login-time by calling a function in calculator.js
-  const loginTime = calc.getLoginTime(game, playerId, stationIndex);
+  const loginTime = utils.getLoginTime(game, playerId, stationIndex);
+
+  // After the defined time the user is allowed into the station
+  const loginTimeout = setTimeout(() => {
+    const game = context.getGameState();
+    const { racks } = game.stations[stationIndex];
+    context.send('station:login:done', { station: stationIndex, racks });
+  }, loginTime * 1000);
 
   // Create a timestamp for the start of the login
   const start = Date.now();
 
   // Change the player's inStation-property
-  game.players[playerId].properties.inStation = {
+  player.properties.inStation = {
     station: stationIndex,
     start,
     loginTime,
+    loginTimeout,
   };
+
+  game.players[playerId] = player;
 
   // Update the gamestate (which includes the player)
   context.updateGameState(game);
 
-  // TODO: cancel when logging into more
-  // TODO: people logging in should be able to see everything live
   // Send the login-wait-event to the user so that they start waiting
   const { racks } = station;
   context.send('station:login:wait', {
@@ -66,13 +80,6 @@ function stationLogin(context, payload) {
     start,
     loginTime,
   });
-
-  // After the defined time the user is allowed into the station
-  setTimeout(() => {
-    const game = context.getGameState();
-    const { racks } = game.stations[stationIndex];
-    context.send('station:login:done', { station: stationIndex, racks });
-  }, loginTime * 1000);
 }
 
 module.exports = {

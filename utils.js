@@ -37,6 +37,26 @@ function findObjectByProperties(objects, properties) {
   }, null);
 }
 
+// Courtesy of: https://stackoverflow.com/a/2450976
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
 // Sends a `msg` to a websocket (if the connection is opened)
 function send(ws, msg) {
   if (ws.readyState !== WebSocket.OPEN) {
@@ -87,20 +107,18 @@ function createGame(state = {}) {
   const game = {
     id,
     name: '',
-    code: '',
-    currentTick: 0,
-    callbacks: [],
-    defaults: {
-      planPhaseDuration: 30,
-      playPhaseDuration: 60 * 5,
-      nrOfSalaries: 10,
-      phase: { type: 0, start: 0 },
-    },
+    timeouts: [],
     tokens: [],
     stations: [],
     teams: [],
     players: {},
     ...state,
+    defaults: {
+      planPhaseDuration: 30,
+      playPhaseDuration: 60 * 5,
+      phase: { type: 0 },
+      ...state.defaults,
+    },
   };
 
   // Make properties a copy of defaults
@@ -113,14 +131,15 @@ function createGame(state = {}) {
 function createStation(state = {}) {
   const station = {
     name: '',
-    defaults: {
-      locked: false,
-      loginTime: 5,
-      loginMultiplier: 1,
-      salaryMultiplier: 1,
-    },
     racks: [],
     ...state,
+    defaults: {
+      locked: false,
+      loginTime: 7,
+      loginMultiplier: 1,
+      salaryMultiplier: 1,
+      ...state.defaults,
+    },
   };
 
   station.properties = { ...station.defaults };
@@ -128,13 +147,18 @@ function createStation(state = {}) {
   return station;
 }
 
-// Create racks for a station based on the number of teams and tokens
-function createRacks(nrOfTeams, nrOfTokens) {
-  const randomRack = Array.from({ length: nrOfTokens }).map(() => {
+// Generate a rack
+function createRack(nrOfTokens) {
+  return Array.from({ length: nrOfTokens }).map(() => {
     return {
       token: Math.floor(Math.random() * nrOfTokens),
     };
   });
+}
+
+// Create racks for a station based on the number of teams and tokens
+function createRacks(nrOfTeams, nrOfTokens) {
+  const randomRack = createRack(nrOfTokens);
 
   return Array.from({ length: nrOfTeams }).map(() => {
     return {
@@ -148,7 +172,7 @@ function createRacks(nrOfTeams, nrOfTokens) {
 // Create tokens.....for now it dosnt take any arguments
 function createTokens() {
   // Our tokes (for now) is just a simple array of { name: letter }
-  const tokens = 'ABCDEFGH'.split('').map((letter) => {
+  const tokens = 'ABCDEF'.split('').map((letter) => {
     return { name: letter };
   });
   return tokens;
@@ -159,13 +183,16 @@ function createTeam(state = {}) {
   const team = {
     name: '',
     crew: -1,
+    ...state,
     defaults: {
       score: 0,
       locked: false,
+      immune: false,
+      silenced: false,
       loginMultiplier: 1,
       salaryMultiplier: 1,
+      ...state.defaults,
     },
-    ...state,
   };
 
   team.properties = { ...team.defaults };
@@ -177,6 +204,7 @@ function createTeam(state = {}) {
 function createPlayer(state = {}) {
   const player = {
     team: -1,
+    ...state,
     defaults: {
       locked: false,
       immune: false,
@@ -188,8 +216,8 @@ function createPlayer(state = {}) {
       temporaryPocket: -1,
       temporaryPockedLocked: true,
       spells: [],
+      ...state.defaults,
     },
-    ...state,
   };
 
   player.properties = { ...player.defaults };
@@ -197,19 +225,100 @@ function createPlayer(state = {}) {
   return player;
 }
 
+// Returns a shuffled array of station names
+function getStationNames() {
+  return shuffle([
+    'Uranus',
+    'Urwilly',
+    'Urfanny',
+    'Urmom',
+    'Pluto',
+    'Moo',
+  ]);
+}
+
+// Filter out unecessary keys
+function filterGame(game) {
+  // NOTE: Do we need to send out the players?
+  return {
+    id: game.id,
+    name: game.name,
+    tokens: game.tokens,
+    stations: game.stations.map((station) => {
+      const { name, properties } = station;
+      return { name, properties };
+    }),
+    teams: game.teams.map((team) => {
+      const { name, properties } = team;
+      return { name, properties };
+    }),
+  };
+}
+
+// Calculate the login time for a station
+function getLoginTime(gameState, playerId, stationIndex) {
+  // Unpack the needed properties from the gamestate
+  const { stations, players } = gameState;
+
+  // Get the specified objects
+  const station = stations[stationIndex];
+  const player = players[playerId];
+
+  // Calculate the logintime based on the station's and the player's properties
+  const loginTime = (
+    (station.properties.loginTime * station.properties.loginMultiplier)
+    * player.properties.loginMultiplier
+  );
+
+  // Return it
+  return loginTime;
+}
+
+// Get all team scores as [team 1 score, team 2 score, ...]
+function getTeamScores(game) {
+  // Unpack the teams from the recieved gamestate
+  const { teams } = game;
+  return teams.map((team) => team.properties.score);
+}
+
+// Returns an array of player ids for a given station
+function getPlayersInStation(game, stationIndex) {
+  return Object.entries(game.players)
+    .filter((entry) => {
+      const [_, player] = entry;
+
+      if (player.properties.inStation === null) {
+        return false;
+      }
+
+      return player.properties.inStation.station === stationIndex;
+    })
+    .map((entry) => {
+      const [id, _] = entry;
+      return id;
+    });
+}
+
 module.exports = {
   randomHex,
   generateUUID,
   withinTimeframe,
   findObjectByProperties,
+  shuffle,
   send,
   sendTo,
   broadcast,
   broadcastTo,
   createGame,
   createStation,
+  createRack,
   createRacks,
   createTokens,
   createTeam,
   createPlayer,
+  filterGame,
+  getStationNames,
+  getLoginTime,
+  getTeamScores,
+  getPlayersInStation,
 };

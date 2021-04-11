@@ -43,7 +43,7 @@ function lockPlayer(context, payload) {
   // then we want to reset whatever we just did.
   // Instead of writing the same code reversed,
   // could we maybe call the function unlockPlayer in unlock_player.js?
-  setTimeout(() => {
+  context.setTimeout(() => {
     // We'll just do the reverse for resetting
     const game = context.getGameState();
     const player = game.players[playerId];

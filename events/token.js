@@ -1,3 +1,5 @@
+const utils = require('../utils');
+
 // Gets the relevant player object key based on the payload
 function getPlayerPocketKey(from, to) {
   if (typeof from === 'string') {
@@ -87,11 +89,13 @@ function tokenSwap(context, payload) {
     return;
   }
 
+  const stationIndex = player.properties.inStation.station;
+  const playerIds = utils.getPlayersInStation(game, stationIndex);
+
   // Between slots
   // =================
   if (typeof from === 'number' && typeof to === 'number') {
     const teamIndex = player.team;
-    const stationIndex = player.properties.inStation.station;
     const fromSlotIndex = from;
     const toSlotIndex = to;
     const station = game.stations[stationIndex];
@@ -107,20 +111,18 @@ function tokenSwap(context, payload) {
     context.updateGameState(game);
 
     // Broadcast the updated rack
-    // TODO: only broadcast to the people within a station?
-    context.broadcastToGame('station:rack', {
+    context.broadcastTo(playerIds, 'station:rack', {
       station: stationIndex,
       team: teamIndex,
       rack: station.racks[teamIndex],
     });
-    // TODO: update salary count
+
     return;
   }
 
   // From pockets to slot (or vice versa)
   // ====================================
   const teamIndex = player.team;
-  const stationIndex = player.properties.inStation.station;
   const slotIndex = typeof from === 'number' ? from : to;
   const station = game.stations[stationIndex];
 
@@ -137,14 +139,44 @@ function tokenSwap(context, payload) {
   // Update the player pocket or temporary pocket
   player.properties[playerPocket] = prevSlot.token;
 
+  // This is how you get points:
+  // ===========================
+
+  // Check if the token swap means a rack has a row of same tokens
+  const slots = station.racks[teamIndex].slots.map((slot) => slot.token);
+  const sameSlots = slots.every((slot) => slot === slots[0]);
+
+  // All the tokens are the same = points!
+  if (sameSlots) {
+    game.teams[teamIndex].properties.score += 10; 
+    station.racks[teamIndex].slots = utils.createRack(game.tokens.length);
+
+    // Broadcast the updated score
+    const score = utils.getTeamScores(game);
+    context.broadcastToGame('game:score', { score });
+  } else {
+    // Only unique slots in a rack also gives points
+    const uniqueSlots = new Set(slots).size === slots.length;
+
+    if (uniqueSlots) {
+      game.teams[teamIndex].properties.score += 8; 
+      station.racks[teamIndex].slots = utils.createRack(game.tokens.length);
+
+      // Broadcast the updated score
+      const score = utils.getTeamScores(game);
+      context.broadcastToGame('game:score', { score });
+    }
+  }
+
+  // ===========================
+
   // Update the game state
   game.stations[stationIndex] = station;
   game.players[playerId] = player;
   context.updateGameState(game);
 
   // Broadcast the updated rack
-  // TODO: only broadcast to the people within a station?
-  context.broadcastToGame('station:rack', {
+  context.broadcastTo(playerIds, 'station:rack', {
     station: stationIndex,
     team: teamIndex,
     rack: station.racks[teamIndex],
@@ -153,7 +185,6 @@ function tokenSwap(context, payload) {
   // Send the players updated pocket
   const { pocket, temporaryPocket } = player.properties;
   context.send('player:pockets', { pocket, temporaryPocket });
-  // TODO: update salary count
 }
 
 module.exports = {
