@@ -250,6 +250,7 @@ function filterGame(game) {
   };
 }
 
+// Calculate the login time for a station
 function getLoginTime(gameState, playerId, stationIndex) {
   // Unpack the needed properties from the gamestate
   const { stations, players } = gameState;
@@ -268,10 +269,29 @@ function getLoginTime(gameState, playerId, stationIndex) {
   return loginTime;
 }
 
+// Get all team scores as [team 1 score, team 2 score, ...]
 function getTeamScores(game) {
   // Unpack the teams from the recieved gamestate
   const { teams } = game;
   return teams.map((team) => team.properties.score);
+}
+
+// Returns an array of player ids for a given station
+function getPlayersInStation(game, stationIndex) {
+  return Object.entries(game.players)
+    .filter((entry) => {
+      const [_, player] = entry;
+
+      if (player.properties.inStation === null) {
+        return false;
+      }
+
+      return player.properties.inStation.station === stationIndex;
+    })
+    .map((entry) => {
+      const [id, _] = entry;
+      return id;
+    });
 }
 
 module.exports = {
