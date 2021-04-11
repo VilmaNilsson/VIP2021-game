@@ -135,7 +135,7 @@ function createStation(state = {}) {
     ...state,
     defaults: {
       locked: false,
-      loginTime: 7,
+      loginTime: 1, // TODO: temporary
       loginMultiplier: 1,
       salaryMultiplier: 1,
       ...state.defaults,
@@ -147,13 +147,18 @@ function createStation(state = {}) {
   return station;
 }
 
-// Create racks for a station based on the number of teams and tokens
-function createRacks(nrOfTeams, nrOfTokens) {
-  const randomRack = Array.from({ length: nrOfTokens }).map(() => {
+// Generate a rack
+function createRack(nrOfTokens) {
+  return Array.from({ length: nrOfTokens }).map(() => {
     return {
       token: Math.floor(Math.random() * nrOfTokens),
     };
   });
+}
+
+// Create racks for a station based on the number of teams and tokens
+function createRacks(nrOfTeams, nrOfTokens) {
+  const randomRack = createRack(nrOfTokens);
 
   return Array.from({ length: nrOfTeams }).map(() => {
     return {
@@ -167,7 +172,7 @@ function createRacks(nrOfTeams, nrOfTokens) {
 // Create tokens.....for now it dosnt take any arguments
 function createTokens() {
   // Our tokes (for now) is just a simple array of { name: letter }
-  const tokens = 'ABCDEFGH'.split('').map((letter) => {
+  const tokens = 'ABCDEF'.split('').map((letter) => {
     return { name: letter };
   });
   return tokens;
@@ -306,11 +311,14 @@ module.exports = {
   broadcastTo,
   createGame,
   createStation,
+  createRack,
   createRacks,
   createTokens,
   createTeam,
   createPlayer,
+  filterGame,
   getStationNames,
   getLoginTime,
   getTeamScores,
+  getPlayersInStation,
 };

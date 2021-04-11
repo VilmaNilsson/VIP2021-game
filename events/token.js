@@ -117,9 +117,6 @@ function tokenSwap(context, payload) {
       rack: station.racks[teamIndex],
     });
 
-    // Broadcast the updated score
-    const score = utils.getTeamScores(game);
-    context.broadcastToGame('game:score', { score });
     return;
   }
 
@@ -142,6 +139,37 @@ function tokenSwap(context, payload) {
   // Update the player pocket or temporary pocket
   player.properties[playerPocket] = prevSlot.token;
 
+  // This is how you get points:
+  // ===========================
+
+  // Check if the token swap means a rack has a row of same tokens
+  const slots = station.racks[teamIndex].slots.map((slot) => slot.token);
+  const sameSlots = slots.every((slot) => slot === slots[0]);
+
+  // All the tokens are the same = points!
+  if (sameSlots) {
+    game.teams[teamIndex].properties.score += 10; 
+    station.racks[teamIndex].slots = utils.createRack(game.tokens.length);
+
+    // Broadcast the updated score
+    const score = utils.getTeamScores(game);
+    context.broadcastToGame('game:score', { score });
+  } else {
+    // Only unique slots in a rack also gives points
+    const uniqueSlots = new Set(slots).size === slots.length;
+
+    if (uniqueSlots) {
+      game.teams[teamIndex].properties.score += 8; 
+      station.racks[teamIndex].slots = utils.createRack(game.tokens.length);
+
+      // Broadcast the updated score
+      const score = utils.getTeamScores(game);
+      context.broadcastToGame('game:score', { score });
+    }
+  }
+
+  // ===========================
+
   // Update the game state
   game.stations[stationIndex] = station;
   game.players[playerId] = player;
@@ -157,10 +185,6 @@ function tokenSwap(context, payload) {
   // Send the players updated pocket
   const { pocket, temporaryPocket } = player.properties;
   context.send('player:pockets', { pocket, temporaryPocket });
-
-  // Broadcast the updated score
-  const score = utils.getTeamScores(game);
-  context.broadcastToGame('game:score', { score });
 }
 
 module.exports = {
