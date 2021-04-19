@@ -32,7 +32,7 @@ function playerJoinGame(context, payload) {
   context.send('player:you', { player: utils.filterPlayer(newPlayer) });
   context.send('game:yours', { game: utils.filterGame(game) });
   // Let everyone know the player has joined
-  context.broadcastToGame('player:joined', { playerId, username });
+  context.broadcastToGame('game:joined', { playerId, username });
 }
 
 module.exports = {
