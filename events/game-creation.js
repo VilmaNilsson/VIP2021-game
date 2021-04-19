@@ -19,8 +19,8 @@ function gameCreate(context, payload) {
 
   const player = context.getPlayerState();
 
-  // Can't start a game if you're in one
-  if (player.gameId !== null) {
+  // Can't start a game if you're in one (or not connected)
+  if (!player || player.gameId !== null) {
     context.send('game:create:fail', { errorCode: 1 });
     return;
   }
