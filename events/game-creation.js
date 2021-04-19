@@ -76,7 +76,8 @@ function gameCreate(context, payload) {
   // Add our own username to our player
   const { username } = context.getPlayerState();
   // And then add ourselves as the first player
-  players[id] = utils.createPlayer({ username });
+  const newPlayer = utils.createPlayer({ username });
+  players[id] = newPlayer;
 
   // We'll create a new game with all of the above
   const newGame = utils.createGame({
@@ -94,9 +95,9 @@ function gameCreate(context, payload) {
   // Lets assign ourselves to the game
   context.updatePlayerState({ gameId: newGame.id });
 
-  // Lets send back the newly created game
-  const game = utils.filterGame(newGame);
-  context.send('game:yours', { game });
+  // Lets send back the newly created game and yourself
+  context.send('player:you', { player: utils.filterPlayer(newPlayer) });
+  context.send('game:yours', { game: utils.filterGame(newGame) });
 }
 
 function endPlayPhase(context) {
