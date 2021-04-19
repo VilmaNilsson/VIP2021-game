@@ -6,9 +6,8 @@ function playerConnect() {
 function playerDisconnect(context) {
   const player = context.getPlayerState();
 
-  // If no user is connected
+  // If no socket is connected, dont do anything
   if (player === null) {
-    context.removePlayer(player.id);
     return;
   }
 
