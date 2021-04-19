@@ -25,6 +25,14 @@ function gameCreate(context, payload) {
     return;
   }
 
+  const gameExists = context.getGameState({ name });
+
+  // Game already exists with that name
+  if (gameExists) {
+    context.send('game:create:fail', { errorCode: 2 });
+    return;
+  }
+
   // Default game play properties
   const defaults = {};
 
