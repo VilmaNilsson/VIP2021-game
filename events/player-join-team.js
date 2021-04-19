@@ -8,7 +8,7 @@ function teamJoin(context, payload) {
 
   // Team doesn't exist
   if (team === undefined) {
-    context.send('team:join:failed', { errorCode: 0 });
+    context.send('team:join:fail', { errorCode: 0 });
   }
 
   // Update the player within the game

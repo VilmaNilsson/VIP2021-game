@@ -8,13 +8,13 @@ function playerJoinGame(context, payload) {
 
   // Checks if game exits
   if (game === null) {
-    context.send('game:joined:failed', { errorCode: 0 });
+    context.send('game:joined:fail', { errorCode: 0 });
     return;
   }
 
   // Game already started or ended
   if (game.properties.phase >= 2) {
-    context.send('game:joined:failed', { errorCode: 1 });
+    context.send('game:joined:fail', { errorCode: 1 });
     return;
   }
 
