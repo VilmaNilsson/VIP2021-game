@@ -229,11 +229,12 @@ function createPlayer(state = {}) {
 function getStationNames() {
   return shuffle([
     'Uranus',
-    'Urwilly',
-    'Urfanny',
+    'Blandito',
+    'Margreth',
     'Urmom',
     'Pluto',
     'Moo',
+    'Kim',
   ]);
 }
 
