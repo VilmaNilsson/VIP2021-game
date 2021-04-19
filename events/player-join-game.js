@@ -7,7 +7,7 @@ function playerJoinGame(context, payload) {
   const game = context.getGameState({ name });
 
   // Checks if game exits
-  if (game === undefined) {
+  if (game === null) {
     context.send('game:joined:failed', { errorCode: 0 });
     return;
   }
