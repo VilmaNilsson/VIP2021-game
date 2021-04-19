@@ -252,6 +252,11 @@ function filterGame(game) {
       const { name, properties } = team;
       return { name, properties };
     }),
+    players: Object.entries(game.players).reduce((players, entry) => {
+      const [id, player] = entry;
+      players[id] = { username: player.username, team: player.team };
+      return players;
+    }, {}),
   };
 }
 
