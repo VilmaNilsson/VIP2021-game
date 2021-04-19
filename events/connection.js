@@ -6,16 +6,19 @@ function playerConnect() {
 function playerDisconnect(context) {
   const player = context.getPlayerState();
 
-  // We'll remove a connected player if they only have 2 properties or less,
-  // which means if they only connected and never logged in we'll remove them if
-  // they disconnect
+  // If no user is connected
   if (player === null) {
     context.removePlayer(player.id);
     return;
   }
 
+  // We'll remove a connected player if they only have 2 properties or less,
+  // which means if they only connected and never logged in we'll remove them if
+  // they disconnect
+  const properties = Object.keys(player);
+
   if (properties.length <= 2) {
-    const properties = Object.keys(player);
+    context.removePlayer(player.id);
     return;
   }
 
