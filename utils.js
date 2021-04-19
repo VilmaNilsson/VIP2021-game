@@ -238,9 +238,8 @@ function getStationNames() {
   ]);
 }
 
-// Filter out unecessary keys
+// Filter out unecessary keys of a game
 function filterGame(game) {
-  // NOTE: Do we need to send out the players?
   return {
     id: game.id,
     name: game.name,
@@ -254,6 +253,12 @@ function filterGame(game) {
       return { name, properties };
     }),
   };
+}
+
+// Filter out unecessary keys of a player
+function filterPlayer(player) {
+  const { team, properties } = player;
+  return { team, properties };
 }
 
 // Calculate the login time for a station
@@ -318,6 +323,7 @@ module.exports = {
   createTeam,
   createPlayer,
   filterGame,
+  filterPlayer,
   getStationNames,
   getLoginTime,
   getTeamScores,
