@@ -206,7 +206,10 @@ function create(wss, ws) {
     getGameState: (gameId = null) => {
       if (gameId === null) {
         const player = getPlayerState(ws._id);
-        return getGameState(player.gameId);
+
+        if (player !== null) {
+          return getGameState(player.gameId);
+        }
       }
 
       if (typeof gameId === 'object') {
@@ -219,7 +222,10 @@ function create(wss, ws) {
     updateGameState: (nextGameState, gameId = null) => {
       if (gameId === null) {
         const player = getPlayerState(ws._id);
-        return updateGameState(player.gameId, nextGameState);
+
+        if (player !== null) {
+          return updateGameState(player.gameId, nextGameState);
+        }
       }
 
       return updateGameState(gameId, nextGameState);
@@ -235,6 +241,11 @@ function create(wss, ws) {
     // Store all timeouts within a game
     setTimeout: (cb, ms) => {
       const player = getPlayerState(ws._id);
+
+      if (player === null) {
+        return;
+      }
+
       const game = getGameState(player.gameId);
 
       if (game === null) {
@@ -248,6 +259,11 @@ function create(wss, ws) {
     // Clear all timeouts within a game
     clearTimeouts: () => {
       const player = getPlayerState(ws._id);
+
+      if (player === null) {
+        return;
+      }
+
       const game = getGameState(player.gameId);
 
       if (game === null) {
