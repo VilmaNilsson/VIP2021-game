@@ -23,7 +23,6 @@ function withinTimeframe(seconds, start, received) {
 // Searches an array of objects for an object that contains the keys and values
 // from another object (`properties`)
 function findObjectByProperties(objects, properties) {
-  console.log('called with', objects, properties);
   return objects.reduce((notFound, object) => {
     const isFound = Object.entries(properties).every((entry) => {
       const [key, value] = entry;
