@@ -102,6 +102,11 @@ function gameCreate(context, payload) {
 
 function endPlayPhase(context) {
   const game = context.getGameState();
+
+  if (game === null) {
+    return;
+  }
+
   const start = Date.now();
   const score = utils.getTeamScores(game);
 
@@ -118,6 +123,11 @@ function endPlayPhase(context) {
 
 function startPlayPhase(context) {
   const game = context.getGameState();
+
+  if (game === null) {
+    return;
+  }
+
   const start = Date.now();
   const duration = game.properties.playPhaseDuration * 1000;
 
