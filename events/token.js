@@ -188,7 +188,7 @@ function tokenSwap(context, payload) {
   context.send('player:pockets', { pocket, temporaryPocket });
 }
 
-// TODO: make tokens selectable?
+// TODO: make tokens selectable serverside?
 
 module.exports = {
   'token:swap': tokenSwap,
