@@ -148,7 +148,7 @@ function tokenSwap(context, payload) {
 
   // All the tokens are the same = points!
   if (sameSlots) {
-    game.teams[teamIndex].properties.score += 10; 
+    game.teams[teamIndex].properties.score += 1; 
     station.racks[teamIndex].slots = utils.createRack(game.tokens.length);
 
     // Broadcast the updated score
@@ -159,7 +159,7 @@ function tokenSwap(context, payload) {
     const uniqueSlots = new Set(slots).size === slots.length;
 
     if (uniqueSlots) {
-      game.teams[teamIndex].properties.score += 8; 
+      game.teams[teamIndex].properties.score += 1; 
       station.racks[teamIndex].slots = utils.createRack(game.tokens.length);
 
       // Broadcast the updated score
@@ -186,6 +186,8 @@ function tokenSwap(context, payload) {
   const { pocket, temporaryPocket } = player.properties;
   context.send('player:pockets', { pocket, temporaryPocket });
 }
+
+// TODO: make tokens selectable?
 
 module.exports = {
   'token:swap': tokenSwap,
