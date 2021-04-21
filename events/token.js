@@ -155,10 +155,11 @@ function tokenSwap(context, payload) {
     const score = utils.getTeamScores(game);
     context.broadcastToGame('game:score', { score });
   } else {
+    const noEmptySlots = slots.every((slot) => slot !== -1);
     // Only unique slots in a rack also gives points
     const uniqueSlots = new Set(slots).size === slots.length;
 
-    if (uniqueSlots) {
+    if (noEmptySlots && uniqueSlots) {
       game.teams[teamIndex].properties.score += 1; 
       station.racks[teamIndex].slots = utils.createRack(game.tokens.length);
 
