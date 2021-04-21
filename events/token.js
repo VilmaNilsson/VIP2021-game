@@ -145,9 +145,10 @@ function tokenSwap(context, payload) {
   // Check if the token swap means a rack has a row of same tokens
   const slots = station.racks[teamIndex].slots.map((slot) => slot.token);
   const sameSlots = slots.every((slot) => slot === slots[0]);
+  const noEmptySlots = slots.every((slot) => slot !== -1);
 
   // All the tokens are the same = points!
-  if (sameSlots) {
+  if (noEmptySlots && sameSlots) {
     game.teams[teamIndex].properties.score += 1; 
     station.racks[teamIndex].slots = utils.createRack(game.tokens.length);
 
@@ -155,7 +156,6 @@ function tokenSwap(context, payload) {
     const score = utils.getTeamScores(game);
     context.broadcastToGame('game:score', { score });
   } else {
-    const noEmptySlots = slots.every((slot) => slot !== -1);
     // Only unique slots in a rack also gives points
     const uniqueSlots = new Set(slots).size === slots.length;
 
