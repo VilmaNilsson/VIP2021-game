@@ -23,6 +23,7 @@ function withinTimeframe(seconds, start, received) {
 // Searches an array of objects for an object that contains the keys and values
 // from another object (`properties`)
 function findObjectByProperties(objects, properties) {
+  console.log('called with', objects, properties);
   return objects.reduce((notFound, object) => {
     const isFound = Object.entries(properties).every((entry) => {
       const [key, value] = entry;
@@ -214,7 +215,7 @@ function createPlayer(state = {}) {
       pocket: -1,
       pocketLocked: false,
       temporaryPocket: -1,
-      temporaryPockedLocked: true,
+      temporaryPocketLocked: true,
       spells: [],
       ...state.defaults,
     },
@@ -243,14 +244,16 @@ function filterGame(game) {
   return {
     id: game.id,
     name: game.name,
+    admin: game.admin,
     tokens: game.tokens,
+    phase: game.properties.phase,
     stations: game.stations.map((station) => {
       const { name, properties } = station;
-      return { name, properties };
+      return { name, ...properties };
     }),
     teams: game.teams.map((team) => {
       const { name, properties } = team;
-      return { name, properties };
+      return { name, ...properties };
     }),
     players: Object.entries(game.players).reduce((players, entry) => {
       const [id, player] = entry;
@@ -263,7 +266,7 @@ function filterGame(game) {
 // Filter out unecessary keys of a player
 function filterPlayer(player) {
   const { team, properties } = player;
-  return { team, properties };
+  return { team, ...properties };
 }
 
 // Calculate the login time for a station
@@ -287,8 +290,13 @@ function getLoginTime(gameState, playerId, stationIndex) {
 
 // Get all team scores as [team 1 score, team 2 score, ...]
 function getTeamScores(game) {
+  if (!game) {
+    return [];
+  }
+
   // Unpack the teams from the recieved gamestate
   const { teams } = game;
+
   return teams.map((team) => team.properties.score);
 }
 
