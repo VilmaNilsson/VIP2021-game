@@ -210,6 +210,8 @@ function create(wss, ws) {
         if (player !== null) {
           return getGameState(player.gameId);
         }
+
+        return;
       }
 
       if (typeof gameId === 'object') {
@@ -226,6 +228,8 @@ function create(wss, ws) {
         if (player !== null) {
           return updateGameState(player.gameId, nextGameState);
         }
+
+        return;
       }
 
       return updateGameState(gameId, nextGameState);
