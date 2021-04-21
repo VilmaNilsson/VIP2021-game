@@ -47,14 +47,14 @@ function stationLogin(context, payload) {
   }
 
   // Calculate the total login-time by calling a function in calculator.js
-  const loginTime = utils.getLoginTime(game, playerId, stationIndex);
+  const loginTime = utils.getLoginTime(game, playerId, stationIndex) * 1000;
 
   // After the defined time the user is allowed into the station
   const loginTimeout = setTimeout(() => {
     const game = context.getGameState();
     const { racks } = game.stations[stationIndex];
     context.send('station:login:done', { station: stationIndex, racks });
-  }, loginTime * 1000);
+  }, loginTime);
 
   // Create a timestamp for the start of the login
   const start = Date.now();
