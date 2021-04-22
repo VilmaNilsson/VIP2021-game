@@ -61,6 +61,17 @@ function getGameStateByProps(properties) {
   return utils.findObjectByProperties(games, properties);
 }
 
+// Helper function for getting game state by player id
+function getGameStateByPlayer(id) {
+  const player = getPlayerState(id);
+
+  if (player === null) {
+    return null;
+  }
+
+  return getGameSate(player.gameId);
+}
+
 // Updates the state of a game by `id`
 function updateGameState(id, nextGameState) {
   if (STATE.games[id] === undefined) {
@@ -205,13 +216,7 @@ function create(wss, ws) {
     // by an object of properties
     getGameState: (gameId = null) => {
       if (gameId === null) {
-        const player = getPlayerState(ws._id);
-
-        if (player !== null) {
-          return getGameState(player.gameId);
-        }
-
-        return;
+        return getGameStateByPlayer(ws._id);
       }
 
       if (typeof gameId === 'object') {
@@ -229,7 +234,7 @@ function create(wss, ws) {
           return updateGameState(player.gameId, nextGameState);
         }
 
-        return;
+        return null;
       }
 
       return updateGameState(gameId, nextGameState);
@@ -243,14 +248,10 @@ function create(wss, ws) {
       return clearState();
     },
     // Store all timeouts within a game
-    setTimeout: (cb, ms) => {
-      const player = getPlayerState(ws._id);
-
-      if (player === null) {
-        return;
-      }
-
-      const game = getGameState(player.gameId);
+    setTimeout: (cb, ms, gameId = null) => {
+      const game = gameId === null
+        ? getGameStateByPlayer(ws._id)
+        : getGameState(gameId);
 
       if (game === null) {
         return;
@@ -261,14 +262,10 @@ function create(wss, ws) {
       return updateGameState(player.gameId, game);
     },
     // Clear all timeouts within a game
-    clearTimeouts: () => {
-      const player = getPlayerState(ws._id);
-
-      if (player === null) {
-        return;
-      }
-
-      const game = getGameState(player.gameId);
+    clearTimeouts: (gameId = null) => {
+      const game = gameId === null
+        ? getGameStateByPlayer(ws._id)
+        : getGameState(gameId);
 
       if (game === null) {
         return;
