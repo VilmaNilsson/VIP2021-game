@@ -6,8 +6,10 @@ function getState(context) {
 
 // Clears the whole server state for debugging purposes
 function clearState(context) {
-  const state = context.clearState();
-  context.send('debug:state', state);
+  const state = context.getState();
+  Object.keys(state.games).forEach((id) => context.clearTimeouts(id));
+  context.clearState();
+  context.send('debug:state', {});
 }
 
 // Echoes back whatever it receives
