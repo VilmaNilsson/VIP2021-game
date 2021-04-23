@@ -1,3 +1,21 @@
 body {
     margin: 0;
 }
+
+#teams div:hover,
+#actions div:hover,
+#player-actions div:hover,
+#stations div:hover,
+#racks div:last-child span:hover,
+#pocket:hover,
+#temporary-pocket:hover {
+    cursor: pointer;
+    background: #ddd;
+}
+
+#racks div span {
+    display: inline-block;
+    padding: 3px;
+    margin: 0 2px;
+    background: #eee;
+}

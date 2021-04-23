@@ -1,5 +1,17 @@
-import Home from './home';
+import Main from './main';
+import Login from './login';
+import Create from './create';
+import Join from './join';
+import Lobby from './lobby';
+import Plan from './plan';
+import Play from './play';
 
 export default {
-  Home,
+  Main,
+  Login,
+  Create,
+  Join,
+  Lobby,
+  Plan,
+  Play,
 };
