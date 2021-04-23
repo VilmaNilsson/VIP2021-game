@@ -54,7 +54,7 @@ const Router = {
 
     // Check if the `before` handler exists
     if (handler.before !== undefined) {
-      const redirectPath = handler.before();
+      const redirectPath = handler.before(Context);
 
       // If it returns a string (via `Router.redirect`) we'll navigate to it
       if (typeof redirectPath === 'string') {
@@ -82,7 +82,7 @@ const Router = {
 
     // Check if the `after` handler exists
     if (handler.after !== undefined) {
-      handler.after();
+      handler.after(Context);
     }
 
     // Everything went OK
