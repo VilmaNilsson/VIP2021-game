@@ -1,4 +1,5 @@
 import PubSub from './pubsub';
+import Context from './context';
 
 // Our Router that checks the browser URL and then inserts to correct HTML node
 // into the `root` element. We can also call `.navigate` to manually go from one
@@ -69,8 +70,15 @@ const Router = {
       throw new Error(`The View for [${path}] is not a function`);
     }
 
+    // TODO: should we clear timers here?
+
     // Mount it into our HTML
-    this.mount(handler.view);
+    const mounted = this.mount(handler.view);
+
+    // Silently fails if our view doesnt return an HTML element
+    if (!mounted) {
+      return false;
+    }
 
     // Check if the `after` handler exists
     if (handler.after !== undefined) {
@@ -88,7 +96,12 @@ const Router = {
   mount: function mount(view) {
     try {
       // `view` would be one of the functions within "views/"
-      const el = view();
+      const el = view(Context);
+
+      if (!(el instanceof HTMLElement)) {
+        return false;
+      }
+
       this.root.textContent = '';
       this.root.appendChild(el);
     } catch (err) {
