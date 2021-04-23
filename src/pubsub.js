@@ -36,12 +36,22 @@ const PubSub = {
       // If the listener is a function we'll invoke it with `Context` and the
       // payload
       if (typeof listener === 'function') {
+        // TODO: catch errors?
         listener(Context, payload);
       } else {
         // Otherwise we'll dispatch a CustomEvent, `CustomEvent` is a way of
         // creating our own "click"-like events
-        const e = new CustomEvent(event, { detail: payload });
-        listener.dispatchEvent(e);
+        if (event === 'player:reconnect') {
+          // This just makes sure that events listening to this event gets added
+          // to the end of the event loop
+          setTimeout(() => {
+            const e = new CustomEvent(event, { detail: payload });
+            listener.dispatchEvent(e);
+          }, 0);
+        } else {
+          const e = new CustomEvent(event, { detail: payload });
+          listener.dispatchEvent(e);
+        }
       }
     });
   },
@@ -120,7 +130,7 @@ const PubSub = {
       // Publish the received event and payload
       this.publish(event, payload);
     } catch (err) {
-      console.warn(err.message);
+      console.warn(err);
     }
   },
   // Sends a message to our WebSocket
@@ -151,9 +161,10 @@ const PubSub = {
   },
 };
 
-// Transfer the `send` method to the `Context` object, this makes it so the
-// event handlers doesnt have to import `PubSub`
+// Transfer the `send` and `publish` method to the `Context` object, this makes
+// it so the event handlers doesnt have to import `PubSub`
 Context.send = PubSub.send.bind(PubSub);
+Context.publish = PubSub.publish.bind(PubSub);
 
 // Make our HTML elements be able to subscribe to events
 HTMLElement.prototype.subscribe = function subscribe(event, callback) {
@@ -174,6 +185,15 @@ HTMLElement.prototype.publish = function publish(event, payload) {
 // Make our HTML elements be able to send data to our WebSocket
 HTMLElement.prototype.send = function send(event, payload) {
   PubSub.send(event, payload);
+};
+
+// Simple wrapper for adding click events
+HTMLElement.prototype.click = function onClick(selector, callback) {
+  if (typeof selector === 'function') {
+    this.addEventListener('click', selector); 
+  } else {
+    this.querySelector(selector).addEventListener('click', callback); 
+  }
 };
 
 export default PubSub;
