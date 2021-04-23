@@ -2,6 +2,12 @@
 const Context = {
   // The state
   state: {},
+  // Timers
+  timeouts: [],
+  intervals: [],
+
+  // TODO: should we add ".id()", ".getPlayerState", ".getGameState"?
+
   // Fetches the state
   getState: function getState() {
     return this.state;
@@ -29,6 +35,9 @@ const Context = {
 
     // Set the new state
     this.state = newState;
+
+    // Publish the new changes to our state
+    this.publish('state:update', next);
   },
   // Wrapper function for storing values in localStorage
   setCache: (key, value) => {
@@ -37,6 +46,25 @@ const Context = {
   // Wrapper function for fetching values from localStorage
   getCache: (key) => {
     return window.localStorage.getItem(key);
+  },
+  // Wrapper function for setting timeouts (that also get stored)
+  setTimeout: function setTimeout(cb, ms) {
+    const timeout = window.setTimeout(cb, ms);
+    this.timeouts = [...this.timeouts, timeout];
+    return timeout;
+  },
+  // Wrapper function for setting intervals (that also get stored)
+  setInterval: function setInterval(cb, ms) {
+    const interval = window.setInterval(cb, ms);
+    this.intervals = [...this.intervals, interval];
+    return interval;
+  },
+  // Clear all stored timers (ie. when a game ends)
+  clearTimers: function clearTimers() {
+    this.timeouts.forEach(window.clearTimeout);
+    this.intervals.forEach(window.clearInterval);
+    this.timeouts = [];
+    this.intervals = [];
   },
 };
 
