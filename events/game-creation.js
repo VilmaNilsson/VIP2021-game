@@ -100,40 +100,52 @@ function gameCreate(context, payload) {
   context.send('game:yours', { game: utils.filterGame(newGame) });
 }
 
+// END
+// ===
 function endPlayPhase(context) {
   const game = context.getGameState();
 
-  if (game === null) {
+  if (!game) {
     return;
   }
 
+  // Immediately clear all active timers
+  context.clearTimeouts();
+
   const start = Date.now();
   const score = utils.getTeamScores(game);
-
-  context.clearTimeouts();
 
   // Set our current game phase to 3 (End)
   // ======================================
   game.properties.phase = { type: 3, start };
   context.updateGameState(game);
   // Broadcast the last phase
-  context.broadcastToGame('game:phase', game.properties.phase);
   context.broadcastToGame('game:score', { score });
+  context.broadcastToGame('game:phase', game.properties.phase);
+
+  // This disconnects all players from the game and then removes it
+  // ==============================================================
+  const playerIds = Object.keys(game.players);
+  playerIds.forEach((id) => context.updatePlayerState({ gameId: null }, id));
+  context.removeGame(game.id);
+  context.broadcastTo(playerIds, 'game:over', {});
 }
 
+// PLAY
+// ====
 function startPlayPhase(context) {
   const game = context.getGameState();
 
-  if (game === null) {
+  if (!game) {
     return;
   }
 
   const start = Date.now();
   const duration = game.properties.playPhaseDuration * 1000;
 
-  setTimeout(() => endPlayPhase(context), duration);
+  context.setTimeout(() => endPlayPhase(context), duration);
   
-  // Calculate scores and salaries
+  // Calculate scores 
   const initialScore = utils.getTeamScores(game);
 
   // Set our current game phase to 2 (Play)
@@ -141,8 +153,8 @@ function startPlayPhase(context) {
   game.properties.phase = { type: 2, start, duration };
   context.updateGameState(game);
   // Broadcast the second phase
-  context.broadcastToGame('game:phase', game.properties.phase);
   context.broadcastToGame('game:score', { score: initialScore });
+  context.broadcastToGame('game:phase', game.properties.phase);
 }
 
 // Event handler that starts an existing game
@@ -150,7 +162,7 @@ function gameStart(context) {
   const game = context.getGameState();
 
   // No exists game, we can't start anything
-  if (game === null) {
+  if (!game) {
     context.send('game:start:fail', { errorCode: 0 });
     return;
   }
@@ -176,7 +188,7 @@ function gameStart(context) {
   const planDuration = game.properties.planPhaseDuration * 1000;
 
   // Start the play phase after the plan phase
-  setTimeout(() => startPlayPhase(context), planDuration);
+  context.setTimeout(() => startPlayPhase(context), planDuration);
 
   // Set our current game phase to 1 (Plan)
   // ======================================
