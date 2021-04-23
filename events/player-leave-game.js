@@ -27,6 +27,11 @@ function gameLeave(context) {
 
   // Broadcast to all players in the affected game that one has left
   context.broadcastToGame('game:left', { playerId }, game.id);
+
+  // Send an event to the player as well
+  context.send('game:over', {});
+
+  // TODO: when the last player leaves an already active game we should end it
 }
 
 module.exports = {
