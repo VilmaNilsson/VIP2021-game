@@ -1,3 +1,5 @@
+const utils = require('../utils');
+
 function playerConnect() {
   // TBD
 }
@@ -26,8 +28,30 @@ function playerDisconnect(context) {
   context.broadcastToGame('player:disconnect', { id: context.id() });
 }
 
-function playerReconnect() {
-  // TBD
+function playerReconnect(context, payload) {
+  const { id } = payload;
+  const reconnected = context.connectToPlayer(id);
+
+  if (!reconnected) {
+    return;
+  }
+
+  const game = context.getGameState();
+  const player = game.players[id];
+
+  if (player.properties.inStation !== null) {
+    const racks = game.stations[player.properties.inStation.station].racks;
+    context.send('player:reconnect', {
+      player: utils.filterPlayer(player),
+      game: utils.filterGame(game),
+      racks,
+    });
+  } else {
+    context.send('player:reconnect', {
+      player: utils.filterPlayer(player),
+      game: utils.filterGame(game),
+    });
+  }
 }
 
 module.exports = {
