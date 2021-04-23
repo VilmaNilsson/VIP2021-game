@@ -17,44 +17,44 @@ function stationLogin(context, payload) {
 
   // We're not in a game
   if (game === null) {
-    context.send('event:station:login:fail', { errorCode: 0 });
+    context.send('station:login:fail', { errorCode: 0 });
     return;
   }
 
   // We're not in the play phase
   if (game.properties.phase.type !== 2) {
-    context.send('event:station:login:fail', { errorCode: 1 });
+    context.send('station:login:fail', { errorCode: 1 });
     return;
   }
 
   // If the requested station didn't exist
   if (station === undefined) {
-    context.send('event:station:login:fail', { errorCode: 2 });
+    context.send('station:login:fail', { errorCode: 2 });
     return;
   }
 
   // If the station is locked or the player is unable to do anything they
   // shouldn't be able to log into the station
   if (station.properties.locked === true || player.properties.locked === true) {
-    context.send('event:station:login:fail', { errorCode: 3 });
+    context.send('station:login:fail', { errorCode: 3 });
     return;
   }
 
   // Clear the previous login timeout
   if (player.properties.inStation !== null
-    && player.properties.inStation.loginTimeout !== undefined) {
-    clearTimeout(player.properties.inStation.loginTimeout);
+    && player.properties.inStation.timeout !== undefined) {
+    context.clearTimeout(player.properties.inStation.timeout);
   }
 
   // Calculate the total login-time by calling a function in calculator.js
-  const loginTime = utils.getLoginTime(game, playerId, stationIndex) * 1000;
+  const duration = utils.getLoginTime(game, playerId, stationIndex) * 1000;
 
   // After the defined time the user is allowed into the station
-  const loginTimeout = setTimeout(() => {
+  const timeout = context.setTimeout(() => {
     const game = context.getGameState();
     const { racks } = game.stations[stationIndex];
     context.send('station:login:done', { station: stationIndex, racks });
-  }, loginTime);
+  }, duration);
 
   // Create a timestamp for the start of the login
   const start = Date.now();
@@ -63,8 +63,8 @@ function stationLogin(context, payload) {
   player.properties.inStation = {
     station: stationIndex,
     start,
-    loginTime,
-    loginTimeout,
+    duration,
+    timeout,
   };
 
   game.players[playerId] = player;
@@ -78,7 +78,7 @@ function stationLogin(context, payload) {
     station: stationIndex,
     racks,
     start,
-    loginTime,
+    duration,
   });
 }
 
