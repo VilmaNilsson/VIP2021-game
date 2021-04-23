@@ -1,3 +1,5 @@
+import Router from '../router';
+
 function MainView() {
   const el = document.createElement('div');
 
@@ -14,6 +16,13 @@ function MainView() {
 }
 
 export default {
+  before: (context) => {
+    const uid = context.getCache('_uid');
+
+    if (!uid) {
+      return Router.redirect('/login');
+    }
+  },
   path: '/',
   view: MainView,
 };
