@@ -7,13 +7,13 @@ function lockStationSpell(context, payload) {
 
   // We're not in a game
   if (game === null) {
-    context.send('spell:lock:station:fail', { errorCode: 0 });
+    context.send('spell:station:lock:fail', { errorCode: 0 });
     return;
   }
 
   // We're not in the play phase
   if (game.properties.phase.type !== 2) {
-    context.send('spell:lock:station:fail', { errorCode: 1 });
+    context.send('spell:station:lock:fail', { errorCode: 1 });
     return;
   }
 
@@ -24,12 +24,13 @@ function lockStationSpell(context, payload) {
 
   // They tried targeting an unknown station
   if (station === undefined) {
-    context.send('spell:lock:station:fail', { errorCode: 2 });
+    context.send('spell:station:lock:fail', { errorCode: 2 });
     return;
   }
 
   // 30 seconds
   const duration = 30 * 1000;
+  const start = Date.now();
 
   // We always use the `properties` key for changing values
   station.properties.locked = true;
@@ -38,18 +39,19 @@ function lockStationSpell(context, payload) {
   // Save our changes
   context.updateGameState(game);
   // And broadcast it to all players
-  context.broadcastToGame('station:locked', { station: stationIndex, duration });
+  context.broadcastToGame('spell:station:locked', { station: stationIndex, start, duration });
 
   // Unlock the station on the next salary payout (ie. Tick)
   context.setTimeout(() => {
     const game = context.getGameState();
-    const stationIndex = payload.station;
     const station = game.stations[stationIndex];
     station.properties.locked = false;
     game.stations[stationIndex] = station;
     context.updateGameState(game);
-    context.broadcastToGame('station:locked:faded', { station: stationIndex });
+    context.broadcastToGame('spell:station:locked:faded', { station: stationIndex });
   }, duration);
+
+  return true;
 }
 
 module.exports = {
