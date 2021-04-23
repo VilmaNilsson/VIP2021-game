@@ -2,7 +2,7 @@ const spells = require('../spells');
 
 function playSpell(context, payload) {
   // Take out only the event name
-  const { event, ...rest } = payload;
+  const { event, index, ...rest } = payload;
 
   const game = context.getGameState();
 
@@ -21,11 +21,10 @@ function playSpell(context, payload) {
   const playerId = context.id();
 
   const player = game.players[playerId];
-  const playerSpells = player.properties.spells;
-  const playerSpell = playerSpells.find((s) => s.event === event);
+  const playerSpell = player.properties.spells[index];
 
   // Player doesn't have the spell
-  if (playerSpell === undefined) {
+  if (playerSpell === undefined || playerSpell.event !== event) {
     context.send('player:spell:fail', { errorCode: 2 });
     return;
   }
@@ -44,8 +43,40 @@ function playSpell(context, payload) {
     return;
   }
 
+  // Spell is on cooldown
+  if (playerSpell.timeout) {
+    context.send('player:spell:fail', { errorCode: 5 });
+    return;
+  }
+
   // Pass on the parameters
-  spellHandler(context, rest);
+  const success = spellHandler(context, rest);
+
+  // NOTE: we could use "target" as a generic term for indexes? or index...
+
+  // If the spell was cast, we'll start the cooldown timer
+  if (success) {
+    const start = Date.now();
+    const duration = playerSpell.cooldown * 1000;
+
+    // Start the timer that resets the cooldown
+    const timeout = context.setTimeout(() => {
+      const game = context.getGameState();
+      const player = game.players[playerId];
+      player.properties.spells[index].start = null;
+      player.properties.spells[index].timeout = null;
+      game.players[playerId] = player;
+      context.updateGameState(game);
+      context.send('player:spell:cooldown:done', { index });
+    }, duration);
+
+    // Start the cooldown
+    player.properties.spells[index] = { ...playerSpell, timeout };
+    game.players[playerId] = player;
+    // Only update the key `players` (NOTE: this used to overwrite the timers)
+    context.updateGameState({ players: game.players });
+    context.send('player:spell:cooldown', { index, start, duration });
+  }
 }
 
 function selectSpell(context, payload) {
