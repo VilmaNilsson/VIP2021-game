@@ -2,6 +2,8 @@ const utils = require('./utils');
 
 // The global state
 const STATE = { players: {}, games: {} };
+// Global timers
+const TIMERS = {};
 
 // Returns the whole state (used for debugging purposes)
 function getState() {
@@ -63,13 +65,17 @@ function getGameStateByProps(properties) {
 
 // Helper function for getting game state by player id
 function getGameStateByPlayer(id) {
-  const player = getPlayerState(id);
-
-  if (player === null) {
+  if (STATE.players[id] === undefined) {
     return null;
   }
 
-  return getGameSate(player.gameId);
+  const gameId = STATE.players[id].gameId;
+
+  if (STATE.games[gameId] === undefined) {
+    return null;
+  }
+
+  return STATE.games[gameId];
 }
 
 // Updates the state of a game by `id`
@@ -128,6 +134,24 @@ function removeGame(id) {
   return true;
 }
 
+// Create a `timeout` and store it by a UUID
+function wrappedSetTimeout(cb, ms) {
+  const id = utils.generateUUID();
+  TIMERS[id] = setTimeout(cb, ms);
+  return id;
+}
+
+// Clear and delete a timeout by id
+function wrappedClearTimeout(id) {
+  clearTimeout(TIMERS[id]);
+  delete TIMERS[id];
+}
+
+// Used for debugging purposes
+function getTimeouts() {
+  return TIMERS;
+}
+
 // Creates a context based on the connected websocket id
 function create(wss, ws) {
   return {
@@ -178,10 +202,18 @@ function create(wss, ws) {
     },
     // Connect to an existing player in the state
     connectToPlayer: (id) => {
+      const player = getPlayerState(id);
+
+      if (!player) {
+        return false;
+      }
+
       // Remove the old player
       removePlayer(ws._id);
       // And connect this websocket to the existing player
       ws._id = id;
+
+      return true;
     },
     // Get the state of a player by: the current connected client, a `playerId`
     // or by an object of properties
@@ -247,7 +279,7 @@ function create(wss, ws) {
     clearState: () => {
       return clearState();
     },
-    // Store all timeouts within a game
+    // Create a timeout and couple it with the current game
     setTimeout: (cb, ms, gameId = null) => {
       const game = gameId === null
         ? getGameStateByPlayer(ws._id)
@@ -256,10 +288,18 @@ function create(wss, ws) {
       if (game === null) {
         return;
       }
+
+      const id = wrappedSetTimeout(cb, ms);
+      game.timeouts = [...game.timeouts, id];
+      // game.timeouts.push(id);
+
+      updateGameState(game.id, { timeouts: game.timeouts });
       
-      const timeout = setTimeout(cb, ms);
-      game.timeouts = [...game.timeouts, timeout];
-      return updateGameState(player.gameId, game);
+      return id;
+    },
+    // Clear a timeout by id
+    clearTimeout: (id) => {
+      return wrappedClearTimeout(id);
     },
     // Clear all timeouts within a game
     clearTimeouts: (gameId = null) => {
@@ -271,15 +311,17 @@ function create(wss, ws) {
         return;
       }
 
-      game.timeouts.forEach((timeout) => clearTimeout(timeout));
+      game.timeouts.forEach((id) => wrappedClearTimeout(id));
       game.timeouts = [];
-      return updateGameState(player.gameId, game);
+
+      return updateGameState(game.id, game);
     },
   };
 }
 
 module.exports = {
   getState,
+  getTimeouts,
   clearState,
   addPlayer,
   removePlayer,
