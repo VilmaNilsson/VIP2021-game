@@ -11,12 +11,12 @@ function teamJoin(context, payload) {
     context.send('team:join:fail', { errorCode: 0 });
   }
 
-  // TODO: check if a player is already in a team, then leave->join?
-
   // Update the player within the game
   player.team = teamIndex;
   game.players[playerId] = player
   context.updateGameState(game);
+
+  // NOTE: we could've broadcasted what team they also left
 
   context.send('team:yours', { team: teamIndex });
   context.broadcastToGame('team:joined', {

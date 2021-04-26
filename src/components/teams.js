@@ -10,6 +10,8 @@ function Teams(el, context) {
 
     div.textContent = `${team.name} (${team.score})`;
 
+    // The game-score event gives us the latest scores, no need to calculate
+    // anything
     div.subscribe('game:score', (e) => {
       const { score } = e.detail;
       const newScore = score[i];

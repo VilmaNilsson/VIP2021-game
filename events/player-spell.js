@@ -1,7 +1,7 @@
 const spells = require('../spells');
 
 function playSpell(context, payload) {
-  // Take out only the event name
+  // Take out only the event name and index (incase we have same spells)
   const { event, index, ...rest } = payload;
 
   const game = context.getGameState();
@@ -52,8 +52,6 @@ function playSpell(context, payload) {
   // Pass on the parameters
   const success = spellHandler(context, rest);
 
-  // NOTE: we could use "target" as a generic term for indexes? or index...
-
   // If the spell was cast, we'll start the cooldown timer
   if (success) {
     const start = Date.now();
@@ -63,15 +61,18 @@ function playSpell(context, payload) {
     const timeout = context.setTimeout(() => {
       const game = context.getGameState();
       const player = game.players[playerId];
+
+      // Reset is done by clearing the starting time and timeout
       player.properties.spells[index].start = null;
       player.properties.spells[index].timeout = null;
       game.players[playerId] = player;
+
       context.updateGameState(game);
       context.send('player:spell:cooldown:done', { index });
     }, duration);
 
     // Start the cooldown
-    player.properties.spells[index] = { ...playerSpell, timeout };
+    player.properties.spells[index] = { ...playerSpell, timeout, start };
     game.players[playerId] = player;
     // Only update the key `players` (NOTE: this used to overwrite the timers)
     context.updateGameState({ players: game.players });
@@ -97,6 +98,7 @@ function selectSpell(context, payload) {
   const playerId = context.id();
   const player = game.players[playerId];
 
+  // NOTE: this is where we assign the max limit of spells to own
   // Too many spells
   if (player.properties.spells.length >= 4) {
     context.send('player:spell:select:fail', { errorCode: 2 });

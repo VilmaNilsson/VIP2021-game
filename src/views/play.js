@@ -28,17 +28,25 @@ function PlayView(context) {
     <button id="quit">Quit</button>
   `;
 
+  const timerEl = el.querySelector('#timer');
+  const teamsEl = el.querySelector('#teams');
+  const stationsEl = el.querySelector('#stations');
+  const racksEl = el.querySelector('#racks');
+  const pocketEl = el.querySelector('#pocket');
+  const temporaryPocketEl = el.querySelector('#temporary-pocket');
+  const actionsEl = el.querySelector('#actions');
+
   function renderAll() {
-    // Render all of our components
-    PlayTimer(el.querySelector('#timer'), context);
-    Teams(el.querySelector('#teams'), context);
-    Stations(el.querySelector('#stations'), context);
-    Racks(el.querySelector('#racks'), context);
-    Pocket(el.querySelector('#pocket'), context);
-    TemporaryPocket(el.querySelector('#temporary-pocket'), context);
-    Actions(el.querySelector('#actions'), context);
+    PlayTimer(timerEl, context);
+    Teams(teamsEl, context);
+    Stations(stationsEl, context);
+    Racks(racksEl, context);
+    Pocket(pocketEl, context);
+    TemporaryPocket(temporaryPocketEl, context);
+    Actions(actionsEl, context);
   }
 
+  // Render all of our components
   renderAll();
 
   // We have to rerender them when e player reconnects

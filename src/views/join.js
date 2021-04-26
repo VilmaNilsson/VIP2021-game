@@ -18,11 +18,14 @@ function JoinView() {
     </form>
   `;
 
-  el.querySelector('#error').subscribe('game:join:fail', (e) => {
-    e.target.textContent = 'Game doesnt exist';
+  const errorEl = el.querySelector('#error');
+  const formEl = el.querySelector('#join-form');
+
+  errorEl.subscribe('game:join:fail', (e) => {
+    errorEl.textContent = 'Game doesnt exist';
   });
 
-  el.querySelector('#join-form').addEventListener('submit', (e) => {
+  formEl.addEventListener('submit', (e) => {
     e.preventDefault();
     const payload = utils.serializeForm(e.target);
     el.send('game:join', payload);

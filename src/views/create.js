@@ -43,11 +43,14 @@ function CreateView() {
     </form>
   `;
 
-  el.querySelector('#error').subscribe('game:create:fail', (e) => {
-    e.target.textContent = 'Game already exists';
+  const errorEl = el.querySelector('#error');
+  const formEl = el.querySelector('#create-form');
+
+  errorEl.subscribe('game:create:fail', (e) => {
+    errorEl.textContent = 'Game already exists';
   });
   
-  el.querySelector('#create-form').addEventListener('submit', (e) => {
+  formEl.addEventListener('submit', (e) => {
     e.preventDefault();
     const payload = utils.serializeForm(e.target);
     el.send('game:create', payload);

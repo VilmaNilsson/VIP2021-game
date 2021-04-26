@@ -17,10 +17,7 @@ function PlanView(context) {
 
   const { game } = context.getState();
 
-  if (!game) {
-    return el;
-  }
-
+  // NOTE: Make the timer into a component
   const { start, duration, spells } = game.phase;
   const end = start + duration;
 

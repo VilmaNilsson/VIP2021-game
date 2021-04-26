@@ -204,7 +204,6 @@ function gameStart(context) {
   context.broadcastToGame('game:phase', game.properties.phase);
 }
 
-// TODO: add delete game
 module.exports = {
   'game:create': gameCreate,
   'game:start': gameStart,

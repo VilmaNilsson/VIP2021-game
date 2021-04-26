@@ -1,10 +1,12 @@
 function Actions(el, context) {
   const { player } = context.getState();
 
+  // If there is no player in our state we cant render anything
   if (!player) {
     return el;
   }
 
+  // Could possibly break out this into a function
   player.spells.forEach((spell, spellIndex) => {
     const { name, event, target, cooldown } = spell;
     const div = document.createElement('div');

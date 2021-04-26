@@ -11,29 +11,35 @@ function LobbyView(context) {
     <button id="quit">Quit</button>
   `;
 
-  const teamsList = el.querySelector('#teams');
+  const teamsEl = el.querySelector('#teams');
+  const quitEl = el.querySelector('#quit');
   
-  // TODO: show error for admin? everyone needs to join a game
-
   state.game.teams.forEach((team, index) => {
     const teamEl = document.createElement('div');
-    teamsList.append(LobbyTeam(teamEl, team.name, index));
+    teamsEl.append(LobbyTeam(teamEl, team.name, index));
   });
 
   // If you're the admin
   if (state.id === state.game.admin) {
     const startBtn = document.createElement('button');
     startBtn.textContent = 'Start';
-    // TODO: 5sec countdown
-    startBtn.addEventListener('click', () => startBtn.send('game:start'));
+
+    startBtn.addEventListener('click', () => {
+      startBtn.send('game:start');
+    });
+
     el.append(startBtn);
   }
+
+  el.subscribe('game:start:fail', () => {
+    el.querySelector('h2').textContent = 'Teams (everyone needs to join a team)';
+  });
 
   el.subscribe('game:phase', () => {
     el.navigate('/plan');
   });
 
-  el.querySelector('#quit').addEventListener('click', () => {
+  quitEl.addEventListener('click', () => {
     el.send('game:leave');
     el.navigate('/');
   });

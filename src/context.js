@@ -5,7 +5,6 @@ const Context = {
   // Timers
   timeouts: [],
   intervals: [],
-
   // Fetches the state
   getState: function getState() {
     return this.state;

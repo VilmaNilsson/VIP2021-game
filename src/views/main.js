@@ -19,6 +19,7 @@ export default {
   before: (context) => {
     const uid = context.getCache('_uid');
 
+    // Check if a username is cached, if not -> login
     if (!uid) {
       return Router.redirect('/login');
     }

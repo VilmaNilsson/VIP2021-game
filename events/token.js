@@ -188,7 +188,8 @@ function tokenSwap(context, payload) {
   context.send('player:pockets', { pocket, temporaryPocket });
 }
 
-// TODO: make tokens selectable serverside?
+// NOTE: We could make tokens selectable if we want since they are objects, then
+// other players would see if someone has a token selected (might be overkill)
 
 module.exports = {
   'token:swap': tokenSwap,

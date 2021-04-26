@@ -43,6 +43,7 @@ function stationLogin(context, payload) {
   // Clear the previous login timeout
   if (player.properties.inStation !== null
     && player.properties.inStation.timeout !== undefined) {
+    // `timeout` is the ID of an actual timeout
     context.clearTimeout(player.properties.inStation.timeout);
   }
 
@@ -72,8 +73,8 @@ function stationLogin(context, payload) {
   // Update the gamestate (which includes the player)
   context.updateGameState(game);
 
-  // Send the login-wait-event to the user so that they start waiting
   const { racks } = station;
+  // Send the login-wait-event to the user so that they start waiting
   context.send('station:login:wait', {
     station: stationIndex,
     racks,
