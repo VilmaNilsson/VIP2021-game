@@ -1,3 +1,4 @@
+// When you receive your own player object
 function playerYou(context, payload) {
   context.setState(payload);
 
@@ -6,6 +7,7 @@ function playerYou(context, payload) {
   }
 }
 
+// When we select/deselect spells
 function playerSpells(context, payload) {
   const { spells } = payload;
   const { player } = context.getState();
@@ -18,6 +20,7 @@ function playerSpells(context, payload) {
   context.setState({ player });
 }
 
+// Updates to our pockets
 function playerPockets(context, payload) {
   const { pocket, temporaryPocket } = payload;
   const { player } = context.getState();
@@ -32,6 +35,7 @@ function playerPockets(context, payload) {
   context.setState({ player });
 }
 
+// When we try to reconnect
 function playerReconnect(context, payload) {
   const { player, game, racks } = payload;
   context.setState({ player, game, racks });

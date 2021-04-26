@@ -21,7 +21,6 @@ const PubSub = {
   publish: function publish(event, payload) {
     // Grouped logging for readability
     console.groupCollapsed(`Event dispatched: %c${event}`, 'color: #177503;');
-    // TODO: .warn if it ends with :fail?
     console.log(payload);
     console.groupEnd();
 
@@ -36,8 +35,11 @@ const PubSub = {
       // If the listener is a function we'll invoke it with `Context` and the
       // payload
       if (typeof listener === 'function') {
-        // TODO: catch errors?
-        listener(Context, payload);
+        try {
+          listener(Context, payload);
+        } catch (err) {
+          console.log(`Event handler for [${event}] failed with`, err);
+        }
       } else {
         // Otherwise we'll dispatch a CustomEvent, `CustomEvent` is a way of
         // creating our own "click"-like events

@@ -71,7 +71,7 @@ function Racks(el, context) {
     return el;
   }
 
-  // Always reset this
+  // Always reset this since it gets rerendered lots of times
   el.innerHTML = '';
 
   const initialRacks = racks ? racks : [];
@@ -80,7 +80,8 @@ function Racks(el, context) {
     return renderRack(rack, teamIndex, context);
   });
 
-  // Place your own rack at the bottom
+  // Place your own rack at the bottom (ie. pop your own rack and place it at
+  // the end of the array and then append all racks again)
   rackElements
     .concat(rackElements.splice(player.team, 1))
     .forEach((rack) => el.append(rack));
@@ -95,8 +96,6 @@ function Racks(el, context) {
     const rackElements = racks.map((rack, teamIndex) => {
       return renderRack(rack, teamIndex, context);
     });
-
-    console.log('got racks?');
 
     // Place your own rack at the bottom
     rackElements

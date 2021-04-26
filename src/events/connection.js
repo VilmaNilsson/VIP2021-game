@@ -1,3 +1,4 @@
+// Try to reconnect if we have stored a UserId in localStorage
 function connectionOpen(context) {
   const id = context.getCache('_uid');
   const { player } = context.getState();
@@ -8,6 +9,7 @@ function connectionOpen(context) {
   }
 }
 
+// Clear all active timers whenever the connection closes
 function connectionClose(context) {
   context.clearTimers();
 }

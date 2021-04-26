@@ -6,8 +6,6 @@ const Context = {
   timeouts: [],
   intervals: [],
 
-  // TODO: should we add ".id()", ".getPlayerState", ".getGameState"?
-
   // Fetches the state
   getState: function getState() {
     return this.state;

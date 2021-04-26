@@ -1,3 +1,4 @@
+// Whenever you join a team
 function teamJoined(context, payload) {
   const { playerId, team } = payload;
   const state = context.getState();
@@ -16,6 +17,7 @@ function teamJoined(context, payload) {
   context.setState({ game });
 }
 
+// Your own team
 function teamYours(context, payload) {
   const { team } = payload;
   const { player } = context.getState();

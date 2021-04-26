@@ -46,6 +46,8 @@ const Router = {
 
     // Before entering a new route we'll clear the existing listeners
     PubSub.unsubscribeAll();
+    // We'll also clear any existing timers
+    Context.clearTimers();
 
     // Extract our route handler;
     // this should always contain a `view` (function that returns a element)
@@ -69,8 +71,6 @@ const Router = {
     } else if (typeof handler.view !== 'function') {
       throw new Error(`The View for [${path}] is not a function`);
     }
-
-    // TODO: should we clear timers here?
 
     // Mount it into our HTML
     const mounted = this.mount(handler.view);
