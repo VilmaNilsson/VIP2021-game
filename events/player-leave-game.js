@@ -4,6 +4,7 @@ function gameLeave(context) {
 
   // Do nothing
   if (game === null) {
+    context.send('game:leave:fail', { errorCode: 0 });
     return;
   }
 
@@ -16,6 +17,15 @@ function gameLeave(context) {
   // Uptade the game with the new player-object
   context.updateGameState(game);
 
+  // You were the last one leaving, lets stop the game and remove it
+  if (Object.keys(game.players) === 0) {
+    context.clearTimeouts();
+    context.removeGame(game.id);
+  } else {
+    // Broadcast to all players in the affected game that one has left
+    context.broadcastToGame('game:left', { playerId }, game.id);
+  }
+
   // Get the player's state
   const player = context.getPlayerState();
 
@@ -25,13 +35,8 @@ function gameLeave(context) {
   // Update the player's state
   context.updatePlayerState(player);
 
-  // Broadcast to all players in the affected game that one has left
-  context.broadcastToGame('game:left', { playerId }, game.id);
-
   // Send an event to the player as well
   context.send('game:over', {});
-
-  // TODO: when the last player leaves an already active game we should end it
 }
 
 module.exports = {

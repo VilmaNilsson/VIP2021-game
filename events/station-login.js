@@ -8,18 +8,18 @@ function stationLogin(context, payload) {
   // Get the gamestate
   const game = context.getGameState();
 
+  // We're not in a game
+  if (game === null) {
+    context.send('station:login:fail', { errorCode: 0 });
+    return;
+  }
+
   // Get the plyer's id
   const playerId = context.id();
 
   // Get the station- and playerobject so that we can get their attributes
   const station = game.stations[stationIndex];
   const player = game.players[playerId];
-
-  // We're not in a game
-  if (game === null) {
-    context.send('station:login:fail', { errorCode: 0 });
-    return;
-  }
 
   // We're not in the play phase
   if (game.properties.phase.type !== 2) {

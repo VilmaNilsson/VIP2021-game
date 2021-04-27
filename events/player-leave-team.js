@@ -2,6 +2,12 @@ function teamLeave(context) {
   // Init variables
   const playerId = context.id();
   const game = context.getGameState();
+
+  if (game === null) {
+    context.send('game:leave:fail', { errorCode: 0 });
+    return;
+  }
+
   const player = game.players[playerId];
   const { team } = player;
 

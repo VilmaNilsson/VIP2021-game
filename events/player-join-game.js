@@ -1,9 +1,9 @@
 const utils = require('../utils');
 
 function playerJoinGame(context, payload) {
+  const { name } = payload;
   const playerId = context.id();
   const player = context.getPlayerState();
-  const { name } = payload;
   const game = context.getGameState({ name });
 
   // Checks if game exits

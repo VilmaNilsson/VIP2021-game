@@ -44,6 +44,7 @@ function playerReconnect(context, payload) {
     return;
   }
 
+  const playerState = context.getPlayerState();
   const player = game.players[id];
 
   // If they're inside of a game and in a station
@@ -52,6 +53,8 @@ function playerReconnect(context, payload) {
 
     // We'll send the game, player and racks
     context.send('player:reconnect', {
+      id: playerState.id,
+      username: playerState.username,
       player: utils.filterPlayer(player),
       game: utils.filterGame(game),
       racks,
@@ -59,6 +62,8 @@ function playerReconnect(context, payload) {
   } else {
     // Otherwise no racks
     context.send('player:reconnect', {
+      id: playerState.id,
+      username: playerState.username,
       player: utils.filterPlayer(player),
       game: utils.filterGame(game),
     });

@@ -66,7 +66,7 @@ function tokenSwap(context, payload) {
 
   // Check if they're using the temporary pocket, if its locked it will fail
   if ((from === 'temporary-pocket' || to === 'temporary-pocket')
-    && player.properties.temporaryPocketLocked === true) {
+    && player.properties.temporaryPocket.locked === true) {
     context.send('token:swap:fail', { errorCode: 6 });
     return;
   }
@@ -75,10 +75,10 @@ function tokenSwap(context, payload) {
   // ===============
   if (typeof from === 'string' && typeof to === 'string') {
     // Swap the two
-    const prevPocket = player.properties.pocket;
-    const prevTemporaryPocket = player.properties.temporaryPocket;
-    player.properties.pocket = prevTemporaryPocket;
-    player.properties.temporaryPocket = prevPocket;
+    const prevPocket = player.properties.pocket.token;
+    const prevTemporaryPocket = player.properties.temporaryPocket.token;
+    player.properties.pocket.token = prevTemporaryPocket;
+    player.properties.temporaryPocket.token = prevPocket;
 
     // Update the game (ie. the player)
     game.players[playerId] = player;
@@ -130,14 +130,14 @@ function tokenSwap(context, payload) {
 
   // Store the current pocket/slot values
   const prevSlot = station.racks[teamIndex].slots[slotIndex];
-  const prevPocket = player.properties[playerPocket];
+  const prevPocket = player.properties[playerPocket].token;
 
   // Move the new token to the slot
   const nextSlot = { token: prevPocket };
   station.racks[teamIndex].slots[slotIndex] = nextSlot;
 
   // Update the player pocket or temporary pocket
-  player.properties[playerPocket] = prevSlot.token;
+  player.properties[playerPocket].token = prevSlot.token;
 
   // This is how you get points:
   // ===========================
