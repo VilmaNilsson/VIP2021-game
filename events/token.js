@@ -149,7 +149,7 @@ function tokenSwap(context, payload) {
 
   // All the tokens are the same = points!
   if (noEmptySlots && sameSlots) {
-    game.teams[teamIndex].properties.score += 1;
+    game.teams[teamIndex].properties.score += 3;
     station.racks[teamIndex].slots = utils.createRack(game.tokens.length);
 
     // Broadcast the updated score
@@ -160,7 +160,7 @@ function tokenSwap(context, payload) {
     const uniqueSlots = new Set(slots).size === slots.length;
 
     if (noEmptySlots && uniqueSlots) {
-      game.teams[teamIndex].properties.score += 1;
+      game.teams[teamIndex].properties.score += 2;
       station.racks[teamIndex].slots = utils.createRack(game.tokens.length);
 
       // Broadcast the updated score
