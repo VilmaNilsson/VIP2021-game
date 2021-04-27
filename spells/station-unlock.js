@@ -45,6 +45,8 @@ function unlockStationSpell(context, payload) {
   context.updateGameState(gameState);
   // broadcast
   context.broadcastToGame('station:unlocked', { station: stationIndex });
+
+  return true;
 }
 
 module.exports = {

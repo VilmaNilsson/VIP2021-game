@@ -38,6 +38,8 @@ function immuneToSpells(context) {
     // Message the player that their immunity has ran out
     context.send('player:immunity:faded', {});
   }, duration);
+
+  return true;
 }
 
 module.exports = {

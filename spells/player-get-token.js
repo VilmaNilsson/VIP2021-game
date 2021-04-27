@@ -1,13 +1,13 @@
 /* eslint-disable linebreak-style */
 
-function getToken(context, payload) {
+function givePlayerToken(context, payload) {
   // payload=token-index that gets sent
   // check the game phase, only when in play phase
   const gameState = context.getGameState();
 
   // there is no game
   if (gameState === null) {
-    context.send('spell:player:get-token:fail', { errorCode: 0 });
+    context.send('spell:player:token:fail', { errorCode: 0 });
     return;
   }
 
@@ -15,7 +15,7 @@ function getToken(context, payload) {
 
   // not in the play phase
   if (gamePhase !== 2) {
-    context.send('spell:player:get-token:fail', { errorCode: 1 });
+    context.send('spell:player:token:fail', { errorCode: 1 });
     return;
   }
 
@@ -36,9 +36,11 @@ function getToken(context, payload) {
   context.updateGameState(gameState);
 
   // send back message to the player with the event and token as payload
-  context.send('player:pocket', { token: payload.token });
+  context.send('player:pockets', { token: payload.token });
+
+  return true;
 }
 
 module.exports = {
-  'spell:player:get-token': getToken,
+  'spell:player:token': givePlayerToken,
 };

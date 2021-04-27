@@ -21,6 +21,8 @@ function increaseLoginTimePlayer(context, payload) {
     context.updateGameState(newGameState);
     context.sendTo(targetedPlayerId, 'player:slowed:faded', {});
   }, duration);
+
+  return true;
 }
 
 module.exports = {

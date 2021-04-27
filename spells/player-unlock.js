@@ -29,6 +29,8 @@ function unlockPlayer(context, payload) {
 
   // Send a message to the targeted player
   context.sendTo(playerId, 'player:unlocked', { player: playerId });
+
+  return true;
 }
 
 module.exports = {

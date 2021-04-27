@@ -37,6 +37,8 @@ function doubleSalary(context) {
     context.updateGameState(game);
     context.broadcastToGame('stations:double-salary:faded', {});
   }, duration);
+
+  return true;
 }
 
 module.exports = {

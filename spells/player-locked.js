@@ -52,6 +52,8 @@ function lockPlayer(context, payload) {
     context.updateGameState(game);
     context.sendTo(playerId, 'player:locked:faded', {});
   }, duration * 1000); // Times are in milliseconds
+
+  return true;
 }
 
 module.exports = {

@@ -2,7 +2,7 @@
 const spells = require('./spells');
 // This is where we `require` all of our spell handlers ('event:name': handler)
 const playerImmune = require('./player-immune');
-const playerIncLogin = require('./player-increased-login');
+const playerLoginTime = require('./player-increased-login');
 const playerLocked = require('./player-locked');
 const playerTemporaryPocket = require('./player-temporary-pocket');
 const playerUnlock = require('./player-unlock');
@@ -14,12 +14,13 @@ const stationLock = require('./station-lock');
 const stationUnlock = require('./station-unlock');
 const stationsDoubleSalary = require('./stations-double-salary');
 const stationsHalfSalary = require('./stations-half-salary');
+const stationLoginTime = require('./station-increased-login');
 const teamsSwapRack = require('./teams-swap-rack');
 
 // Combine the handlers
 const spellHandlers = {
   playerImmune,
-  playerIncLogin,
+  playerLoginTime,
   playerLocked,
   playerTemporaryPocket,
   playerUnlock,
@@ -31,6 +32,7 @@ const spellHandlers = {
   stationUnlock,
   stationsDoubleSalary,
   stationsHalfSalary,
+  stationLoginTime,
   teamsSwapRack,
 };
 

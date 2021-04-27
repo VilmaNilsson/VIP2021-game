@@ -47,6 +47,8 @@ function halfSalaryStationSpell(context, payload) {
     context.updateGameState(game);
     context.broadcastToGame('station:half-salary:faded', { station: stationIndex });
   }, duration);
+
+  return true;
 }
 
 module.exports = {

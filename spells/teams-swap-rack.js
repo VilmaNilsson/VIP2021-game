@@ -55,6 +55,8 @@ function swapTeamRack(context, payload) {
   const playerIds = utils.getPlayersInStation(game, station);
   const racks = game.stations[station].racks;
   context.broadcastTo(playerIds, 'station:rack', { station, racks });
+
+  return true;
 }
 
 module.exports = {

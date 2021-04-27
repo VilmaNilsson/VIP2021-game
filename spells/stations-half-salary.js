@@ -22,6 +22,8 @@ function halfSalaryAllStations(context) {
     context.updateGameState(newGame);
     context.broadcastToGame('stations:half-salary:faded', {});
   }, duration);
+
+  return true;
 }
 
 module.exports = {

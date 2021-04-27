@@ -47,6 +47,8 @@ function doubleSalaryStationSpell(context, payload) {
     context.updateGameState(game);
     context.broadcastToGame('station:double-salary:faded', { station: stationIndex });
   }, duration);
+
+  return true;
 }
 
 module.exports = {

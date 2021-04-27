@@ -4,13 +4,13 @@ function increasedLoginSpell(context, payload) {
 
   // if we are on game
   if (game === null) {
-    context.send('spell:station:increasedlogintime:fail', { errorCode: 0 });
+    context.send('spell:station:slow:fail', { errorCode: 0 });
     return;
   }
 
   // if we are on the good game phase
   if (game.properties.phase.type !== 2) {
-    context.send('spell:station:increasedlogintime:fail', { errorCode: 1 });
+    context.send('spell:station:slow:fail', { errorCode: 1 });
     return;
   }
 
@@ -21,7 +21,7 @@ function increasedLoginSpell(context, payload) {
 
   // we check if the station exist
   if (station === undefined) {
-    context.send('spell:station:increasedlogintime:fail', { errorCode: 2 });
+    context.send('spell:station:slow:fail', { errorCode: 2 });
     return;
   }
 
@@ -32,11 +32,10 @@ function increasedLoginSpell(context, payload) {
   // we save the change
   context.updateGameState(game);
   // we broadcast the change to all player
-  context.broadcastToGame('station:slowed', { station: stationIndex ,duration: 60});
+  context.broadcastToGame('station:slowed', { station: stationIndex, duration: 60});
 
   // we reset the parameter after 1 mins
-
-  setTimeout(() => {
+  context.setTimeout(() => {
     const game = context.getGameState();
     const stationIndex = payload.station;
     const station = game.stations[stationIndex];
@@ -45,6 +44,8 @@ function increasedLoginSpell(context, payload) {
     context.updateGameState(game);
     context.broadcastToGame('station:slowed:faded', { station: stationIndex });
   }, 60 * 1000);
+
+  return true;
 }
 
 

@@ -43,6 +43,8 @@ function resetAll(context) {
   context.broadcastToGame('reset:pocket');
   context.broadcastToGame('reset:stations', { stations });
   context.broadcastToGame('game:salary');
+
+  return true;
 }
 
 module.export = {
