@@ -18,7 +18,7 @@ function gameLeave(context) {
   context.updateGameState(game);
 
   // You were the last one leaving, lets stop the game and remove it
-  if (Object.keys(game.players) === 0) {
+  if (Object.keys(game.players).length === 0) {
     context.clearTimeouts();
     context.removeGame(game.id);
   } else {
