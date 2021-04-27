@@ -36,7 +36,17 @@ function PlayView(context) {
   const temporaryPocketEl = el.querySelector('#temporary-pocket');
   const actionsEl = el.querySelector('#actions');
 
-  function renderAll() {
+  // Render all of our components
+  PlayTimer(timerEl, context);
+  Teams(teamsEl, context);
+  Stations(stationsEl, context);
+  Racks(racksEl, context);
+  Pocket(pocketEl, context);
+  TemporaryPocket(temporaryPocketEl, context);
+  Actions(actionsEl, context);
+
+  // We have to rerender them when e player reconnects
+  el.subscribe('player:reconnect', (e) => {
     PlayTimer(timerEl, context);
     Teams(teamsEl, context);
     Stations(stationsEl, context);
@@ -44,27 +54,18 @@ function PlayView(context) {
     Pocket(pocketEl, context);
     TemporaryPocket(temporaryPocketEl, context);
     Actions(actionsEl, context);
-  }
-
-  // Render all of our components
-  renderAll();
-
-  // We have to rerender them when e player reconnects
-  el.subscribe('player:reconnect', (e) => {
-    renderAll();
   });
 
   // Super simple "Game Over" view
   el.subscribe('game:phase', () => {
     const { game } = context.getState();
-    const scores = game.teams.map((t) => t.score);
-    scores.sort().reverse();
+    game.teams.sort((a, b) => a.score - b.score);
 
     el.innerHTML = `
       <h1>Game over</h1>
       <h2>Scores</h2>
       <div>
-        ${scores.map((s, i) => `Team ${i + 1}: ${s}`).join('<br>')}
+        ${game.teams.map((team) => `${team.name}: ${team.score}`).join('<br>')}
       </div>
       <button id="leave">Leave</button>
     `;

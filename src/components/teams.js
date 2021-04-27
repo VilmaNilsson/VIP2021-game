@@ -15,7 +15,7 @@ function Teams(el, context) {
     div.subscribe('game:score', (e) => {
       const { score } = e.detail;
       const newScore = score[i];
-      el.textContent = `${team.name} (${newScore})`;
+      div.textContent = `${team.name} (${newScore})`;
     });
 
     el.append(div);

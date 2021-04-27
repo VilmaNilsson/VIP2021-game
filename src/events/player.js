@@ -37,8 +37,7 @@ function playerPockets(context, payload) {
 
 // When we try to reconnect
 function playerReconnect(context, payload) {
-  const { player, game, racks } = payload;
-  context.setState({ player, game, racks });
+  context.setState(payload);
 }
 
 export default {

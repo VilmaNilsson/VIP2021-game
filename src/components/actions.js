@@ -8,10 +8,28 @@ function Actions(el, context) {
 
   // Could possibly break out this into a function
   player.spells.forEach((spell, spellIndex) => {
-    const { name, event, target, cooldown } = spell;
+    const { name, event, target, cooldown, start } = spell;
     const div = document.createElement('div');
 
-    div.textContent = `${name} (Cooldown ${cooldown}s)`;
+    const now = Date.now();
+    const end = start + (cooldown * 1000);
+
+    // The spell is on cooldown
+    if (end > 0) {
+      const interval = context.setInterval(() => {
+        const now = Date.now();
+        const sec = ((end - now) / 1000).toFixed(1);
+        div.textContent = `${name} (${sec}s)`;
+
+        if (sec <= 0) {
+          clearInterval(interval);
+          div.textContent = `${name} (Cooldown ${cooldown}s)`;
+        }
+      }, 100);
+    } else {
+      // Otherwise display the standard text
+      div.textContent = `${name} (Cooldown ${cooldown}s)`;
+    }
 
     div.click(() => {
       const { spell } = context.getState();

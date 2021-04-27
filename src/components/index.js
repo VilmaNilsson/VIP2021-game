@@ -1,4 +1,7 @@
-import LobbyTeam from './lobby-team';
+import LobbyTeams from './lobby-teams';
+import PlanTimer from './plan-timer';
+import PlanActions from './plan-actions';
+import PlanPlayerActions from './plan-player-actions';
 import Teams from './teams';
 import PlayTimer from './play-timer';
 import Stations from './stations';
@@ -8,7 +11,10 @@ import Actions from './actions';
 import Racks from './racks';
 
 export {
-  LobbyTeam,
+  LobbyTeams,
+  PlanActions,
+  PlanPlayerActions,
+  PlanTimer,
   Teams,
   PlayTimer,
   Stations,

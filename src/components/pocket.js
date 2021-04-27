@@ -8,7 +8,7 @@ function Pocket(el, context) {
 
   const { tokens } = game;
   const { pocket } = player;
-  const token = tokens[pocket] ? tokens[pocket].name : '-';
+  const token = tokens[pocket.token] ? tokens[pocket.token].name : '-';
 
   el.textContent = `Pocket: ${token}`;
 
@@ -17,7 +17,7 @@ function Pocket(el, context) {
     const { game } = context.getState();
     const { tokens } = game;
     const { pocket } = e.detail;
-    const token = tokens[pocket] ? tokens[pocket].name : '-';
+    const token = tokens[pocket.token] ? tokens[pocket.token].name : '-';
 
     el.textContent = `Pocket: ${token}`;
   });

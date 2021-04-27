@@ -89,6 +89,9 @@ function Stations(el, context) {
     // another station _while_ logging into another, this makes it resettable
     let loginInterval = null;
 
+    // TODO: we should check from the start if a station is being logged in to
+    // and then display a timer as well
+
     div.subscribe('station:login:wait', (e) => {
       const payload = e.detail;
 

@@ -1,11 +1,13 @@
-import { LobbyTeam } from '../components';
+import { LobbyTeams } from '../components';
 
 function LobbyView(context) {
   const el = document.createElement('div');
-  const state = context.getState();
+  const { id, game } = context.getState();
+
+  const name = game ? game.name : '';
 
   el.innerHTML = `
-    <h1>Lobby: ${state.game.name}</h1>
+    <h1>Lobby: ${name}</h1>
     <h2>Teams</h2>
     <div id="teams"></div>
     <button id="quit">Quit</button>
@@ -13,14 +15,11 @@ function LobbyView(context) {
 
   const teamsEl = el.querySelector('#teams');
   const quitEl = el.querySelector('#quit');
-  
-  state.game.teams.forEach((team, index) => {
-    const teamEl = document.createElement('div');
-    teamsEl.append(LobbyTeam(teamEl, team.name, index));
-  });
 
+  LobbyTeams(teamsEl, context);
+  
   // If you're the admin
-  if (state.id === state.game.admin) {
+  if (game && id === game.admin) {
     const startBtn = document.createElement('button');
     startBtn.textContent = 'Start';
 
@@ -30,6 +29,24 @@ function LobbyView(context) {
 
     el.append(startBtn);
   }
+
+  el.subscribe('player:reconnect', () => {
+    const { id, game } = context.getState();
+
+    LobbyTeams(teamsEl, context);
+
+    // If you're the admin
+    if (game && id === game.admin) {
+      const startBtn = document.createElement('button');
+      startBtn.textContent = 'Start';
+
+      startBtn.addEventListener('click', () => {
+        startBtn.send('game:start');
+      });
+
+      el.append(startBtn);
+    }
+  });
 
   el.subscribe('game:start:fail', () => {
     el.querySelector('h2').textContent = 'Teams (everyone needs to join a team)';

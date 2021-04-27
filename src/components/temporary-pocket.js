@@ -8,8 +8,12 @@ function TemporaryPocket(el, context) {
 
   const { tokens } = game;
   const { temporaryPocket } = player;
-  const token = tokens[temporaryPocket] ? tokens[temporaryPocket].name : '-';
 
+  const token = tokens[temporaryPocket.token]
+    ? tokens[temporaryPocket.token].name
+    : '-';
+
+  // TODO: check if the pocket is activated (then display that timer as well)
   el.textContent = `Temporary: ${token}`;
 
   // Whenever we receive the changes to our pocket
@@ -17,7 +21,10 @@ function TemporaryPocket(el, context) {
     const { game } = context.getState();
     const { tokens } = game;
     const { temporaryPocket } = e.detail;
-    const token = tokens[temporaryPocket] ? tokens[temporaryPocket].name : '-';
+
+    const token = tokens[temporaryPocket.token]
+      ? tokens[temporaryPocket.token].name
+      : '-';
 
     el.textContent = `Temporary: ${token}`;
   });
@@ -57,8 +64,8 @@ function TemporaryPocket(el, context) {
       const { temporaryPocket } = player;
 
       // First get our current token
-      const token = tokens[temporaryPocket]
-        ? tokens[temporaryPocket].name
+      const token = tokens[temporaryPocket.token]
+        ? tokens[temporaryPocket.token].name
         : '-';
 
       // We take a timestamp ('now' in seconds)
