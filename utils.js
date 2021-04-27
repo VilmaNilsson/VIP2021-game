@@ -135,9 +135,9 @@ function createStation(state = {}) {
     ...state,
     defaults: {
       locked: false,
-      loginTime: 7,
+      loginTime: 5,
       loginMultiplier: 1,
-      salaryMultiplier: 1,
+      pointsMultiplier: 1,
       ...state.defaults,
     },
   };
@@ -190,7 +190,7 @@ function createTeam(state = {}) {
       immune: false,
       silenced: false,
       loginMultiplier: 1,
-      salaryMultiplier: 1,
+      pointsMultiplier: 1,
       ...state.defaults,
     },
   };
@@ -211,11 +211,15 @@ function createPlayer(state = {}) {
       silenced: false,
       loginMultiplier: 1,
       inStation: null,
-      pocket: -1,
-      pocketLocked: false,
-      temporaryPocket: -1,
-      temporaryPocketLocked: true,
       spells: [],
+      pocket: {
+        token: -1,
+        locked: false
+      },
+      temporaryPocket: {
+        token: -1,
+        locked: false
+      },
       ...state.defaults,
     },
   };
