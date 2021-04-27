@@ -20,7 +20,7 @@ function teamJoin(context, payload) {
 
   // Update the player within the game
   player.team = teamIndex;
-  game.players[playerId] = player
+  game.players[playerId] = player;
   context.updateGameState(game);
 
   // NOTE: we could've broadcasted what team they also left

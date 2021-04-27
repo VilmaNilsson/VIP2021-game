@@ -14,17 +14,17 @@ function swapTeamRack(context, payload) {
   // We're not in a game
   if (game === null) {
     context.send('spell:rack:swap:fail', { errorCode: 0 });
-    return;
+    return false;
   }
   // We're not in the play phase
   if (game.properties.phase.type !== 2) {
     context.send('spell:rack:swap:fail', { errorCode: 1 });
-    return;
+    return false;
   }
   // They tried targeting an unknown station
   if (game.stations[station] === undefined) {
     context.send('spell:rack:swap:fail', { errorCode: 2 });
-    return;
+    return false;
   }
 
   // Get the player's id
@@ -53,7 +53,7 @@ function swapTeamRack(context, payload) {
 
   // Broadcast the event (to everyone within a station)
   const playerIds = utils.getPlayersInStation(game, station);
-  const racks = game.stations[station].racks;
+  const { racks } = game.stations[station].racks;
   context.broadcastTo(playerIds, 'station:rack', { station, racks });
 
   return true;

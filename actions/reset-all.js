@@ -7,13 +7,13 @@ function resetAll(context) {
   // We're not in a game
   if (game === null) {
     context.send('spell:reset:all:fail', { errorCode: 0 });
-    return;
+    return false;
   }
 
   // We're not in the play phase
   if (game.properties.phase.type !== 2) {
     context.send('spell:reset:all:fail', { errorCode: 1 });
-    return;
+    return false;
   }
 
   const players = { ...game.players };

@@ -19,7 +19,7 @@ function halfSalaryAllStations(context) {
       station.properties.salaryMultiplier = defaultMultiplier;
     });
 
-    context.updateGameState(newGame);
+    context.updateGameState(game);
     context.broadcastToGame('stations:half-salary:faded', {});
   }, duration);
 

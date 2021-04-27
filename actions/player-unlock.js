@@ -14,7 +14,7 @@ function unlockPlayer(context, payload) {
   // They tried targeting an unknown player
   if (player === undefined) {
     context.send('spell:unlock:player:fail', { errorCode: 0 });
-    return;
+    return false;
   }
 
   // We always use the `properties` key for changing values

@@ -1,11 +1,11 @@
 const utils = require('../utils');
 
 // Gets the relevant player object key based on the payload
-function getPlayerPocketKey(from, to) {
+function getPlayerCargoKey(from, to) {
   if (typeof from === 'string') {
-    return from === 'pocket' ? 'pocket' : 'temporaryPocket';
+    return from === 'cargo' ? 'cargo' : 'secretCargo';
   }
-  return to === 'pocket' ? 'pocket' : 'temporaryPocket';
+  return to === 'cargo' ? 'cargo' : 'secretCargo';
 }
 
 function tokenSwap(context, payload) {
@@ -32,10 +32,10 @@ function tokenSwap(context, payload) {
     return;
   }
 
-  // from:  {String|Number} 'pocket|temporary-pocket' or 0 (slot index)
-  // to:    {String|Number} 'pocket|temporary-pocket' or 0 (slot index)
+  // from:  {String|Number} 'cargo|secret-cargo' or 0 (slot index)
+  // to:    {String|Number} 'cargo|secret-cargo' or 0 (slot index)
   //
-  // If the destination (pocket to slot) has a token, we'll replace them
+  // If the destination (cargo to slot) has a token, we'll replace them
   const { to, from } = payload;
 
   // Not enough payload
@@ -64,28 +64,28 @@ function tokenSwap(context, payload) {
     return;
   }
 
-  // Check if they're using the temporary pocket, if its locked it will fail
-  if ((from === 'temporary-pocket' || to === 'temporary-pocket')
-    && player.properties.temporaryPocket.locked === true) {
+  // Check if they're using the secret cargo, if its locked it will fail
+  if ((from === 'secret-cargo' || to === 'secret-cargo')
+    && player.properties.secretCargo.locked === true) {
     context.send('token:swap:fail', { errorCode: 6 });
     return;
   }
 
-  // Between pockets
+  // Between cargos
   // ===============
   if (typeof from === 'string' && typeof to === 'string') {
     // Swap the two
-    const prevPocket = player.properties.pocket.token;
-    const prevTemporaryPocket = player.properties.temporaryPocket.token;
-    player.properties.pocket.token = prevTemporaryPocket;
-    player.properties.temporaryPocket.token = prevPocket;
+    const prevCargo = player.properties.cargo.token;
+    const prevTemporaryCargo = player.properties.secretCargo.token;
+    player.properties.cargo.token = prevTemporaryCargo;
+    player.properties.secretCargo.token = prevCargo;
 
     // Update the game (ie. the player)
     game.players[playerId] = player;
     context.updateGameState(game);
 
-    const { pocket, temporaryPocket } = player.properties;
-    context.send('player:pockets', { pocket, temporaryPocket });
+    const { cargo, secretCargo } = player.properties;
+    context.send('player:cargos', { cargo, secretCargo });
     return;
   }
 
@@ -120,24 +120,24 @@ function tokenSwap(context, payload) {
     return;
   }
 
-  // From pockets to slot (or vice versa)
+  // From cargos to slot (or vice versa)
   // ====================================
   const teamIndex = player.team;
   const slotIndex = typeof from === 'number' ? from : to;
   const station = game.stations[stationIndex];
 
-  const playerPocket = getPlayerPocketKey(from, to);
+  const playerCargo = getPlayerCargoKey(from, to);
 
-  // Store the current pocket/slot values
+  // Store the current cargo/slot values
   const prevSlot = station.racks[teamIndex].slots[slotIndex];
-  const prevPocket = player.properties[playerPocket].token;
+  const prevCargo = player.properties[playerCargo].token;
 
   // Move the new token to the slot
-  const nextSlot = { token: prevPocket };
+  const nextSlot = { token: prevCargo };
   station.racks[teamIndex].slots[slotIndex] = nextSlot;
 
-  // Update the player pocket or temporary pocket
-  player.properties[playerPocket].token = prevSlot.token;
+  // Update the player cargo or secret cargo
+  player.properties[playerCargo].token = prevSlot.token;
 
   // This is how you get points:
   // ===========================
@@ -149,7 +149,7 @@ function tokenSwap(context, payload) {
 
   // All the tokens are the same = points!
   if (noEmptySlots && sameSlots) {
-    game.teams[teamIndex].properties.score += 1; 
+    game.teams[teamIndex].properties.score += 1;
     station.racks[teamIndex].slots = utils.createRack(game.tokens.length);
 
     // Broadcast the updated score
@@ -160,7 +160,7 @@ function tokenSwap(context, payload) {
     const uniqueSlots = new Set(slots).size === slots.length;
 
     if (noEmptySlots && uniqueSlots) {
-      game.teams[teamIndex].properties.score += 1; 
+      game.teams[teamIndex].properties.score += 1;
       station.racks[teamIndex].slots = utils.createRack(game.tokens.length);
 
       // Broadcast the updated score
@@ -183,9 +183,9 @@ function tokenSwap(context, payload) {
     rack: station.racks[teamIndex],
   });
 
-  // Send the players updated pocket
-  const { pocket, temporaryPocket } = player.properties;
-  context.send('player:pockets', { pocket, temporaryPocket });
+  // Send the players updated cargo
+  const { cargo, secretCargo } = player.properties;
+  context.send('player:cargos', { cargo, secretCargo });
 }
 
 // NOTE: We could make tokens selectable if we want since they are objects, then

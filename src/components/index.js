@@ -5,8 +5,8 @@ import PlanPlayerActions from './plan-player-actions';
 import Teams from './teams';
 import PlayTimer from './play-timer';
 import Stations from './stations';
-import Pocket from './pocket';
-import TemporaryPocket from './temporary-pocket';
+import Cargo from './cargo';
+import SecretCargo from './secret-cargo';
 import Actions from './actions';
 import Racks from './racks';
 
@@ -18,8 +18,8 @@ export {
   Teams,
   PlayTimer,
   Stations,
-  Pocket,
-  TemporaryPocket,
+  Cargo,
+  SecretCargo,
   Actions,
   Racks,
 };

@@ -40,21 +40,19 @@ const PubSub = {
         } catch (err) {
           console.warn(`Event handler for [${event}] failed with`, err);
         }
+      } else if (event === 'player:reconnect') {
+        // This just makes sure that events listening to this event gets added
+        // to the end of the event loop, in order for updates to the state to
+        // be properly available
+        setTimeout(() => {
+          const e = new CustomEvent(event, { detail: payload });
+          listener.dispatchEvent(e);
+        }, 0);
       } else {
         // Otherwise we'll dispatch a CustomEvent, `CustomEvent` is a way of
         // creating our own "click"-like events
-        if (event === 'player:reconnect') {
-          // This just makes sure that events listening to this event gets added
-          // to the end of the event loop, in order for updates to the state to
-          // be properly available
-          setTimeout(() => {
-            const e = new CustomEvent(event, { detail: payload });
-            listener.dispatchEvent(e);
-          }, 0);
-        } else {
-          const e = new CustomEvent(event, { detail: payload });
-          listener.dispatchEvent(e);
-        }
+        const e = new CustomEvent(event, { detail: payload });
+        listener.dispatchEvent(e);
       }
     });
   },
@@ -193,9 +191,9 @@ HTMLElement.prototype.send = function send(event, payload) {
 // Simple wrapper for adding click events
 HTMLElement.prototype.click = function onClick(selector, callback) {
   if (typeof selector === 'function') {
-    this.addEventListener('click', selector); 
+    this.addEventListener('click', selector);
   } else {
-    this.querySelector(selector).addEventListener('click', callback); 
+    this.querySelector(selector).addEventListener('click', callback);
   }
 };
 

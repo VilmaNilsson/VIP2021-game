@@ -25,7 +25,7 @@ function gameJoined(context, payload) {
 
 // When game phases are updated
 function gamePhase(context, payload) {
-  const { game } = context.getState();
+  const { game } = context.getState();
 
   if (!game) {
     return;
@@ -54,7 +54,7 @@ function gameScore(context, payload) {
 }
 
 // When a game ends or you leave one
-function gameOver(context, payload) {
+function gameOver(context) {
   context.setState({ player: null, game: null });
   context.clearTimers();
 }

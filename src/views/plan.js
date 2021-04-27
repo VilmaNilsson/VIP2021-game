@@ -1,4 +1,8 @@
-import { PlanTimer, PlanActions, PlanPlayerActions } from '../components';
+import {
+  PlanTimer,
+  PlanActions,
+  PlanPlayerActions,
+} from '../components';
 
 function PlanView(context) {
   const el = document.createElement('div');

@@ -23,6 +23,8 @@ export default {
     if (!uid) {
       return Router.redirect('/login');
     }
+
+    return true;
   },
   path: '/',
   view: MainView,

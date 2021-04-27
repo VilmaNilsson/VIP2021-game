@@ -5,13 +5,13 @@ function increasedLoginSpell(context, payload) {
   // if we are on game
   if (game === null) {
     context.send('spell:station:slow:fail', { errorCode: 0 });
-    return;
+    return false;
   }
 
   // if we are on the good game phase
   if (game.properties.phase.type !== 2) {
     context.send('spell:station:slow:fail', { errorCode: 1 });
-    return;
+    return false;
   }
 
   // we receive the index of the selected station
@@ -22,7 +22,7 @@ function increasedLoginSpell(context, payload) {
   // we check if the station exist
   if (station === undefined) {
     context.send('spell:station:slow:fail', { errorCode: 2 });
-    return;
+    return false;
   }
 
   // we change the value of the loginTime variable
@@ -32,7 +32,7 @@ function increasedLoginSpell(context, payload) {
   // we save the change
   context.updateGameState(game);
   // we broadcast the change to all player
-  context.broadcastToGame('station:slowed', { station: stationIndex, duration: 60});
+  context.broadcastToGame('station:slowed', { station: stationIndex, duration: 60 });
 
   // we reset the parameter after 1 mins
   context.setTimeout(() => {
@@ -47,7 +47,6 @@ function increasedLoginSpell(context, payload) {
 
   return true;
 }
-
 
 module.exports = {
   'spell:station:slow': increasedLoginSpell,

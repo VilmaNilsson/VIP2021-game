@@ -5,10 +5,10 @@ function PlanActions(el, context) {
     return el;
   }
 
-  const { spells } = game.phase;
+  const { actions } = game.phase;
 
-  spells.forEach((spell) => {
-    const { name, desc, event } = spell;
+  actions.forEach((action) => {
+    const { name, desc, event } = action;
     const div = document.createElement('div');
 
     div.innerHTML = `
@@ -17,11 +17,11 @@ function PlanActions(el, context) {
     `;
 
     div.click(() => {
-      const { player } = context.getState();
+      const { player } = context.getState();
 
-      // Can only select 4 spells (the server wouldnt accept it anyway)
-      if (player && player.spells.length < 4) {
-        div.send('player:spell:select', { event });
+      // Can only select 4 actions (the server wouldnt accept it anyway)
+      if (player && player.actions.length < 4) {
+        div.send('player:action:select', { event });
       }
     });
 

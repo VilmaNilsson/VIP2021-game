@@ -8,7 +8,7 @@ function unlockStationSpell(context, payload) {
   // there is no game
   if (gameState === null) {
     context.send('spell:unlock:station:fail', { errorCode: 0 });
-    return;
+    return false;
   }
 
   const gamePhase = gameState.properties.phase.type;
@@ -16,7 +16,7 @@ function unlockStationSpell(context, payload) {
   // not in the play phase
   if (gamePhase !== 2) {
     context.send('spell:unlock:station:fail', { errorCode: 1 });
-    return;
+    return false;
   }
 
   // in the payload, the player sends information which station to lock
@@ -26,7 +26,7 @@ function unlockStationSpell(context, payload) {
   // the station does not exist
   if (station === undefined) {
     context.send('spell:unlock:station:fail', { errorCode: 2 });
-    return;
+    return false;
   }
 
   // check if the station is locked
@@ -34,7 +34,7 @@ function unlockStationSpell(context, payload) {
   // send back info that the station cant get unlocked
   if (station.properties.locked !== true) {
     // console.log("Heeeee, don't try to unlock an unlocked station... cheater!");
-    return;
+    return false;
   }
 
   // if the station is locked, change it in state and broadcast

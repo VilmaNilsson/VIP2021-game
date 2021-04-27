@@ -49,7 +49,7 @@ function playerReconnect(context, payload) {
 
   // If they're inside of a game and in a station
   if (player.properties.inStation !== null) {
-    const racks = game.stations[player.properties.inStation.station].racks;
+    const { racks } = game.stations[player.properties.inStation.station];
 
     // We'll send the game, player and racks
     context.send('player:reconnect', {

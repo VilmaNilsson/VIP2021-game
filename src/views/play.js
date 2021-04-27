@@ -2,8 +2,8 @@ import {
   Teams,
   PlayTimer,
   Stations,
-  Pocket,
-  TemporaryPocket,
+  Cargo,
+  SecretCargo,
   Actions,
   Racks,
 } from '../components';
@@ -20,9 +20,9 @@ function PlayView(context) {
     <div id="stations"></div>
     <h2>Racks</h2>
     <div id="racks"></div>
-    <h2>Pockets</h2>
-    <div id="pocket"></div>
-    <div id="temporary-pocket"></div>
+    <h2>Cargo</h2>
+    <div id="cargo"></div>
+    <div id="secret-cargo"></div>
     <h3>Your actions</h3>
     <div id="actions"></div>
     <button id="quit">Quit</button>
@@ -32,8 +32,8 @@ function PlayView(context) {
   const teamsEl = el.querySelector('#teams');
   const stationsEl = el.querySelector('#stations');
   const racksEl = el.querySelector('#racks');
-  const pocketEl = el.querySelector('#pocket');
-  const temporaryPocketEl = el.querySelector('#temporary-pocket');
+  const cargoEl = el.querySelector('#cargo');
+  const secretCargoEl = el.querySelector('#secret-cargo');
   const actionsEl = el.querySelector('#actions');
 
   // Render all of our components
@@ -41,18 +41,18 @@ function PlayView(context) {
   Teams(teamsEl, context);
   Stations(stationsEl, context);
   Racks(racksEl, context);
-  Pocket(pocketEl, context);
-  TemporaryPocket(temporaryPocketEl, context);
+  Cargo(cargoEl, context);
+  SecretCargo(secretCargoEl, context);
   Actions(actionsEl, context);
 
   // We have to rerender them when e player reconnects
-  el.subscribe('player:reconnect', (e) => {
+  el.subscribe('player:reconnect', () => {
     PlayTimer(timerEl, context);
     Teams(teamsEl, context);
     Stations(stationsEl, context);
     Racks(racksEl, context);
-    Pocket(pocketEl, context);
-    TemporaryPocket(temporaryPocketEl, context);
+    Cargo(cargoEl, context);
+    SecretCargo(secretCargoEl, context);
     Actions(actionsEl, context);
   });
 
@@ -87,4 +87,3 @@ export default {
   path: '/play',
   view: PlayView,
 };
-

@@ -39,11 +39,12 @@ function findObjectByProperties(objects, properties) {
 
 // Courtesy of: https://stackoverflow.com/a/2450976
 function shuffle(array) {
-  var currentIndex = array.length, temporaryValue, randomIndex;
+  let currentIndex = array.length;
+  let temporaryValue;
+  let randomIndex;
 
   // While there remain elements to shuffle...
-  while (0 !== currentIndex) {
-
+  while (currentIndex !== 0) {
     // Pick a remaining element...
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex -= 1;
@@ -211,14 +212,14 @@ function createPlayer(state = {}) {
       silenced: false,
       loginMultiplier: 1,
       inStation: null,
-      spells: [],
-      pocket: {
+      actions: [],
+      cargo: {
         token: -1,
-        locked: false
+        locked: false,
       },
-      temporaryPocket: {
+      secretCargo: {
         token: -1,
-        locked: false
+        locked: true,
       },
       ...state.defaults,
     },
@@ -256,7 +257,7 @@ function filterGame(game) {
     }),
     teams: game.teams.map((team) => {
       const { name, properties } = team;
-      return { name, ...properties };
+      return { name, ...properties };
     }),
     players: Object.entries(game.players).reduce((players, entry) => {
       const [id, player] = entry;
@@ -307,7 +308,7 @@ function getTeamScores(game) {
 function getPlayersInStation(game, stationIndex) {
   return Object.entries(game.players)
     .filter((entry) => {
-      const [_, player] = entry;
+      const player = entry[1];
 
       if (player.properties.inStation === null) {
         return false;
@@ -316,7 +317,7 @@ function getPlayersInStation(game, stationIndex) {
       return player.properties.inStation.station === stationIndex;
     })
     .map((entry) => {
-      const [id, _] = entry;
+      const id = entry[0];
       return id;
     });
 }

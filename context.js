@@ -69,7 +69,7 @@ function getGameStateByPlayer(id) {
     return null;
   }
 
-  const gameId = STATE.players[id].gameId;
+  const { gameId } = STATE.players[id];
 
   if (STATE.games[gameId] === undefined) {
     return null;
@@ -286,15 +286,14 @@ function create(wss, ws) {
         : getGameState(gameId);
 
       if (game === null) {
-        return;
+        return null;
       }
 
       const id = wrappedSetTimeout(cb, ms);
       game.timeouts = [...game.timeouts, id];
-      // game.timeouts.push(id);
 
       updateGameState(game.id, { timeouts: game.timeouts });
-      
+
       return id;
     },
     // Clear a timeout by id
@@ -308,7 +307,7 @@ function create(wss, ws) {
         : getGameState(gameId);
 
       if (game === null) {
-        return;
+        return null;
       }
 
       game.timeouts.forEach((id) => wrappedClearTimeout(id));

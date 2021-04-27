@@ -1,33 +1,4 @@
-// Render a rack (and update it when we receive updates)
-function renderRack(rack, teamIndex, context) {
-  const div = document.createElement('div');
-
-  // Render the slots
-  rack.slots.forEach((slot, tokenIndex) => {
-    const slotElem = renderSlot(slot, tokenIndex, teamIndex, context);
-    div.append(slotElem);
-  });
-
-  // Whenever we receive a rack update to a station
-  div.subscribe('station:rack', (e) => {
-    const { team, rack } = e.detail;
-
-    // If the update isnt for this team, dont do anything
-    if (team !== teamIndex) {
-      return;
-    }
-
-    div.innerHTML = '';
-
-    rack.slots.forEach((slot, tokenIndex) => {
-      const slotElem = renderSlot(slot, tokenIndex, teamIndex, context);
-      div.append(slotElem);
-    });
-  });
-
-  return div;
-}
-
+// Renders a slot within a rack
 function renderSlot(slot, tokenIndex, teamIndex, context) {
   const { player, game } = context.getState();
   const { team } = player;
@@ -72,6 +43,36 @@ function renderSlot(slot, tokenIndex, teamIndex, context) {
   return el;
 }
 
+// Render a rack (and update it when we receive updates)
+function renderRack(rack, teamIndex, context) {
+  const div = document.createElement('div');
+
+  // Render the slots
+  rack.slots.forEach((slot, tokenIndex) => {
+    const slotElem = renderSlot(slot, tokenIndex, teamIndex, context);
+    div.append(slotElem);
+  });
+
+  // Whenever we receive a rack update to a station
+  div.subscribe('station:rack', (e) => {
+    const { team, rack } = e.detail;
+
+    // If the update isnt for this team, dont do anything
+    if (team !== teamIndex) {
+      return;
+    }
+
+    div.innerHTML = '';
+
+    rack.slots.forEach((slot, tokenIndex) => {
+      const slotElem = renderSlot(slot, tokenIndex, teamIndex, context);
+      div.append(slotElem);
+    });
+  });
+
+  return div;
+}
+
 function Racks(el, context) {
   const { game, player, racks } = context.getState();
 
@@ -101,7 +102,7 @@ function Racks(el, context) {
   // Reset everything once a player has logged into a station
   el.subscribe('station:login:done', (e) => {
     const { racks } = e.detail;
-    
+
     // Always reset this
     el.innerHTML = '';
 

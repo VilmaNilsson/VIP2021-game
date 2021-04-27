@@ -17,13 +17,13 @@ function lockPlayer(context, payload) {
   // They tried targeting an unknown player
   if (player === undefined) {
     context.send('spell:lock:player:fail', { errorCode: 0 });
-    return;
+    return false;
   }
 
   // They tried targeting a player that is already locked
   if (player.properties.locked === true) {
     context.send('spell:lock:player:fail', { errorCode: 1 });
-    return;
+    return false;
   }
 
   // We always use the `properties` key for changing values

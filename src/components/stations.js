@@ -1,7 +1,7 @@
 function Stations(el, context) {
   const { game, player } = context.getState();
 
-  if (!game || !player) {
+  if (!game || !player) {
     return el;
   }
 
@@ -10,7 +10,7 @@ function Stations(el, context) {
     const div = document.createElement('div');
     div.textContent = station.name;
 
-    // When a player selects a station for a spell
+    // When a player selects a station for a action
     let selectable = false;
 
     // Simple on-off toggle, should probably just be classes
@@ -27,29 +27,29 @@ function Stations(el, context) {
     }
 
     div.click(() => {
-      const { spell } = context.getState();
+      const { action } = context.getState();
 
-      // If our client state contains a spell and our stations can be selected
-      if (spell && selectable) {
+      // If our client state contains a action and our stations can be selected
+      if (action && selectable) {
         // Deselect it (just for the looks)
         setSelectable(false);
-        // Then send the station-spell, since they clicked a station as their
+        // Then send the station-action, since they clicked a station as their
         // target
-        div.send('player:spell', { ...spell, station: i });
-        // Deselect the spell in our client state
-        context.setState({ spell: null });
+        div.send('player:action', { ...action, station: i });
+        // Deselect the action in our client state
+        context.setState({ action: null });
       } else {
         // Otherwise they wanted to login
         div.send('station:login', { station: i });
       }
     });
 
-    // When the station is selectable for spells (all station-spells)
-    div.subscribe('player:spell:stations', () => setSelectable(true));
+    // When the station is selectable for actions (all station-actions)
+    div.subscribe('player:action:stations', () => setSelectable(true));
     // Otherwise remove the selection
-    div.subscribe('player:spell:cooldown', () => setSelectable(false));
-    div.subscribe('player:spell:cancel', () => setSelectable(false));
-    div.subscribe('player:spell:fail', () => setSelectable(false));
+    div.subscribe('player:action:cooldown', () => setSelectable(false));
+    div.subscribe('player:action:cancel', () => setSelectable(false));
+    div.subscribe('player:action:fail', () => setSelectable(false));
 
     // Highlight the station you're in
     if (player.inStation && player.inStation.station === i) {
@@ -57,10 +57,10 @@ function Stations(el, context) {
     }
 
     // When the station gets locked
-    div.subscribe('spell:station:locked', (e) => {
-      const payload = e.detail; 
+    div.subscribe('action:station:locked', (e) => {
+      const payload = e.detail;
 
-      // If the lock spell wasn't for this station, do nothing
+      // If the lock action wasn't for this station, do nothing
       if (payload.station !== i) {
         return;
       }

@@ -5,7 +5,7 @@ function connectionOpen(context) {
 
   // If we have no player state and a cached id exists, lets try to reconnect
   if (!player && id) {
-    context.send('player:reconnect', { id });
+    context.send('player:reconnect', { id });
   }
 }
 

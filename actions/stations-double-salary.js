@@ -6,12 +6,12 @@ function doubleSalary(context) {
   // We're not in a game
   if (game === null) {
     context.send('spell:stations:double-salary:fail', { errorCode: 0 });
-    return;
+    return false;
   }
   // We're not in the play phase
   if (game.properties.phase.type !== 2) {
     context.send('spell:stations:double-salary:fail', { errorCode: 1 });
-    return;
+    return false;
   }
 
   // Loop through all stations in the gamestate and change their salaryMultiplier

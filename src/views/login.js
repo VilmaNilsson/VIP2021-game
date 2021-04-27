@@ -9,23 +9,24 @@ function LoginView() {
     <button id="login-button">Login</button>
   `;
 
-  const input = el.querySelector('#login-field');
-  
-  input.addEventListener('keyup', (e) => {
+  const errorEl = el.querySelector('#error');
+  const inputEl = el.querySelector('#login-field');
+
+  inputEl.addEventListener('keyup', (e) => {
     if (e.key !== 'Enter' || e.target.value.length < 2) {
       return;
     }
 
-    const username = input.value;
+    const username = inputEl.value;
     el.send('player:login', { username });
   });
 
   el.click('#login-button', () => {
-    if (input.value.length < 2) {
+    if (inputEl.value.length < 2) {
       return;
     }
 
-    const username = input.value;
+    const username = inputEl.value;
     el.send('player:login', { username });
   });
 
@@ -33,8 +34,8 @@ function LoginView() {
     el.navigate('/');
   });
 
-  el.subscribe('player:login:fail', (e) => {
-    el.querySelector('#error').textContent = 'Username already taken';
+  el.subscribe('player:login:fail', () => {
+    errorEl.textContent = 'Username already taken';
   });
 
   return el;

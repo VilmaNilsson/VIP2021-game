@@ -1,4 +1,4 @@
-function TemporaryPocket(el, context) {
+function SecretCargo(el, context) {
   const { game, player } = context.getState();
 
   // We need both the game and the player for this component
@@ -7,42 +7,42 @@ function TemporaryPocket(el, context) {
   }
 
   const { tokens } = game;
-  const { temporaryPocket } = player;
+  const { secretCargo } = player;
 
-  const token = tokens[temporaryPocket.token]
-    ? tokens[temporaryPocket.token].name
+  const token = tokens[secretCargo.token]
+    ? tokens[secretCargo.token].name
     : '-';
 
-  // TODO: check if the pocket is activated (then display that timer as well)
-  el.textContent = `Temporary: ${token}`;
+  // TODO: check if the cargo is activated (then display that timer as well)
+  el.textContent = `Secret: ${token}`;
 
-  // Whenever we receive the changes to our pocket
-  el.subscribe('player:pockets', (e) => {
+  // Whenever we receive the changes to our cargo
+  el.subscribe('player:cargos', (e) => {
     const { game } = context.getState();
     const { tokens } = game;
-    const { temporaryPocket } = e.detail;
+    const { secretCargo } = e.detail;
 
-    const token = tokens[temporaryPocket.token]
-      ? tokens[temporaryPocket.token].name
+    const token = tokens[secretCargo.token]
+      ? tokens[secretCargo.token].name
       : '-';
 
-    el.textContent = `Temporary: ${token}`;
+    el.textContent = `Secret: ${token}`;
   });
 
   el.click(() => {
     const state = context.getState();
 
-    // If nothing is in our pocket
+    // If nothing is in our cargo
     if (state.tokenSelection === null || state.tokenSelection === undefined) {
-      // Select the pocket
-      state.tokenSelection = 'temporary-pocket';
-    } else if (state.tokenSelection === 'temporary-pocket') {
+      // Select the cargo
+      state.tokenSelection = 'secret-cargo';
+    } else if (state.tokenSelection === 'secret-cargo') {
       // Deselect
       state.tokenSelection = null;
-    // If something is in our pocket
+    // If something is in our cargo
     } else {
       // Otherwise perform a swap
-      const to = 'temporary-pocket';
+      const to = 'secret-cargo';
       const from = state.tokenSelection;
       el.send('token:swap', { to, from });
       state.tokenSelection = null;
@@ -52,32 +52,32 @@ function TemporaryPocket(el, context) {
     context.setState({ tokenSelection: state.tokenSelection });
   });
 
-  // Whenever someone plays the activate temporary pocket spell
-  el.subscribe('player:temporary-pocket', (e) => {
-    const { start, duration } = e.detail; 
+  // Whenever someone plays the activate secret cargo action
+  el.subscribe('action:player:secret-cargo', (e) => {
+    const { start, duration } = e.detail;
     // The end time (ie. 'that many seconds far ahead')
     const end = start + duration;
 
     const interval = context.setInterval(() => {
       const { game, player } = context.getState();
       const { tokens } = game;
-      const { temporaryPocket } = player;
+      const { secretCargo } = player;
 
       // First get our current token
-      const token = tokens[temporaryPocket.token]
-        ? tokens[temporaryPocket.token].name
+      const token = tokens[secretCargo.token]
+        ? tokens[secretCargo.token].name
         : '-';
 
       // We take a timestamp ('now' in seconds)
       const now = Date.now();
       // Calculate how many seconds are left
       const sec = ((end - now) / 1000).toFixed(1);
-      el.textContent = `Temporary: ${token} (${sec}s)`;
+      el.textContent = `Secret: ${token} (${sec}s)`;
 
       // If none are, stop our interval
       if (sec <= 0) {
         clearInterval(interval);
-        el.textContent = `Temporary: ${token}`;
+        el.textContent = `Secret: ${token}`;
       }
     }, 100);
   });
@@ -85,4 +85,4 @@ function TemporaryPocket(el, context) {
   return el;
 }
 
-export default TemporaryPocket;
+export default SecretCargo;

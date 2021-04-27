@@ -1,6 +1,6 @@
 function LobbyTeams(el, context) {
   const { game, player } = context.getState();
-  
+
   if (!game) {
     return el;
   }

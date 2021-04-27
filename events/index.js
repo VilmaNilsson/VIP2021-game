@@ -7,7 +7,7 @@ const playerJoinGame = require('./player-join-game');
 const playerJoinTeam = require('./player-join-team');
 const playerLeaveTeam = require('./player-leave-team');
 const playerLogin = require('./player-login');
-const playerSpell = require('./player-spell');
+const playerAction = require('./player-action');
 const stationLogin = require('./station-login');
 const token = require('./token');
 
@@ -21,7 +21,7 @@ module.exports = {
   playerJoinTeam,
   playerLeaveTeam,
   playerLogin,
-  playerSpell,
+  playerAction,
   stationLogin,
   token,
 };

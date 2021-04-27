@@ -21,7 +21,7 @@ function JoinView() {
   const errorEl = el.querySelector('#error');
   const formEl = el.querySelector('#join-form');
 
-  errorEl.subscribe('game:join:fail', (e) => {
+  errorEl.subscribe('game:join:fail', () => {
     errorEl.textContent = 'Game doesnt exist';
   });
 
@@ -42,4 +42,3 @@ export default {
   path: '/join',
   view: JoinView,
 };
-

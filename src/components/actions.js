@@ -7,15 +7,24 @@ function Actions(el, context) {
   }
 
   // Could possibly break out this into a function
-  player.spells.forEach((spell, spellIndex) => {
-    const { name, event, target, cooldown, start } = spell;
+  player.actions.forEach((action, actionIndex) => {
+    const {
+      name,
+      event,
+      target,
+      cooldown,
+      start,
+    } = action;
+
     const div = document.createElement('div');
 
-    const now = Date.now();
-    const end = start + (cooldown * 1000);
+    // NOTE: We might need to calculate what time is left in order to reduce
+    // risk for erros
 
-    // The spell is on cooldown
-    if (end > 0) {
+    // The action is on cooldown
+    if (start) {
+      // NOTE: should cooldowns be stored in milliseconds instead?
+      const end = start + (cooldown * 1000);
       const interval = context.setInterval(() => {
         const now = Date.now();
         const sec = ((end - now) / 1000).toFixed(1);
@@ -32,30 +41,30 @@ function Actions(el, context) {
     }
 
     div.click(() => {
-      const { spell } = context.getState();
+      const { action } = context.getState();
 
-      // Cancel a active spell thats about to be cast
-      if (spell !== null && spell !== undefined) {
-        context.setState({ spell: null });
-        div.publish('player:spell:cancel');
+      // Cancel a active action thats about to be cast
+      if (action !== null && action !== undefined) {
+        context.setState({ action: null });
+        div.publish('player:action:cancel');
         return;
       }
 
       // When they target themselves we dont need to select anything
       if (target === 'player') {
-        context.setState({ spell: null });
-        div.send('player:spell', { event, index: spellIndex });
+        context.setState({ action: null });
+        div.send('player:action', { event, index: actionIndex });
       } else {
-        context.setState({ spell: { event, index: spellIndex }});
-        div.publish(`player:spell:${target}`);
+        context.setState({ action: { event, index: actionIndex } });
+        div.publish(`player:action:${target}`);
       }
     });
 
-    div.subscribe('player:spell:cooldown', (e) => {
-      const { index, start, duration } = e.detail;
+    div.subscribe('player:action:cooldown', (e) => {
+      const { index, start, duration } = e.detail;
 
-      // Not this spell
-      if (spellIndex !== index) {
+      // Not this action
+      if (actionIndex !== index) {
         return;
       }
 

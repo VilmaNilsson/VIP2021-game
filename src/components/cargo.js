@@ -1,4 +1,4 @@
-function Pocket(el, context) {
+function Cargo(el, context) {
   const { game, player } = context.getState();
 
   // We need both the game and the player for this component
@@ -7,35 +7,35 @@ function Pocket(el, context) {
   }
 
   const { tokens } = game;
-  const { pocket } = player;
-  const token = tokens[pocket.token] ? tokens[pocket.token].name : '-';
+  const { cargo } = player;
+  const token = tokens[cargo.token] ? tokens[cargo.token].name : '-';
 
-  el.textContent = `Pocket: ${token}`;
+  el.textContent = `Cargo: ${token}`;
 
-  // Whenever we receive the changes to our pocket
-  el.subscribe('player:pockets', (e) => {
+  // Whenever we receive the changes to our cargo
+  el.subscribe('player:cargos', (e) => {
     const { game } = context.getState();
     const { tokens } = game;
-    const { pocket } = e.detail;
-    const token = tokens[pocket.token] ? tokens[pocket.token].name : '-';
+    const { cargo } = e.detail;
+    const token = tokens[cargo.token] ? tokens[cargo.token].name : '-';
 
-    el.textContent = `Pocket: ${token}`;
+    el.textContent = `Cargo: ${token}`;
   });
 
   el.click(() => {
     const state = context.getState();
 
-    // If nothing is in our pocket
+    // If nothing is in our cargo
     if (state.tokenSelection === null || state.tokenSelection === undefined) {
-      // Select the pocket
-      state.tokenSelection = 'pocket';
-    // If something is in our pocket
-    } else if (state.tokenSelection === 'pocket') {
+      // Select the cargo
+      state.tokenSelection = 'cargo';
+    // If something is in our cargo
+    } else if (state.tokenSelection === 'cargo') {
       // Deselect
       state.tokenSelection = null;
     } else {
       // Otherwise perform a swap
-      const to = 'pocket';
+      const to = 'cargo';
       const from = state.tokenSelection;
       el.send('token:swap', { to, from });
       state.tokenSelection = null;
@@ -48,4 +48,4 @@ function Pocket(el, context) {
   return el;
 }
 
-export default Pocket;
+export default Cargo;

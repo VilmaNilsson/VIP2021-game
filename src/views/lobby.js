@@ -17,7 +17,7 @@ function LobbyView(context) {
   const quitEl = el.querySelector('#quit');
 
   LobbyTeams(teamsEl, context);
-  
+
   // If you're the admin
   if (game && id === game.admin) {
     const startBtn = document.createElement('button');
@@ -66,5 +66,5 @@ function LobbyView(context) {
 
 export default {
   path: '/lobby',
-  view: LobbyView
+  view: LobbyView,
 };

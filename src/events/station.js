@@ -16,6 +16,6 @@ function stationRack(context, payload) {
 }
 
 export default {
-  'station:login:done': playerStationLogin,
+  'station:login:done': stationLoginDone,
   'station:rack': stationRack,
 };

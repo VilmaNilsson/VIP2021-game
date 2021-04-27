@@ -7,31 +7,31 @@ function playerYou(context, payload) {
   }
 }
 
-// When we select/deselect spells
-function playerSpells(context, payload) {
-  const { spells } = payload;
-  const { player } = context.getState();
-
-  if (!player) {
-    return;
-  }
-
-  player.spells = spells;
-  context.setState({ player });
-}
-
-// Updates to our pockets
-function playerPockets(context, payload) {
-  const { pocket, temporaryPocket } = payload;
+// When we select/deselect actions
+function playerActions(context, payload) {
+  const { actions } = payload;
   const { player } = context.getState();
 
   if (!player) {
     return;
   }
 
-  player.pocket = pocket;
-  player.temporaryPocket = temporaryPocket;
-  
+  player.actions = actions;
+  context.setState({ player });
+}
+
+// Updates to our cargos
+function playerCargos(context, payload) {
+  const { cargo, secretCargo } = payload;
+  const { player } = context.getState();
+
+  if (!player) {
+    return;
+  }
+
+  player.cargo = cargo;
+  player.secretCargo = secretCargo;
+
   context.setState({ player });
 }
 
@@ -42,7 +42,7 @@ function playerReconnect(context, payload) {
 
 export default {
   'player:you': playerYou,
-  'player:spells': playerSpells,
-  'player:pockets': playerPockets,
+  'player:actions': playerActions,
+  'player:cargos': playerCargos,
   'player:reconnect': playerReconnect,
 };

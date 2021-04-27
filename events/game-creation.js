@@ -1,5 +1,5 @@
 const utils = require('../utils');
-const spells = require('../spells');
+const actions = require('../actions');
 
 // Event handler that creates a new game
 function gameCreate(context, payload) {
@@ -8,7 +8,7 @@ function gameCreate(context, payload) {
     nrOfTeams,
     nrOfStations,
     planDuration,
-    playDuration
+    playDuration,
   } = payload;
 
   // A game must have a name
@@ -49,7 +49,7 @@ function gameCreate(context, payload) {
   const tokens = utils.createTokens();
 
   // Our teams (based off of `nrOfTeams`)
-  const teams = Array.from({ length: nrOfTeams || 4 }).map((_, index) => {
+  const teams = Array.from({ length: nrOfTeams || 4 }).map((_, index) => {
     return utils.createTeam({
       name: `Team ${index + 1}`,
     });
@@ -144,8 +144,8 @@ function startPlayPhase(context) {
   const duration = game.properties.playPhaseDuration * 1000;
 
   context.setTimeout(() => endPlayPhase(context), duration);
-  
-  // Calculate scores 
+
+  // Calculate scores
   const initialScore = utils.getTeamScores(game);
 
   // Set our current game phase to 2 (Play)
@@ -197,7 +197,7 @@ function gameStart(context) {
     type: 1,
     start,
     duration: planDuration,
-    spells: spells.spells,
+    actions: actions.actions,
   };
   context.updateGameState(game);
   // Broadcast the first phase

@@ -7,22 +7,22 @@ function givePlayerToken(context, payload) {
 
   // there is no game
   if (gameState === null) {
-    context.send('spell:player:token:fail', { errorCode: 0 });
-    return;
+    context.send('action:player:token:fail', { errorCode: 0 });
+    return false;
   }
 
   const gamePhase = gameState.properties.phase.type;
 
   // not in the play phase
   if (gamePhase !== 2) {
-    context.send('spell:player:token:fail', { errorCode: 1 });
-    return;
+    context.send('action:player:token:fail', { errorCode: 1 });
+    return false;
   }
 
   // checks if the token-index from payload is within the predefined tokens-arr of the game
   // if the index of the chosen token is outside the arraylength, an invalid index has been sent
   if (payload.token > gameState.tokens.length) {
-    return;
+    return false;
   }
 
   // get the player and information about the player
@@ -36,11 +36,11 @@ function givePlayerToken(context, payload) {
   context.updateGameState(gameState);
 
   // send back message to the player with the event and token as payload
-  context.send('player:pockets', { token: payload.token });
+  context.send('player:cargos', { token: payload.token });
 
   return true;
 }
 
 module.exports = {
-  'spell:player:token': givePlayerToken,
+  'action:player:token': givePlayerToken,
 };

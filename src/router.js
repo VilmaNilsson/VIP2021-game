@@ -98,14 +98,16 @@ const Router = {
       // `view` would be one of the functions within "views/"
       const el = view(Context);
 
-      if (!(el instanceof HTMLElement)) {
+      if (!(el instanceof HTMLElement)) {
         return false;
       }
 
       this.root.textContent = '';
       this.root.appendChild(el);
+      return true;
     } catch (err) {
       console.warn(`Unable to mount the view [${view.name}]`, err.message);
+      return false;
     }
   },
   // Set our root node
