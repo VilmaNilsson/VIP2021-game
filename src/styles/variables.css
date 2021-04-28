@@ -1,0 +1,23 @@
+html {
+    /* Main colors */
+    --background-color: #242328;
+    --text-color: #f4f4f4;
+    /* Complementery colors */
+    --comp-color-1: #660066;
+    --comp-color-2: #291039;
+    /* Team colors */
+    --team-color-1: #33ffff; /* neon */
+    --team-color-2: #ff3399; /* pink */
+    --team-color-3: #cc00ff; /* purple */
+    --team-color-4: #0066ff; /* blue */
+    /* Logo color */
+    --logo-color: #ff00cc;
+
+    /* Fonts
+     * =====
+     * Primary: Titles, buttons, etc
+     * Secondary: Body text
+     */
+    --font-primary: "Rajdhani", Arial, sans-serif;
+    --font-secondary: "Lato", Arial, sans-serif;
+}
