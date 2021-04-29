@@ -26,6 +26,7 @@ function PlayView(context) {
     <h3>Your actions</h3>
     <div id="actions"></div>
     <button id="quit">Quit</button>
+    <button id="menu">Menu</button>
   `;
 
   const timerEl = el.querySelector('#timer');
@@ -79,6 +80,10 @@ function PlayView(context) {
     el.send('game:leave');
     el.navigate('/');
   });
+
+  // el.click('#menu', () => {
+  //   console.log('You pressed the menu button');
+  // });
 
   return el;
 }
