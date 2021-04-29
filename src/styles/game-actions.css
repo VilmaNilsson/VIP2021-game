@@ -1,0 +1,38 @@
+.game-action-bar {
+  height: 10vh;
+  width: 50%;
+
+  padding: 2%;
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4%;
+
+  background-color: black;
+}
+
+.game-action-button {
+  /* height: 85%;
+  width: calc(100% - 6% - 6%);
+
+  margin: 2%; */
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  background-color: white;
+
+  border-radius: 10px;
+
+  font-size: 0.8rem;
+}
+
+.game-action-on-cooldown {
+  background-color: rgb(161, 189, 189);
+}
+
+.game-action-selected {
+  background-color: rgb(129, 161, 161);
+}
