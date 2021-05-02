@@ -5,8 +5,6 @@ function increaseLoginTimeTeams(context, payload) {
   const LOGIN_MULTIPLIER = 1.5;
   const DEFAULT_LOGIN_TIME = game.teams[team].defaults.loginMultiplier;
 
-  console.log('INCREASED LOGIN TEAMS');
-
   if (game === null) {
     context.send('action:teams:slowed:fail', { errorCode: 0 });
     return false;
