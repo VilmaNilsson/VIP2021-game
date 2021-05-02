@@ -49,5 +49,5 @@ function increasedLoginSpell(context, payload) {
 }
 
 module.exports = {
-  'action:station:slow': increasedLoginSpell,
+  'action:station:slowed': increasedLoginSpell,
 };
