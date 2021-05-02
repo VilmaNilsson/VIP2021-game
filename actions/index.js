@@ -19,11 +19,13 @@ const actions = require('./actions');
 // NOTE: These are working
 const stationLock = require('./station-lock');
 const playerSecretCargo = require('./player-secret-cargo');
+const teamsLoginIncreased = require('./teams-increased-login');
 
 // Combine the handlers
 const actionHandlers = {
   playerSecretCargo,
   stationLock,
+  teamsLoginIncreased,
   // NOTE: don't forget to add more here
 };
 

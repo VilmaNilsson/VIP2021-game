@@ -3,7 +3,9 @@ function increaseLoginTimeTeams(context, payload) {
   const game = context.getGameState();
   const { team } = payload;
   const LOGIN_MULTIPLIER = 1.5;
-  const DEFAULT_LOGIN_TIME = game.teams[team].default.loginMultiplier;
+  const DEFAULT_LOGIN_TIME = game.teams[team].defaults.loginMultiplier;
+
+  console.log('INCREASED LOGIN TEAMS');
 
   if (game === null) {
     context.send('action:teams:slowed:fail', { errorCode: 0 });
@@ -17,7 +19,7 @@ function increaseLoginTimeTeams(context, payload) {
 
   if (!team) context.send('action:teams:slowed:fail', { errorCode: 2 });
 
-  game.teams[team].default.loginMultiplier *= LOGIN_MULTIPLIER;
+  game.teams[team].properties.loginMultiplier *= LOGIN_MULTIPLIER;
 
   const newGameState = { ...game };
   context.updateGameState(newGameState);
@@ -25,7 +27,7 @@ function increaseLoginTimeTeams(context, payload) {
   context.broadcastToGame('action:teams:slowed', { team });
 
   context.setTimeout(() => {
-    game.teams[team].loginMultiplier = DEFAULT_LOGIN_TIME;
+    game.teams[team].properties.loginMultiplier = DEFAULT_LOGIN_TIME;
     const newGameState = { ...game };
 
     context.updateGameState(newGameState);
@@ -36,5 +38,5 @@ function increaseLoginTimeTeams(context, payload) {
 }
 
 module.exports = {
-  'spell:teams:slow': increaseLoginTimeTeams,
+  'action:teams:slowed': increaseLoginTimeTeams,
 };
