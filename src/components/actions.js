@@ -76,6 +76,10 @@ function Actions(el, context) {
 
     div.click(() => {
       const { action } = context.getState();
+
+      const otherSelectedAction = document.querySelector('.game-action-selected');
+      if (otherSelectedAction) otherSelectedAction.classList.remove('.game-action-selected');
+
       if (canBeCanceled) div.classList.toggle('game-action-selected');
       // Cancel a active action thats about to be cast
       if (action !== null && action !== undefined) {
