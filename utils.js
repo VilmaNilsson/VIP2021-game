@@ -322,6 +322,16 @@ function getPlayersInStation(game, stationIndex) {
     });
 }
 
+// Returns true if station rack (for a specific team) is full
+function isRackFull(station, teamId) {
+  station.rack[teamId].slots.forEach((slot) => {
+    if(slot.token == -1){
+      return false;
+    }
+  });
+  return true;
+}
+
 module.exports = {
   randomHex,
   generateUUID,
@@ -345,4 +355,5 @@ module.exports = {
   getLoginTime,
   getTeamScores,
   getPlayersInStation,
+  isRackFull,
 };
