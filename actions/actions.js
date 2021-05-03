@@ -27,6 +27,13 @@ const actions = [
     target: 'stations',
     cooldown: 2 * 60,
   },
+  {
+    event: 'action:station:fill-empty',
+    name: 'Fill Empty',
+    desc: 'Places a random token in selected slot within the station',
+    target: 'stations',
+    cooldown: 2 * 60,
+  },
 ];
 
 module.exports = actions;
