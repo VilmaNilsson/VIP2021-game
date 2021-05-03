@@ -13,7 +13,6 @@
 }
 
 #login-logo {
-  height: 25%;
   width: 100%;
   
   margin-bottom: 10%;
@@ -92,5 +91,16 @@
 }
 
 @media(min-width: 800px) {
-  
+  #login-logo {
+    height: 30%;
+    margin-bottom: 2%;
+  }
+
+  #login-field {
+    width: 50%;
+  }
+
+  #login-button {
+    width: 30%;
+  }
 }
