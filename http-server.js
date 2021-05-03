@@ -13,8 +13,8 @@ const routes = require('./routes');
 // Middleware
 app.use(minify());
 app.use(express.static('dist'));
+app.use('/assets', express.static('assets'));
 app.use(morgan('combined'));
-app.use(express.static('assets'));
 
 // `routes` is an object of { endpoint: router, ... }
 Object.entries(routes).forEach((entry) => {
@@ -27,7 +27,6 @@ app.use((req, res) => {
   const dir = path.resolve(__dirname, 'src');
   res.sendFile(`${dir}/index.html`);
 });
-
 
 app.listen(port, () => {
   console.log(`[HTTP]: Started listening on port :${port}`);

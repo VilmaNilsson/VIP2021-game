@@ -3,9 +3,9 @@ function LoginView() {
   el.id = 'home';
 
   el.innerHTML = `
-    <h1>Home</h1>
+    <img id="login-logo" src="/assets/logo.svg" alt="LOGO">
     <div id="error"></div>
-    <input type="text" id="login-field"><br>
+    <input type="text" id="login-field" placeholder="username"><br>
     <button id="login-button">Login</button>
   `;
 
