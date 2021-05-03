@@ -3,17 +3,17 @@ const utils = require('../utils');
 
 function fillEmpty(context, payload) {
     // payload=none
-    const gameState = context.getGameState();
+    const game = context.getGameState();
     const playerId = context.id();
 
     // there is no game
-    if (gameState === null) {
+    if (game === null) {
       context.send('action:station:fill-empty:fail', { errorCode: 0 });
       return false;
     }
   
-    const gamePhase = gameState.properties.phase.type;
-    const player = gameState.players[playerId];
+    const gamePhase = game.properties.phase.type;
+    const player = game.players[playerId];
   
     // not in the play phase
     if (gamePhase !== 2) {
@@ -30,19 +30,28 @@ function fillEmpty(context, payload) {
     const station = player.inStation;
 
     // Fail if there is no free slot in planet
-    // if (station.racks[player.team].slot === undefined) {
-    //     context.send('action:station:fill-empty:fail', { errorCode: 3 });
-    //     return false;
-    // }
+    if (utils.isRackFull(station, player.team)) {
+        context.send('action:station:fill-empty:fail', { errorCode: 3 });
+        return false;
+    }
   
     // We give the connected station a random token 
+    station.racks[player.team].slots.every((slot) => {
+        if(slot.token === -1){
+            // Assign random token
+            slot.token = Math.floor(Math.random() * game.tokens.length);
+            return false;
+        } else {
+            return true;
+        }
+    });
   
     // save the changes
-    context.updateGameState(gameState);
+    context.updategame(game);
   
     // send back message to logged players in planet with the event and slot + token as payload
-    // const playerIds = utils.getPlayersInStation(game, station);
-    context.send('station:filled-empty', { token: payload.token });
+    const playerIds = utils.getPlayersInStation(game, station);
+    context.broadcastTo(playerIds, 'station:filled-empty', { station, racks });
   
     return true;
   }

@@ -325,7 +325,7 @@ function getPlayersInStation(game, stationIndex) {
 // Returns true if station rack (for a specific team) is full
 function isRackFull(station, teamId) {
   station.rack[teamId].slots.forEach((slot) => {
-    if(slot.token == -1){
+    if(slot.token === -1){
       return false;
     }
   });
