@@ -1,0 +1,30 @@
+#cargos_all {
+    display: flex;
+    justify-content: space-around;
+    width: 50vw;
+}
+
+.cargos-base {
+    background-color: var(--team-color-4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cargos-base > div {
+    width: 9vh;
+    height: 9vh;
+    border-radius: 50%;
+    border: 2px solid black;
+    box-sizing: border-box;
+    margin: 1vh;
+}
+
+#secret-cargo {
+    width: 15vh;
+}
+
+#secret-cargo-timer {
+    transform-origin: center;
+    transform: rotate(90deg);
+}

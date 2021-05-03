@@ -21,8 +21,15 @@ function PlayView(context) {
     <h2>Racks</h2>
     <div id="racks"></div>
     <h2>Cargo</h2>
-    <div id="cargo"></div>
-    <div id="secret-cargo"></div>
+    <div id="cargos_all">
+      <div class="cargos-base" id="cargo">
+        <div></div>
+      </div>
+      <div class="cargos-base" id="secret-cargo">
+        <div></div>
+        <p id="secret-cargo-timer">02:56</p>
+      </div>
+    </div>
     <h3>Your actions</h3>
     <div id="actions"></div>
     <button id="quit">Quit</button>
