@@ -49,7 +49,7 @@ function fillEmpty(context, payload) {
     // save the changes
     context.updategame(game);
   
-    // send back message to logged players in planet with the event and slot + token as payload
+    // send back message to logged players in planet with the event and station + racks as payload
     const playerIds = utils.getPlayersInStation(game, station);
     context.broadcastTo(playerIds, 'station:filled-empty', { station, racks });
   
