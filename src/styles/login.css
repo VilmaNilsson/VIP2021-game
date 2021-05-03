@@ -1,0 +1,89 @@
+@import 'variables.css';
+
+#home {
+  width: 100vw;
+  height: 100vh;
+
+  background-color: var(--background-color);
+
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  flex-direction: column;
+}
+
+#login-logo {
+  height: 25%;
+  width: 100%;
+  
+  margin-bottom: 10%;
+}
+
+#error {
+  width: 90%;
+  height: 8%;
+
+  opacity: 1;
+
+  color: red;
+
+  text-align: center;
+  font-size: 1.5rem;
+
+  transition: opacity 500ms ease;
+}
+
+.login-error-active {
+  opacity: 0 !important;
+  transition: opacity 500ms ease;
+}
+
+#login-field {
+  cursor: text;
+  box-shadow: 0 0 10px 5px white;
+  text-shadow: 0 0 5px white;
+
+  border: none;
+  border-radius: 20px;
+
+  color: var(--text-color);
+  background-color: var(--background-color);
+
+  width: 90%;
+  height: 8%;
+
+  margin-bottom: 10%;
+
+  font-size: 1.5rem;
+
+  text-align: center;
+
+  outline: none;
+
+  font-family: var(--font-primary);
+}
+
+#login-button {
+  box-shadow: 0 0 10px 5px white;
+  text-shadow: 0 0 5px white;
+
+  border: none;
+  border-radius: 50px;
+
+  color: var(--text-color);
+  background-color: var(--background-color);
+
+  width: 50%;
+  height: 8%;
+
+  font-size: 1.5rem;
+
+  outline: none;
+
+  font-family: var(--font-secondary);
+}
+
+#login-button:hover, #login-button:focus, #login-field:hover, #login-field:focus, #login-field:active {
+  box-shadow: 0 0 10px 5px var(--logo-color);
+}
+

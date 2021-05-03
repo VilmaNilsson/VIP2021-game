@@ -20,4 +20,11 @@ html {
      */
     --font-primary: "Rajdhani", Arial, sans-serif;
     --font-secondary: "Lato", Arial, sans-serif;
+
+    /*Game actions variables*/
+    --game-action-on-cooldown-color: rgb(161, 189, 189);
+    --game-action-selected-color: rgb(129, 161, 161);
+    --game-action-text-color: rgb(0, 0, 0);
+    --game-action-background-color: rgb(255, 255, 255);
+    --game-action-font-size: 0.8rem;
 }
