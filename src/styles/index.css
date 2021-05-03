@@ -21,3 +21,14 @@ body {
     margin: 0 2px;
     background: #eee;
 }
+
+#menu {
+    width: 18vw;
+    border-radius: 7px;
+
+    background-color: white;
+
+    position: absolute;
+    bottom: 2vw;
+    right: 2vw;
+}

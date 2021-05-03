@@ -1,0 +1,40 @@
+.game-action-bar {
+  height: 10vh;
+  width: 50%;
+
+  padding: 2%;
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4%;
+}
+
+.game-action-button {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+
+  background-color: white;
+
+  border-radius: 10px;
+
+  font-size: 0.8rem;
+}
+
+.game-action-on-cooldown {
+  background-color: rgb(161, 189, 189);
+}
+
+.game-action-selected {
+  background-color: rgb(129, 161, 161);
+}

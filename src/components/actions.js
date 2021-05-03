@@ -1,3 +1,6 @@
+const CONVERT_MINUTES = 60;
+const CONVERT_SECONDS = 60;
+
 function Actions(el, context) {
   const { player } = context.getState();
 
@@ -17,6 +20,24 @@ function Actions(el, context) {
     } = action;
 
     const div = document.createElement('div');
+    el.classList.add('game-action-bar');
+    div.classList.add('game-action-button');
+
+    let cdMinutes = Math.floor(cooldown / CONVERT_MINUTES);
+    let cdSec = cooldown - (cdMinutes * CONVERT_SECONDS);
+
+    if (cdSec === 60) {
+      cdSec = 0;
+    }
+
+    let convertedCooldown;
+    if (cdSec === 0) {
+      convertedCooldown = `0${cdMinutes}:0${cdSec}`;
+    } else {
+      convertedCooldown = `0${cdMinutes}:${cdSec}`;
+    }
+
+    let canBeCanceled = true;
 
     // NOTE: We might need to calculate what time is left in order to reduce
     // risk for erros
@@ -25,24 +46,41 @@ function Actions(el, context) {
     if (start) {
       // NOTE: should cooldowns be stored in milliseconds instead?
       const end = start + (cooldown * 1000);
+      div.classList.add('game-action-on-cooldown');
+      canBeCanceled = false;
+
+      cdMinutes -= 1;
+
       const interval = context.setInterval(() => {
         const now = Date.now();
-        const sec = ((end - now) / 1000).toFixed(1);
-        div.textContent = `${name} (${sec}s)`;
+        let sec = ((end - now) / 1000).toFixed(0);
+        sec = sec - cdMinutes * CONVERT_SECONDS - 1;
+        if (sec < 10) div.innerHTML = `<span>${name}</span> <span>0${cdMinutes}:0${sec}</span>`;
+        else div.innerHTML = `<span>${name}</span> <span>0${cdMinutes}:${sec}</span>`;
+        if (sec <= 0) cdMinutes -= 1;
 
-        if (sec <= 0) {
-          clearInterval(interval);
-          div.textContent = `${name} (Cooldown ${cooldown}s)`;
+        if (cdMinutes < 0) {
+          if (sec <= 0) {
+            clearInterval(interval);
+            canBeCanceled = true;
+            div.classList.remove('game-action-on-cooldown');
+            cdMinutes = cooldown / CONVERT_MINUTES;
+            div.innerHTML = `<span>${name}</span> <span>${convertedCooldown}</span>`;
+          }
         }
-      }, 100);
+      }, 1000);
     } else {
       // Otherwise display the standard text
-      div.textContent = `${name} (Cooldown ${cooldown}s)`;
+      div.innerHTML = `<span>${name}</span> <span>${convertedCooldown}</span>`;
     }
 
     div.click(() => {
       const { action } = context.getState();
 
+      const otherSelectedAction = document.querySelector('.game-action-selected');
+      if (otherSelectedAction) otherSelectedAction.classList.remove('.game-action-selected');
+
+      if (canBeCanceled) div.classList.toggle('game-action-selected');
       // Cancel a active action thats about to be cast
       if (action !== null && action !== undefined) {
         context.setState({ action: null });
@@ -67,19 +105,29 @@ function Actions(el, context) {
       if (actionIndex !== index) {
         return;
       }
+      div.classList.remove('game-action-selected');
+      div.classList.add('game-action-on-cooldown');
+      canBeCanceled = false;
 
       const end = start + duration;
-
+      cdMinutes -= 1;
       const interval = context.setInterval(() => {
         const now = Date.now();
-        const sec = ((end - now) / 1000).toFixed(1);
-        div.textContent = `${name} (${sec}s)`;
-
-        if (sec <= 0) {
-          clearInterval(interval);
-          div.textContent = `${name} (Cooldown ${cooldown}s)`;
+        let sec = ((end - now) / 1000).toFixed(0);
+        sec = sec - cdMinutes * CONVERT_SECONDS - 1;
+        if (sec < 10) div.innerHTML = `<span>${name}</span> <span>0${cdMinutes}:0${sec}</span>`;
+        else div.innerHTML = `<span>${name}</span> <span>0${cdMinutes}:${sec}</span>`;
+        if (sec <= 0) cdMinutes -= 1;
+        if (cdMinutes < 0) {
+          if (sec <= 0) {
+            clearInterval(interval);
+            canBeCanceled = true;
+            div.classList.remove('game-action-on-cooldown');
+            cdMinutes = cooldown / CONVERT_MINUTES;
+            div.innerHTML = `<span>${name}</span> <span>${convertedCooldown}</span>`;
+          }
         }
-      }, 100);
+      }, 1000);
     });
 
     el.append(div);
