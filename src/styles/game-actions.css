@@ -24,17 +24,18 @@
       -ms-flex-direction: column;
           flex-direction: column;
 
-  background-color: white;
+  background-color: var(--game-action-background-color);
+  color: var(--game-action-text-color);
 
   border-radius: 10px;
 
-  font-size: 0.8rem;
+  font-size: var(--game-action-font-size);
 }
 
 .game-action-on-cooldown {
-  background-color: rgb(161, 189, 189);
+  background-color: var(--game-action-on-cooldown-color);
 }
 
 .game-action-selected {
-  background-color: rgb(129, 161, 161);
+  background-color: var(--game-action-selected-color);
 }
