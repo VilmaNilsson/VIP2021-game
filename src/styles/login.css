@@ -63,6 +63,10 @@
   font-family: var(--font-primary);
 }
 
+#login-field::placeholder {
+  color: var(--text-color);
+}
+
 #login-button {
   box-shadow: 0 0 10px 5px white;
   text-shadow: 0 0 5px white;
@@ -87,3 +91,6 @@
   box-shadow: 0 0 10px 5px var(--logo-color);
 }
 
+@media(min-width: 800px) {
+  
+}
