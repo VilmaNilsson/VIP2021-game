@@ -6,10 +6,19 @@
 
   background-color: var(--background-color);
 
+  display: -webkit-box;
+
+  display: -ms-flexbox;
+
   display: flex;
   /* justify-content: center; */
-  align-items: center;
-  flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
 
 #login-logo {
@@ -29,17 +38,24 @@
   text-align: center;
   font-size: 1.5rem;
 
+  -webkit-transition: opacity 500ms ease;
+
+  -o-transition: opacity 500ms ease;
+
   transition: opacity 500ms ease;
 }
 
 .login-error-active {
   opacity: 0 !important;
+  -webkit-transition: opacity 500ms ease;
+  -o-transition: opacity 500ms ease;
   transition: opacity 500ms ease;
 }
 
 #login-field {
   cursor: text;
-  box-shadow: 0 0 10px 5px white;
+  -webkit-box-shadow: 0 0 10px 5px white;
+          box-shadow: 0 0 10px 5px white;
   text-shadow: 0 0 5px white;
 
   border: none;
@@ -62,12 +78,29 @@
   font-family: var(--font-primary);
 }
 
+#login-field::-webkit-input-placeholder {
+  color: var(--text-color);
+}
+
+#login-field::-moz-placeholder {
+  color: var(--text-color);
+}
+
+#login-field:-ms-input-placeholder {
+  color: var(--text-color);
+}
+
+#login-field::-ms-input-placeholder {
+  color: var(--text-color);
+}
+
 #login-field::placeholder {
   color: var(--text-color);
 }
 
 #login-button {
-  box-shadow: 0 0 10px 5px white;
+  -webkit-box-shadow: 0 0 10px 5px white;
+          box-shadow: 0 0 10px 5px white;
   text-shadow: 0 0 5px white;
 
   border: none;
@@ -87,7 +120,8 @@
 }
 
 #login-button:hover, #login-button:focus, #login-field:hover, #login-field:focus, #login-field:active {
-  box-shadow: 0 0 10px 5px var(--logo-color);
+  -webkit-box-shadow: 0 0 10px 5px var(--logo-color);
+          box-shadow: 0 0 10px 5px var(--logo-color);
 }
 
 @media(min-width: 800px) {
