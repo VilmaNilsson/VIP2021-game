@@ -9,22 +9,29 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    border-radius: 10px;
 }
 
 .cargos-base > div {
-    width: 9vh;
-    height: 9vh;
+    width: 8vh;
+    height: 8vh;
     border-radius: 50%;
     border: 2px solid black;
     box-sizing: border-box;
-    margin: 1vh;
+    margin: 1.5vh;
 }
 
 #secret-cargo {
     width: 15vh;
 }
 
+#secret-cargo > div {
+    margin-right: 0px;
+}
+
 #secret-cargo-timer {
     transform-origin: center;
     transform: rotate(90deg);
+    font-family: var(--font-primary);
+    margin: 0px;
 }

@@ -23,10 +23,10 @@ function PlayView(context) {
     <h2>Cargo</h2>
     <div id="cargos_all">
       <div class="cargos-base" id="cargo">
-        <div></div>
+        <img id="cargo-slot">
       </div>
       <div class="cargos-base" id="secret-cargo">
-        <div></div>
+        <img id="secret-cargo-slot">
         <p id="secret-cargo-timer">02:56</p>
       </div>
     </div>

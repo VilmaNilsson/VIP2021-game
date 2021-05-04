@@ -1,5 +1,6 @@
 function Cargo(el, context) {
   const { game, player } = context.getState();
+  const cargoSlot = el.getElementById("cargo-slot");
 
   // We need both the game and the player for this component
   if (!game || !player) {
@@ -10,7 +11,7 @@ function Cargo(el, context) {
   const { cargo } = player;
   const token = tokens[cargo.token] ? tokens[cargo.token].name : '-';
 
-  el.textContent = `Cargo: ${token}`;
+  cargoSlot.src = token;
 
   // Whenever we receive the changes to our cargo
   el.subscribe('player:cargos', (e) => {
@@ -19,7 +20,7 @@ function Cargo(el, context) {
     const { cargo } = e.detail;
     const token = tokens[cargo.token] ? tokens[cargo.token].name : '-';
 
-    el.textContent = `Cargo: ${token}`;
+    cargoSlot.src = token;
   });
 
   el.click(() => {
