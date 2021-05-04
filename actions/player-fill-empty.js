@@ -2,7 +2,6 @@
 const utils = require('../utils');
 
 function fillEmpty(context, payload) {
-    // payload=none
     const game = context.getGameState();
     const playerId = context.id();
 
@@ -52,6 +51,9 @@ function fillEmpty(context, payload) {
     // send back message to logged players in planet with the event and station + racks as payload
     const playerIds = utils.getPlayersInStation(game, station);
     context.broadcastTo(playerIds, 'station:filled-empty', { station, racks });
+
+    // check if action updates the score
+    utils.checkActionForScore(context, game, station, player.team);
   
     return true;
   }

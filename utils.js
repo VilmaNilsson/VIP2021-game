@@ -332,6 +332,37 @@ function isRackFull(station, teamId) {
   return true;
 }
 
+// Checks and broadcast score for a given context, game, station and teamIndex
+function checkActionForScore(context, game, station, teamIndex) {
+  // This is how you get points:
+  // ===========================
+
+  // Check if the action means a rack has a row of same tokens
+  const slots = station.racks[teamIndex].slots.map((slot) => slot.token);
+  const sameSlots = slots.every((slot) => slot === slots[0]);
+  const noEmptySlots = slots.every((slot) => slot !== -1);
+
+  // All the tokens are the same = points!
+  if (noEmptySlots && sameSlots) {
+    game.teams[teamIndex].properties.score += 3;
+
+    // Broadcast the updated score
+    const score = getTeamScores(game);
+    context.broadcastToGame('game:score', { score });
+  } else {
+    // Only unique slots in a rack also gives points
+    const uniqueSlots = new Set(slots).size === slots.length;
+
+    if (noEmptySlots && uniqueSlots) {
+      game.teams[teamIndex].properties.score += 2;
+
+      // Broadcast the updated score
+      const score = getTeamScores(game);
+      context.broadcastToGame('game:score', { score });
+    }
+  }
+}
+
 module.exports = {
   randomHex,
   generateUUID,
@@ -356,4 +387,5 @@ module.exports = {
   getTeamScores,
   getPlayersInStation,
   isRackFull,
+  checkActionForScore,
 };
