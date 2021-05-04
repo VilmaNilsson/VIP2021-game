@@ -1,3 +1,5 @@
+console.log('hej')
+
 import {
   PlanTimer,
   PlanActions,
@@ -6,15 +8,20 @@ import {
 
 function PlanView(context) {
   const el = document.createElement('div');
+  el.setAttribute('class', 'planWrapper');
 
   el.innerHTML = `
-    <h1>Plan</h1>
-    <div id="timer"></div>
-    <h2>Actions</h2>
+    <div id='controlPanel'>
+      <div id='rocketBox'><div class='rocket'>Rocket</div><div class='rocket'>Rocket</div><div class='rocket'>Rocket</div><div class='rocket'>Rocket</div></div>
+      <div id="timer"></div>
+    </div>
     <div id="actions"></div>
-    <h3>Your actions</h3>
-    <div id="player-actions"></div>
-    <button id="quit">Quit</button>
+    <div id="player-actions">
+      <div class='chosenAction'>chosen Action</div>
+      <div class='chosenAction'>chosen Action</div>
+      <div class='chosenAction'>chosen Action</div>
+      <div class='chosenAction'>chosen Action</div>
+    </div>
   `;
 
   const timerEl = el.querySelector('#timer');
@@ -36,10 +43,7 @@ function PlanView(context) {
     el.navigate('/play');
   });
 
-  el.click('#quit', () => {
-    el.send('game:leave');
-    el.navigate('/');
-  });
+  
 
   return el;
 }

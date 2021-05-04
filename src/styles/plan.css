@@ -1,0 +1,62 @@
+.planWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: black;
+    height: 100vh;
+    width: 100vw;
+    color: white;
+}
+#controlPanel {
+    height: 10%;
+    width: 100%;
+}
+#rocketBox {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+.rocket {
+    border: 2px solid white;
+    border-radius: 10px;
+    padding: 2px;
+}
+#timer {
+    display: flex;
+    justify-content: center;
+}
+#actions {
+    border: 5px double white;
+    border-radius: 10px;
+    height: 70%;
+    width: 90vw;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+#player-actions {
+    height: 10%;
+    width: 90vw;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.chosenAction {
+    width: 22%;
+    border: 2px solid white;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+#controlPanel, #actions, #player-actions, #timer {
+    margin-top: 2%;
+}
