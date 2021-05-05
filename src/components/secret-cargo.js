@@ -1,7 +1,7 @@
 function SecretCargo(el, context) {
   const { game, player } = context.getState();
-  const secretCargoSlot = el.getElementById("secret-cargo-slot");
-  const secretCargoTimer = el.getElementById("secret-cargo-timer");
+  const secretCargoSlot = document.getElementById("secret-cargo-slot");
+  const secretCargoTimer = document.getElementById("secret-cargo-timer");
 
   // We need both the game and the player for this component
   if (!game || !player) {
@@ -28,7 +28,7 @@ function SecretCargo(el, context) {
       ? tokens[secretCargo.token].name
       : '-';
 
-    secretCargoSlot.src = token;
+    secretCargoSlot.src = `../../assets/${token}.png`;
   });
 
   el.click(() => {
@@ -79,7 +79,7 @@ function SecretCargo(el, context) {
       // If none are, stop our interval
       if (sec <= 0) {
         clearInterval(interval);
-        secretCargoSlot.src = token;
+        secretCargoSlot.src = `../../assets/${token}.png`;
       }
     }, 100);
   });

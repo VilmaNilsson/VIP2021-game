@@ -12,21 +12,17 @@
     border-radius: 10px;
 }
 
-.cargos-base > div {
-    width: 8vh;
-    height: 8vh;
-    border-radius: 50%;
-    border: 2px solid black;
-    box-sizing: border-box;
-    margin: 1.5vh;
+.cargos-base > img {
+    width: 17vw;
+    margin: 1vw;
 }
 
 #secret-cargo {
-    width: 15vh;
+    width: 25vw;
 }
 
-#secret-cargo > div {
-    margin-right: 0px;
+#secret-cargo > img {
+    margin-right: -1vw;
 }
 
 #secret-cargo-timer {

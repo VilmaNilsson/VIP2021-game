@@ -173,7 +173,7 @@ function createRacks(nrOfTeams, nrOfTokens) {
 // Create tokens.....for now it dosnt take any arguments
 function createTokens() {
   // Our tokes (for now) is just a simple array of { name: letter }
-  const tokens = 'ABCDEF'.split('').map((letter) => {
+  const tokens = 'ABCDEFGHIJ'.split('').map((letter) => {
     return { name: letter };
   });
   return tokens;
