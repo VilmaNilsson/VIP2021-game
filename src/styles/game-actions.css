@@ -1,0 +1,41 @@
+.game-action-bar {
+  height: 10vh;
+  width: 50%;
+
+  padding: 2%;
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4%;
+}
+
+.game-action-button {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+
+  background-color: var(--game-action-background-color);
+  color: var(--game-action-text-color);
+
+  border-radius: 10px;
+
+  font-size: var(--game-action-font-size);
+}
+
+.game-action-on-cooldown {
+  background-color: var(--game-action-on-cooldown-color);
+}
+
+.game-action-selected {
+  background-color: var(--game-action-selected-color);
+}

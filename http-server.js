@@ -13,6 +13,7 @@ const routes = require('./routes');
 // Middleware
 app.use(minify());
 app.use(express.static('dist'));
+app.use('/assets', express.static('assets'));
 app.use(morgan('combined'));
 
 // `routes` is an object of { endpoint: router, ... }
