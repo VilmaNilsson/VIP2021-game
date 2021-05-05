@@ -24,7 +24,19 @@
 .rocket {
     border: 2px solid white;
     border-radius: 10px;
-    padding: 2px;
+    padding: 2px 10px;
+}
+.one {
+ background-color: lightskyblue;
+}
+.two {
+    background-color: hotpink;
+}
+.three {
+    background-color: purple;
+}
+.four {
+    background-color: rgb(28, 106, 224);
 }
 #timer {
     display: flex;
@@ -35,6 +47,30 @@
     border-radius: 10px;
     height: 70%;
     width: 90vw;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(8, 40vw);
+    grid-gap: 5px;
+    overflow-y: scroll;
+    padding: 5px;
+}
+.availableAction {
+    background-color: yellow;
+    border: 2px solid white;
+    width: 43vw;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    text-align-last: left;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     -ms-border-radius: 10px;
@@ -56,7 +92,12 @@
     align-items: center;
     text-align: center;
     justify-content: center;
+    background-color: grey;
 }
-#controlPanel, #actions, #player-actions, #timer {
+
+#controlPanel, #actions, #player-actions {
     margin-top: 2%;
+}
+#timer {
+    margin-top: 5%;
 }
