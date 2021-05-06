@@ -23,11 +23,11 @@ function PlayView(context) {
     <h2>Cargo</h2>
     <div id="cargos_all">
       <div class="cargos-base" id="cargo">
-        <img id="cargo-slot">
+        <img id="cargo-slot" src="../../assets/A.png">
       </div>
       <div class="cargos-base" id="secret-cargo">
-        <img id="secret-cargo-slot">
-        <p id="secret-cargo-timer">02:56</p>
+        <img id="secret-cargo-slot" src="../../assets/B.png">
+        <p id="secret-cargo-timer"><span>0</span>:<span>0</span></p>
       </div>
     </div>
     <h3>Your actions</h3>
@@ -91,7 +91,6 @@ function PlayView(context) {
   // el.click('#menu', () => {
   //   console.log('You pressed the menu button');
   // });
-
   return el;
 }
 

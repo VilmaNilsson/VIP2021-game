@@ -59,6 +59,7 @@ function SecretCargo(el, context) {
     const { start, duration } = e.detail;
     // The end time (ie. 'that many seconds far ahead')
     const end = start + duration;
+    timerCaller();
 
     const interval = context.setInterval(() => {
       const { game, player } = context.getState();
@@ -84,6 +85,37 @@ function SecretCargo(el, context) {
     }, 100);
   });
 
+  function timerCaller() {
+    const minSpan = document.querySelector("div > span:first-of-type");
+    minSpan.innerHTML = "02";
+
+    const secSpan = document.querySelector("div > span:last-of-type");
+    secSpan.innerHTML = "00";
+
+    let secID = setInterval(() => {
+        timeSec();
+    }, 500);
+
+    setTimeout(() => {
+        clearInterval(secID);
+    }, 60500);
+  }
+
+  function timeSec() {
+      const secSpan = document.querySelector("div > span:last-of-type");
+      let secVal = secSpan.innerHTML;
+
+      if (secVal == '00' || secVal == '0') {
+          const minSpan = document.querySelector("div > span:first-of-type");
+          let minVal = minSpan.innerHTML;
+          minVal--;
+          minSpan.innerHTML = ('0' + minVal).slice(-2);
+          secSpan.innerHTML = '59';
+      } else {
+          secVal--;
+          secSpan.innerHTML = ('0' + secVal).slice(-2);
+      }
+  }
   return el;
 }
 
