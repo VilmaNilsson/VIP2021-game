@@ -10,6 +10,8 @@ function SecretCargo(el, context) {
 
   const { tokens } = game;
   const { secretCargo } = player;
+  const {teamNr} = player;
+  secretCargoSlot.style.backgroundColor = `var(--team-color-${teamNr})`;
 
   const token = tokens[secretCargo.token]
     ? tokens[secretCargo.token].name
@@ -75,7 +77,6 @@ function SecretCargo(el, context) {
       const now = Date.now();
       // Calculate how many seconds are left
       const sec = ((end - now) / 1000).toFixed(1);
-      secretCargoTimer.textContent = sec;
 
       // If none are, stop our interval
       if (sec <= 0) {

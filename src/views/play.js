@@ -23,11 +23,19 @@ function PlayView(context) {
     <h2>Cargo</h2>
     <div id="cargos_all">
       <div class="cargos-base" id="cargo">
+<<<<<<< Updated upstream
         <img id="cargo-slot" src="../../assets/A.png">
       </div>
       <div class="cargos-base" id="secret-cargo">
         <img id="secret-cargo-slot" src="../../assets/B.png">
         <p id="secret-cargo-timer"><span>0</span>:<span>0</span></p>
+=======
+        <img id="cargo-slot" src="../../assets/C.png">
+      </div>
+      <div class="cargos-base" id="secret-cargo">
+        <img id="secret-cargo-slot" src="../../assets/A.png">
+        <p id="secret-cargo-timer">02:56</p>
+>>>>>>> Stashed changes
       </div>
     </div>
     <h3>Your actions</h3>

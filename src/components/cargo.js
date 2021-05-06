@@ -10,6 +10,8 @@ function Cargo(el, context) {
   const { tokens } = game;
   const { cargo } = player;
   const token = tokens[cargo.token] ? tokens[cargo.token].name : '-';
+  const {teamNr} = player;
+  secretCargoSlot.style.backgroundColor = `var(--team-color-${teamNr})`;
 
   cargoSlot.src = `../../assets/${token}.png`;
 
