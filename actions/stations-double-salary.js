@@ -5,18 +5,20 @@ function doubleSalary(context) {
   // Some error-handling
   // We're not in a game
   if (game === null) {
-    context.send('spell:stations:double-salary:fail', { errorCode: 0 });
+    context.send('action:stations:double-points:fail', { errorCode: 0 });
     return false;
   }
   // We're not in the play phase
   if (game.properties.phase.type !== 2) {
-    context.send('spell:stations:double-salary:fail', { errorCode: 1 });
+    context.send('action:stations:double-points:fail', { errorCode: 1 });
     return false;
   }
 
+  const POINT_MULTIPLIER = 2;
+
   // Loop through all stations in the gamestate and change their salaryMultiplier
   game.stations.forEach((station) => {
-    station.properties.salaryMultiplier = 2;
+    station.properties.pointsMultiplier = POINT_MULTIPLIER;
   });
 
   // 30 seconds
@@ -27,16 +29,16 @@ function doubleSalary(context) {
   context.updateGameState(game);
 
   // Broadcast the event to everyone
-  context.broadcastToGame('stations:double-salary', { start, duration });
+  context.broadcastToGame('action:stations:double-points', { start, duration });
 
   // Reset all multipliers after the next salaries have been given
   context.setTimeout(() => {
-    const game = context.getGameState();
     game.stations.forEach((station) => {
-      station.properties.salaryMultiplier = 1;
+      const DEFAULT_MUILTIPLER = station.defaults.pointsMultiplier;
+      station.properties.salaryMultiplier = DEFAULT_MUILTIPLER;
     });
     context.updateGameState(game);
-    context.broadcastToGame('stations:double-salary:faded', {});
+    context.broadcastToGame('action:stations:double-points:faded', {});
   }, duration);
 
   return true;

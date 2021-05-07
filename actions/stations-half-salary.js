@@ -12,7 +12,7 @@ function halfSalaryAllStations(context) {
   const start = Date.now();
 
   context.updateGameState(game);
-  context.broadcastToGame('stations:half-points', { start, duration });
+  context.broadcastToGame('action:stations:half-points', { start, duration });
 
   context.setTimeout(() => {
     const game = context.getGameState();
@@ -23,7 +23,7 @@ function halfSalaryAllStations(context) {
     });
 
     context.updateGameState(game);
-    context.broadcastToGame('stations:half-points:faded', {});
+    context.broadcastToGame('action:stations:half-points:faded', {});
   }, duration);
 
   return true;
