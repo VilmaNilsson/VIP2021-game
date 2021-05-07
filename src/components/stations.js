@@ -100,7 +100,7 @@ function Stations(el, context) {
         const now = Date.now();
         const sec = ((end - now) / 1000).toFixed(1);
 
-        div.textContent = `${station.name} (Double)`;
+        div.textContent = `${station.name} (Double ${sec}s)`;
 
         if (sec <= 0) {
           clearInterval(interval);
@@ -124,7 +124,7 @@ function Stations(el, context) {
         const now = Date.now();
         const sec = ((end - now) / 1000).toFixed(1);
 
-        div.textContent = `${station.name} (Half)`;
+        div.textContent = `${station.name} (Half ${sec}s)`;
 
         if (sec <= 0) {
           clearInterval(interval);
@@ -151,7 +151,7 @@ function Stations(el, context) {
         const divs = el.nodeChilds;
 
         console.log(divs);
-        div.textContent = `${station.name} (Double)`;
+        div.textContent = `${station.name} (Double ${sec}s)`;
 
         if (sec <= 0) {
           clearInterval(interval);
@@ -175,7 +175,7 @@ function Stations(el, context) {
         const now = Date.now();
         const sec = ((end - now) / 1000).toFixed(1);
 
-        div.textContent = `${station.name} (Half)`;
+        div.textContent = `${station.name} (Half ${sec}s)`;
 
         if (sec <= 0) {
           clearInterval(interval);
