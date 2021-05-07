@@ -21,12 +21,13 @@ function doubleSalary(context) {
 
   // 30 seconds
   const duration = 30 * 1000;
+  const start = Date.now();
 
   // Update the gamestate
   context.updateGameState(game);
 
   // Broadcast the event to everyone
-  context.broadcastToGame('stations:double-salary', { duration });
+  context.broadcastToGame('stations:double-salary', { start, duration });
 
   // Reset all multipliers after the next salaries have been given
   context.setTimeout(() => {
@@ -42,5 +43,5 @@ function doubleSalary(context) {
 }
 
 module.exports = {
-  'spell:stations:double-salary': doubleSalary,
+  'action:stations:double-points': doubleSalary,
 };

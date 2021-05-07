@@ -1,31 +1,34 @@
 function halfSalaryAllStations(context) {
   const game = context.getGameState();
 
+  const HALF_MULTIPLIER = 0.5;
+
   game.stations.forEach((station) => {
-    station.properties.salaryMultiplier = 0.5;
+    station.properties.pointsMultiplier *= HALF_MULTIPLIER;
   });
 
   // 30 seconds
   const duration = 30 * 1000;
+  const start = Date.now();
 
   context.updateGameState(game);
-  context.broadcastToGame('stations:half-salary', { duration });
+  context.broadcastToGame('stations:half-points', { start, duration });
 
   context.setTimeout(() => {
     const game = context.getGameState();
 
     game.stations.forEach((station) => {
-      const defaultMultiplier = station.defaults.salaryMultiplier;
-      station.properties.salaryMultiplier = defaultMultiplier;
+      const defaultMultiplier = station.defaults.pointsMultiplier;
+      station.properties.pointsMultiplier = defaultMultiplier;
     });
 
     context.updateGameState(game);
-    context.broadcastToGame('stations:half-salary:faded', {});
+    context.broadcastToGame('stations:half-points:faded', {});
   }, duration);
 
   return true;
 }
 
 module.exports = {
-  'spell:stations:half-salary': halfSalaryAllStations,
+  'action:stations:half-points': halfSalaryAllStations,
 };
