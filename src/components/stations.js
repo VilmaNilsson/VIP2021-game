@@ -137,10 +137,6 @@ function Stations(el, context) {
     div.subscribe('action:stations:double-points', (e) => {
       const payload = e.detail;
 
-      if (payload.station !== i) {
-        return;
-      }
-
       const { start, duration } = payload;
 
       const end = start + duration;
@@ -149,9 +145,6 @@ function Stations(el, context) {
         const now = Date.now();
         const sec = ((end - now) / 1000).toFixed(1);
 
-        const divs = el.nodeChilds;
-
-        console.log(divs);
         div.textContent = `${station.name} (Double ${sec}s)`;
 
         if (sec <= 0) {
@@ -163,10 +156,6 @@ function Stations(el, context) {
 
     div.subscribe('action:stations:half-points', (e) => {
       const payload = e.detail;
-
-      if (payload.station !== i) {
-        return;
-      }
 
       const { start, duration } = payload;
 
