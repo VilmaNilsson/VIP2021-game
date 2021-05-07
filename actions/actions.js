@@ -27,6 +27,13 @@ const actions = [
     target: 'stations',
     cooldown: 2 * 60,
   },
+  {
+    event: 'action:teams:swap-rack',
+    name: 'Swap Racks',
+    desc: `Swap your team's rack of bins with team's rack.`,
+    target: 'teams',
+    cooldown: 3 * 60,
+  },
 ];
 
 module.exports = actions;

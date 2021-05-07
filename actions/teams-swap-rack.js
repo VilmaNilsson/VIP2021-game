@@ -13,17 +13,17 @@ function swapTeamRack(context, payload) {
   // Some error-checking
   // We're not in a game
   if (game === null) {
-    context.send('spell:rack:swap:fail', { errorCode: 0 });
+    context.send('action:teams:swap-rack:fail', { errorCode: 0 });
     return false;
   }
   // We're not in the play phase
   if (game.properties.phase.type !== 2) {
-    context.send('spell:rack:swap:fail', { errorCode: 1 });
+    context.send('action:teams:swap-rack:fail', { errorCode: 1 });
     return false;
   }
   // They tried targeting an unknown station
   if (game.stations[station] === undefined) {
-    context.send('spell:rack:swap:fail', { errorCode: 2 });
+    context.send('action:teams:swap-rack:fail', { errorCode: 2 });
     return false;
   }
 
@@ -60,5 +60,5 @@ function swapTeamRack(context, payload) {
 }
 
 module.exports = {
-  'spell:rack:swap': swapTeamRack,
+  'action:teams:swap-rack': swapTeamRack,
 };

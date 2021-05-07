@@ -128,7 +128,8 @@ function Stations(el, context) {
     // When they log into another station lets clear the bg
     div.subscribe('station:login:done', (e) => {
       const payload = e.detail;
-
+      player.inStation = payload;
+      context.setState({ player });
       if (payload.station !== i) {
         div.style.background = 'white';
       }
