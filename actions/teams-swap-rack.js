@@ -53,7 +53,6 @@ function swapTeamRack(context, payload) {
 
   // Broadcast the event (to everyone within a station)
   const playerIds = utils.getPlayersInStation(game, station);
-  const { racks } = game.stations[station].racks;
   context.broadcastTo(playerIds, 'station:rack', { team: teamOne, rack: opponentRack });
   context.broadcastTo(playerIds, 'station:rack', { team: teamTwo, rack: tempRack });
 

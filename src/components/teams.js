@@ -34,9 +34,9 @@ function Teams(el, context) {
 
     div.click(() => {
       const { action } = context.getState();
-      if(action.event === 'action:teams:swap-rack' && action && selectable) {
+      if (action.event === 'action:teams:swap-rack' && action && selectable) {
         const station = player.inStation.station;
-        div.send('player:action', {...action, team: i, station});
+        div.send('player:action', { ...action, team: i, station });
       } else if (action && selectable) {
         setSelectable(false);
         div.send('player:action', { ...action, team: i });
