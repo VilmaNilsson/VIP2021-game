@@ -28,6 +28,7 @@ function Stations(el, context) {
 
     div.click(() => {
       const { action } = context.getState();
+      console.log(action);
 
       // If our client state contains a action and our stations can be selected
       if (action && selectable) {
