@@ -133,6 +133,57 @@ function Stations(el, context) {
       }, 100);
     });
 
+    div.subscribe('action:stations:double-points', (e) => {
+      const payload = e.detail;
+
+      if (payload.station !== i) {
+        return;
+      }
+
+      const { start, duration } = payload;
+
+      const end = start + duration;
+
+      const interval = context.setInterval(() => {
+        const now = Date.now();
+        const sec = ((end - now) / 1000).toFixed(1);
+
+        const divs = el.nodeChilds;
+
+        console.log(divs);
+        div.textContent = `${station.name} (Double ${sec}s)`;
+
+        if (sec <= 0) {
+          clearInterval(interval);
+          div.textContent = station.name;
+        }
+      }, 100);
+    });
+
+    div.subscribe('action:stations:half-points', (e) => {
+      const payload = e.detail;
+
+      if (payload.station !== i) {
+        return;
+      }
+
+      const { start, duration } = payload;
+
+      const end = start + duration;
+
+      const interval = context.setInterval(() => {
+        const now = Date.now();
+        const sec = ((end - now) / 1000).toFixed(1);
+
+        div.textContent = `${station.name} (Half ${sec}s)`;
+
+        if (sec <= 0) {
+          clearInterval(interval);
+          div.textContent = station.name;
+        }
+      }, 100);
+    });
+
     // We need to store our login interval outside because they can click on
     // another station _while_ logging into another, this makes it resettable
     let loginInterval = null;

@@ -1,6 +1,7 @@
 function doubleSalary(context) {
   // First we'll get the game state
   const game = context.getGameState();
+  console.log('hejsansaldmas');
 
   // Some error-handling
   // We're not in a game
@@ -35,7 +36,7 @@ function doubleSalary(context) {
   context.setTimeout(() => {
     game.stations.forEach((station) => {
       const DEFAULT_MUILTIPLER = station.defaults.pointsMultiplier;
-      station.properties.salaryMultiplier = DEFAULT_MUILTIPLER;
+      station.properties.pointsMultiplier = DEFAULT_MUILTIPLER;
     });
     context.updateGameState(game);
     context.broadcastToGame('action:stations:double-points:faded', {});
