@@ -50,7 +50,7 @@ const actions = [
   },
   {
     event: 'action:stations:half-points',
-    name: 'Half All Pooints',
+    name: 'Half All Points',
     desc: 'Halves the amount of points handed out by all Stations. It only works for the next points.',
     target: 'stations',
     cooldown: 2 * 60,
