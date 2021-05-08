@@ -1,7 +1,7 @@
 function SecretCargo(el, context) {
   const { game, player } = context.getState();
-  const secretCargoSlot = document.getElementById("secret-cargo-slot");
-  const secretCargoTimer = document.getElementById("secret-cargo-timer");
+  const secretCargoObj = document.getElementById('secret-cargo');
+  const secretCargoSlot = document.getElementById('secret-cargo-slot');
 
   // We need both the game and the player for this component
   if (!game || !player) {
@@ -10,8 +10,11 @@ function SecretCargo(el, context) {
 
   const { tokens } = game;
   const { secretCargo } = player;
+
+  // Get the team-number of the player's team and use it to set the
+  // background color of the element to the team's color
   const {teamNr} = player;
-  secretCargoSlot.style.backgroundColor = `var(--team-color-${teamNr})`;
+  secretCargoObj.style.backgroundColor = `var(--team-color-${teamNr})`;
 
   const token = tokens[secretCargo.token]
     ? tokens[secretCargo.token].name
@@ -87,11 +90,11 @@ function SecretCargo(el, context) {
   });
 
   function timerCaller() {
-    const minSpan = document.querySelector("div > span:first-of-type");
-    minSpan.innerHTML = "02";
+    const minSpan = document.querySelector('#secret-cargo-timer > span:first-of-type');
+    minSpan.innerHTML = '02';
 
-    const secSpan = document.querySelector("div > span:last-of-type");
-    secSpan.innerHTML = "00";
+    const secSpan = document.querySelector('#secret-cargo-timer > span:last-of-type');
+    secSpan.innerHTML = '00';
 
     let secID = setInterval(() => {
         timeSec();
@@ -103,11 +106,11 @@ function SecretCargo(el, context) {
   }
 
   function timeSec() {
-      const secSpan = document.querySelector("div > span:last-of-type");
+      const secSpan = document.querySelector('#secret-cargo-timer > span:last-of-type');
       let secVal = secSpan.innerHTML;
 
       if (secVal == '00' || secVal == '0') {
-          const minSpan = document.querySelector("div > span:first-of-type");
+          const minSpan = document.querySelector('#secret-cargo-timer > span:first-of-type');
           let minVal = minSpan.innerHTML;
           minVal--;
           minSpan.innerHTML = ('0' + minVal).slice(-2);

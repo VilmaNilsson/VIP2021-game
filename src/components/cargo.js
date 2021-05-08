@@ -1,6 +1,7 @@
 function Cargo(el, context) {
   const { game, player } = context.getState();
-  const cargoSlot = document.getElementById("cargo-slot");
+  const cargoObj = document.getElementById('cargo');
+  const cargoSlot = document.getElementById('cargo-slot');
 
   // We need both the game and the player for this component
   if (!game || !player) {
@@ -10,8 +11,11 @@ function Cargo(el, context) {
   const { tokens } = game;
   const { cargo } = player;
   const token = tokens[cargo.token] ? tokens[cargo.token].name : '-';
+
+  // Get the team-number of the player's team and use it to set the
+  // background color of the element to the team's color
   const {teamNr} = player;
-  secretCargoSlot.style.backgroundColor = `var(--team-color-${teamNr})`;
+  cargoObj.style.backgroundColor = `var(--team-color-${teamNr})`;
 
   cargoSlot.src = `../../assets/${token}.png`;
 
