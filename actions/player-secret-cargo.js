@@ -1,6 +1,6 @@
 function activateSecretCargo(context) {
   const start = Date.now();
-  const duration = 120 * 1000;
+  const duration = 121 * 1000;
   const playerId = context.id();
   const game = context.getGameState();
   const player = game.players[playerId];

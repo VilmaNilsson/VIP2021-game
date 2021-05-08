@@ -17,6 +17,14 @@
     margin: 1vw;
 }
 
+.inactive {
+    opacity: .5;
+}
+
+.active {
+    opacity: 1;
+}
+
 #secret-cargo {
     width: 25vw;
 }
