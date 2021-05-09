@@ -14,13 +14,13 @@ const actions = require('./actions');
 // const stationsDoubleSalary = require('./stations-double-salary');
 // const stationsHalfSalary = require('./stations-half-salary');
 // const stationLoginTime = require('./station-increased-login');
-// const teamsSwapRack = require('./teams-swap-rack');
 
 // NOTE: These are working
 const stationLock = require('./station-lock');
 const playerSecretCargo = require('./player-secret-cargo');
 const teamsLoginIncreased = require('./teams-increased-login');
 const stationLoginIncreased = require('./station-increased-login');
+const teamsSwapRack = require('./teams-swap-rack');
 const stationDoublePoints = require('./station-double-salary');
 const stationHalfPoints = require('./station-half-salary');
 const stationsDoublePoints = require('./stations-double-salary');
@@ -32,6 +32,7 @@ const actionHandlers = {
   stationLock,
   teamsLoginIncreased,
   stationLoginIncreased,
+  teamsSwapRack,
   stationDoublePoints,
   stationHalfPoints,
   stationsDoublePoints,
