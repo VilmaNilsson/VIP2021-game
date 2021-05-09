@@ -12,10 +12,9 @@ function PlayView(context) {
   const el = document.createElement('div');
 
   el.innerHTML = `
+    <div id="teams"></div>
     <h1>Play</h1>
     <div id="timer"></div>
-    <h2>Teams</h2>
-    <div id="teams"></div>
     <h2>Stations</h2>
     <div id="stations"></div>
     <h2>Racks</h2>

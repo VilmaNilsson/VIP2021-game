@@ -4,18 +4,35 @@ function Teams(el, context) {
   if (!game) {
     return el;
   }
+  
+
 
   game.teams.forEach((team, i) => {
     const div = document.createElement('div');
+    const dtext = document.createElement('div'); 	
 
-    div.textContent = `${team.name} (${team.score})`;
+    dtext.textContent = ` ${team.score}`;
+	
+	dtext.className = "text-rocket";
+
+	
+	if(i==0)
+		div.className = "rocket-team1";
+	if(i==1)
+		div.className = "rocket-team2";
+	if(i==2)
+		div.className = "rocket-team3";
+	if(i==3)
+		div.className = "rocket-team4";
 
     // The game-score event gives us the latest scores, no need to calculate
     // anything
     div.subscribe('game:score', (e) => {
       const { score } = e.detail;
       const newScore = score[i];
-      div.textContent = `${team.name} (${newScore})`;
+	  
+	  dtext.textContent = `${newScore}`;
+	  
     });
     // When a player selects a station for a action
     let selectable = false;
@@ -46,8 +63,11 @@ function Teams(el, context) {
     div.subscribe('player:action:cooldown', () => setSelectable(false));
     div.subscribe('player:action:cancel', () => setSelectable(false));
     div.subscribe('player:action:fail', () => setSelectable(false));
+	
+	div.append(dtext);
 
     el.append(div);
+	
   });
 
   return el;

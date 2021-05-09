@@ -1,0 +1,78 @@
+.rocket-team1 {
+	background-image: url('../../assets/rocket.svg');
+	background-repeat: no-repeat;
+	background-position: top;
+	text-align: center;
+	
+
+	
+	
+	
+	width: 20%;
+	height: 20%;
+	
+	background-size:100%;
+	
+	position: absolute;
+	margin-top: 0%;
+	
+	
+	
+}
+
+.text-rocket{
+	font-size: 120%;
+	margin-top:9%;
+	color:red;
+	font-family: Fantasy;
+	
+	font-size: 200%;
+}
+
+
+
+.rocket-team2 {
+	background-image: url('../../assets/rocket.svg');
+	background-repeat: no-repeat;
+	background-position: top;
+	text-align: center;
+	
+	width: 20%;
+	height: 20%;
+	
+	background-size:100%;
+	
+	position: absolute;
+	margin-top: 0%;
+	margin-left: 25%;
+}
+.rocket-team3 {
+	background-image: url('../../assets/rocket.svg');
+	background-repeat: no-repeat;
+	background-position: top;
+	text-align: center;
+	
+	width: 20%;
+	height: 20%;
+	
+	background-size:100%;
+	
+	position: absolute;
+	margin-top: 0%;
+	margin-left: 50%;
+}
+.rocket-team4 {
+	background-image: url('../../assets/rocket.svg');
+	background-repeat: no-repeat;
+	background-position: top;
+	text-align: center;
+	
+	width: 20%;
+	height: 20%;
+	
+	background-size:100%;
+	
+	position: absolute;
+	margin-top: 0%;
+	margin-left: 75%;
+}
