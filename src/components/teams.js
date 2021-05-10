@@ -5,16 +5,17 @@ function Teams(el, context) {
     return el;
   }
   
-
+  const grille = document.createElement('div');
+  grille.className = "grille";
 
   game.teams.forEach((team, i) => {
     const div = document.createElement('div');
-    const dtext = document.createElement('div'); 	
+    //const dtext = document.createElement('div'); 	
 
-    dtext.textContent = ` ${team.score}`;
+    //dtext.textContent = ` ${team.score}`;
 	
-	dtext.className = "text-rocket";
-
+	//dtext.className = "text-rocket";
+	div.textContent = ` ${team.score}`;
 	
 	if(i==0)
 		div.className = "rocket-team1";
@@ -31,7 +32,8 @@ function Teams(el, context) {
       const { score } = e.detail;
       const newScore = score[i];
 	  
-	  dtext.textContent = `${newScore}`;
+	  //dtext.textContent = `${newScore}`;
+	  div.textContent = `${newScore}`;
 	  
     });
     // When a player selects a station for a action
@@ -64,12 +66,14 @@ function Teams(el, context) {
     div.subscribe('player:action:cancel', () => setSelectable(false));
     div.subscribe('player:action:fail', () => setSelectable(false));
 	
-	div.append(dtext);
-
-    el.append(div);
+	//div.appendChild(dtext);
+	grille.appendChild(div)
+	
+   
 	
   });
-
+  
+  el.append(grille);
   return el;
 }
 

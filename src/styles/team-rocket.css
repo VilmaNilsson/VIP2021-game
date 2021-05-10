@@ -1,78 +1,149 @@
+.grille{
+	
+	display:grid;
+	
+	grid-template-columns: auto auto auto auto;
+	
+	align-items: center;
+	margin-top: 3%;
+	
+	
+	
+	
+
+}
+
 .rocket-team1 {
 	background-image: url('../../assets/rocket.svg');
 	background-repeat: no-repeat;
-	background-position: top;
-	text-align: center;
+	background-position: center;
 	
+	text-align:center;
+	justify-items: center;
+	
+	align-items: center;
+	
+	color:red;
+	font-family: Fantasy;
+	
+	height: 3.1vh;
+	
+	background-size:80%;
+	grid-column: auto; 
+   grid-row: auto;
+	
+	
+	
+	margin-top:1%;
 
-	
-	
-	
-	width: 20%;
-	height: 20%;
-	
-	background-size:100%;
-	
-	position: absolute;
-	margin-top: 0%;
-	
-	
 	
 }
 
 .text-rocket{
-	font-size: 120%;
-	margin-top:9%;
+	
+
+	text-align: center;
+	
 	color:red;
 	font-family: Fantasy;
 	
-	font-size: 200%;
+	font-size:200%;
+
+	height: 150%;
+	width:100%;
+
+	left:12%;
+	top:2vw;
+	
+	
+	
+	
 }
 
 
 
 .rocket-team2 {
+	
 	background-image: url('../../assets/rocket.svg');
 	background-repeat: no-repeat;
-	background-position: top;
+	background-position: center;
 	text-align: center;
 	
-	width: 20%;
-	height: 20%;
+	display: inline-block;
 	
-	background-size:100%;
 	
-	position: absolute;
-	margin-top: 0%;
-	margin-left: 25%;
+	background-size:80%;
+	
+	grid-column: auto; 
+  grid-row: auto;
+	margin-top:2%;
+	
+	text-align:center;
+	justify-items: center;
+	
+	align-items: center;
+	
+	color:red;
+	font-family: Fantasy;
+	
+	height: 3.1vh;
+	
+	
 }
 .rocket-team3 {
 	background-image: url('../../assets/rocket.svg');
 	background-repeat: no-repeat;
-	background-position: top;
+	background-position: center;
 	text-align: center;
 	
-	width: 20%;
-	height: 20%;
 	
-	background-size:100%;
 	
-	position: absolute;
-	margin-top: 0%;
-	margin-left: 50%;
+	background-size:80%;
+	
+	grid-column: auto; 
+  grid-row: auto;
+	
+	margin-top:4%;
+	
+	text-align: center;
+	
+	text-align:center;
+	justify-items: center;
+	
+	align-items: center;
+	
+	color:red;
+	font-family: Fantasy;
+	
+	height: 3.1vh;
+	
+	
+	
+	
 }
 .rocket-team4 {
 	background-image: url('../../assets/rocket.svg');
 	background-repeat: no-repeat;
-	background-position: top;
+	background-position:center;
 	text-align: center;
 	
-	width: 20%;
-	height: 20%;
 	
-	background-size:100%;
 	
-	position: absolute;
-	margin-top: 0%;
-	margin-left: 75%;
+	background-size:80%;
+	
+	grid-column: auto; 
+  grid-row: auto;
+	
+	margin-top:4%;
+	
+	text-align:center;
+	justify-items: center;
+	
+	align-items: center;
+	
+	color:red;
+	font-family: Fantasy;
+	
+	height:3.1vh;
+	
 }
