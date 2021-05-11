@@ -34,6 +34,7 @@ const actions = [
     target: 'teams',
     cooldown: 3 * 60,
   },
+  {
     event: 'action:station:double-points',
     name: 'Double Points Station',
     desc: 'Doubles the amount of points handed out by a given Station. It only works for the next points.',
