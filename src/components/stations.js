@@ -1,5 +1,6 @@
 function Stations(el, context) {
   const { game, player } = context.getState();
+  let lockInterval;
 
   if (!game || !player) {
     return el;
@@ -71,7 +72,7 @@ function Stations(el, context) {
       // The end time (ie. 'that many seconds far ahead')
       const end = start + duration;
 
-      const interval = context.setInterval(() => {
+      lockInterval = context.setInterval(() => {
         // We take a timestamp ('now' in seconds)
         const now = Date.now();
         // Calculate how many seconds are left
@@ -80,10 +81,15 @@ function Stations(el, context) {
 
         // If none are, stop our interval
         if (sec <= 0) {
-          clearInterval(interval);
+          clearInterval(lockInterval);
           div.textContent = station.name;
         }
       }, 100);
+    });
+
+    div.subscribe('action:station:unlocked', () => {
+      clearInterval(lockInterval);
+      div.textContent = station.name;
     });
 
     div.subscribe('action:station:double-points', (e) => {
