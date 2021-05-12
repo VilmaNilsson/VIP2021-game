@@ -38,5 +38,6 @@
     transform: rotate(90deg);
     font-family: var(--font-primary);
     margin: 0px;
+    min-width: 40px;
     text-align: center;
 }

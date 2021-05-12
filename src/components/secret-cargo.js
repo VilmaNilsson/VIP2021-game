@@ -57,7 +57,7 @@ function SecretCargo(el, context) {
       ? tokens[secretCargo.token].name
       : '-';
 
-    secretCargoSlot.src = `../../assets/${token}.png`;
+    secretCargoSlot.src = `assets/${token}.png`;
   });
 
   el.click(() => {
@@ -110,7 +110,7 @@ function SecretCargo(el, context) {
       // If none are, stop our interval
       if (sec <= 0) {
         clearInterval(interval);
-        secretCargoSlot.src = `../../assets/${token}.png`;
+        secretCargoSlot.src = `assets/${token}.png`;
       }
     }, 100);
 
