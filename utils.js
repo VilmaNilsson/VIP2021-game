@@ -363,4 +363,5 @@ module.exports = {
   getLoginTime,
   getTeamScores,
   getPlayersInStation,
+  getPlayersInTeam,
 };
