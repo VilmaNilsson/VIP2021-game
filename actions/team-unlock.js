@@ -5,7 +5,7 @@ function unlockTeam(context, payload) {
   // First we'll get the game state
   const game = context.getGameState();
 
-  // In this spell we'll receive the team id (from frontend) (the player to be unlocked)
+  // In this spell we'll receive the team id (from frontend) (the team to be unlocked)
   const teamId = payload.team;
   const team = game.teams[teamId];
 

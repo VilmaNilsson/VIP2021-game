@@ -10,13 +10,13 @@ function lockTeam(context, payload) {
   const duration = 20;
   const team = game.teams[teamId];
 
-  // They tried targeting an unknown player
+  // They tried targeting an unknown team
   if (teamId === undefined) {
     context.send('action:teams:lock:fail', { errorCode: 0 });
     return false;
   }
 
-  // They tried targeting a player that is already locked
+  // They tried targeting a team that is already locked
   if (game.teams[teamId].properties.locked === true) {
     context.send('action:teams:lock:fail', { errorCode: 1 });
     return false;
