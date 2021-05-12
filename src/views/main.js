@@ -2,11 +2,13 @@ import Router from '../router';
 
 function MainView() {
   const el = document.createElement('div');
+  el.id = 'mainWrapper';
 
   el.innerHTML = `
-    <h1>Main menu</h1>
-    <button id="create">Create</button>
-    <button id="join">Join</button>
+    <img id="login-logo" src="/assets/logo.svg" alt="LOGO">
+    <h2>Are you the game master or a player?</h2>
+    <button id="create">Create Game</button>
+    <button id="join">Join Game</button>
   `;
 
   el.click('#create', () => el.navigate('/create'));
