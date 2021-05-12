@@ -10,38 +10,41 @@ function PlanView(context) {
 
   el.innerHTML = `
     <div id='controlPanel'>
-      <div id='rocketBox'><div class='rocket one'>000</div><div class='rocket two'>000</div><div class='rocket three'>000</div><div class='rocket four'>000</div></div>
+      <div id='rocketBox'>
+        <div class='rocketDiv lBlue'></div>
+        <div class='rocketDiv pink'></div>
+        <div class='rocketDiv purple'></div>
+        <div class='rocketDiv dBlue'></div>
+      </div>
       <div id="timer"></div>
     </div>
-    <div id="actions">
-      <div class='availableAction'><div class='actionName'>Secret</div><br><div class='actionCooldown'>Cooldown 30s</div><br><div class='actionInfo'>Blablalbblbla</div></div>
-      <div class='availableAction'> - </div>
-      <div class='availableAction'> - </div>
-      <div class='availableAction'> - </div>
-      <div class='availableAction'> - </div>
-      <div class='availableAction'> - </div>
-      <div class='availableAction'> - </div>
-      <div class='availableAction'> - </div>
-    </div>
-    <div id="player-actions">
-      <div class='chosenAction'> - </div>
-      <div class='chosenAction'> - </div>
-      <div class='chosenAction'> - </div>
-      <div class='chosenAction'> - </div>
-    </div>
+    <div id="actions"></div>
+    <div id="player-actions"></div>
   `;
+
+  const { player } = context.getState();
+  console.log(player.team);
+
+  // Get the rocket divs
+  const controlPanel = el.querySelector('#controlPanel');
+  const rocketBox = controlPanel.querySelector('#rocketBox');
+  const lBlue = rocketBox.querySelector('.lBlue');
+  const pink = rocketBox.querySelector('.pink');
+  const purple = rocketBox.querySelector('.purple');
+  const dBlue = rocketBox.querySelector('.dBlue');
+  if (player.team === 0) {
+    lBlue.classList.add('yourTeam');
+  } else if (player.team === 1) {
+    pink.classList.add('yourTeam');
+  } else if (player.team === 2) {
+    purple.classList.add('yourTeam');
+  } else if (player.team === 3) {
+    dBlue.classList.add('yourTeam');
+  }
 
   const timerEl = el.querySelector('#timer');
   const actionsEl = el.querySelector('#actions');
   const playerActionsEl = el.querySelector('#player-actions');
-  const availableAction = el.querySelectorAll('.availableAction');
-  console.log(availableAction);
-  availableAction.forEach(function(thisAction){
-    console.log(thisAction)
-    thisAction.addEventListener('click', function(){
-      console.log(this.childNodes[0].innerHTML)
-    })
-  })
 
   // NOTE: we should probably create a `PlanTimer` if their looks differ
   PlanTimer(timerEl, context);
@@ -57,8 +60,6 @@ function PlanView(context) {
   el.subscribe('game:phase', () => {
     el.navigate('/play');
   });
-
-  
 
   return el;
 }
