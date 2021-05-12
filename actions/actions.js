@@ -28,14 +28,14 @@ const actions = [
     cooldown: 2 * 60,
   },
   {
-    event: 'action:team:lock',
+    event: 'action:teams:lock',
     name: 'Lock Team',
     desc: 'Locks an entire team for 20 seconds',
     target: 'teams',
-    cooldown: 2*60,
+    cooldown: 2 * 60,
   },
   {
-    event: 'action:team:unlock',
+    event: 'action:teams:unlock',
     name: 'Unlocks Team',
     desc: 'Unlocks your team',
     target: 'teams',

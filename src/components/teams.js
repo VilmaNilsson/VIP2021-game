@@ -32,6 +32,41 @@ function Teams(el, context) {
       }
     }
 
+    let interval;
+
+    div.subscribe('action:teams:locked', (e) => {
+      const payload = e.detail;
+
+      // If the lock action wasn't for this station, do nothing
+      if (payload.teamId !== i) {
+        return;
+      }
+      const oldText = div.textContent;
+      // The timer could be some component that we can reuse instead
+      const { start, duration } = payload;
+      // The end time (ie. 'that many seconds far ahead')
+      const end = start + duration;
+
+      interval = context.setInterval(() => {
+        // We take a timestamp ('now' in seconds)
+        const now = Date.now();
+        // Calculate how many seconds are left
+        const sec = ((end - now) / 1000).toFixed(1);
+        div.textContent = `${team.name} (Locked ${sec}s)`;
+
+        // If none are, stop our interval
+        if (sec <= 0) {
+          clearInterval(interval);
+          div.textContent = oldText;
+        }
+      }, 100);
+    });
+
+    div.subscribe('action:teams:unlocked', () => {
+      clearInterval(interval);
+      div.textContent = `${team.name} (${team.score})`;
+    });
+
     div.click(() => {
       const { action } = context.getState();
       if (action && selectable) {

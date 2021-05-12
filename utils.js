@@ -322,7 +322,7 @@ function getPlayersInStation(game, stationIndex) {
     });
 }
 
-//Returns an array of player Ids for a given team
+// Returns an array of player Ids for a given team
 function getPlayersInTeam(game, teamId) {
   return Object.entries(game.players)
     .filter((entry) => {
