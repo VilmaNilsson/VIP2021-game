@@ -27,6 +27,20 @@ const actions = [
     target: 'stations',
     cooldown: 2 * 60,
   },
+  {
+    event: 'action:team:lock',
+    name: 'Lock Team',
+    desc: 'Locks an entire team for 20 seconds',
+    target: 'teams',
+    cooldown: 2*60,
+  },
+  {
+    event: 'action:team:unlock',
+    name: 'Unlocks Team',
+    desc: 'Unlocks your team',
+    target: 'teams',
+    cooldown: 2 * 60,
+  },
 ];
 
 module.exports = actions;
