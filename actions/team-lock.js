@@ -1,13 +1,11 @@
 // Locks a player that is targeted with a "locked spell" fx. annoy player
 
 // Takes two params, context = object containing functions to operate on state,
-// payload = data sent from client-side: player-id AND duration in sec for the spell
+// payload = data sent from client-side: team which is the teamId to lock
 function lockTeam(context, payload) {
   // First we'll get the game state
   const game = context.getGameState();
-  // In this spell we'll receive the team id (from frontend) (the player to be locked),
-  // and the duration of spell
-  // Payload.duration MUST be a number, not a string, to work in the setTimeout
+  // In this spell we'll receive the team id (from frontend) (the team to be locked)
   const teamId = payload.team;
   const duration = 20;
   const team = game.teams[teamId];
@@ -31,14 +29,14 @@ function lockTeam(context, payload) {
   // Save our changes, game is an object we want to merge in to gameState
   context.updateGameState(game);
 
-  // Send info to client about status=locked
+  // Send info to client about status=locked, teamId, start of the lock and duration
   const start = Date.now();
   context.broadcastToGame('action:teams:locked', { teamId, start, duration: duration * 1000 });
 
   // Now: we want to make this spell last for as many seconds const duration is,
   // then we want to reset whatever we just did.
   // Instead of writing the same code reversed,
-  // could we maybe call the function unlockPlayer in unlock_player.js?
+  // could we maybe call the function unlockTeam in team_unlock.js?
   context.setTimeout(() => {
     // We'll just do the reverse for resetting
     const game = context.getGameState();
