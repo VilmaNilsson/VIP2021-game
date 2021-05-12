@@ -14,7 +14,7 @@ function Cargo(el, context) {
 
   // Get the team-number of the player's team and use it to set the
   // background color of the element to the team's color
-  const {team} = player;
+  const { team } = player;
   cargoObj.style.backgroundColor = `var(--team-color-${team + 1})`;
 
   cargoSlot.src = `../../assets/${token}.png`;

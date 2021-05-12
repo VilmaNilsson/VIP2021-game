@@ -1,3 +1,35 @@
+function timeSec() {
+  const secSpan = document.querySelector('#secret-cargo-timer > span:last-of-type');
+  let secVal = secSpan.innerHTML;
+
+  if (secVal === '00' || secVal === '0') {
+    const minSpan = document.querySelector('#secret-cargo-timer > span:first-of-type');
+    let minVal = minSpan.innerHTML;
+    minVal -= 1;
+    minSpan.innerHTML = (`0${minVal}`).slice(-2);
+    secSpan.innerHTML = '59';
+  } else {
+    secVal -= 1;
+    secSpan.innerHTML = (`0${secVal}`).slice(-2);
+  }
+}
+
+function timerCaller() {
+  const minSpan = document.querySelector('#secret-cargo-timer > span:first-of-type');
+
+  const secSpan = document.querySelector('#secret-cargo-timer > span:last-of-type');
+
+  const secID = setInterval(() => {
+    timeSec();
+  }, 1000);
+
+  setTimeout(() => {
+    clearInterval(secID);
+    minSpan.innerHTML = '02';
+    secSpan.innerHTML = '00';
+  }, 122000);
+}
+
 function SecretCargo(el, context) {
   const { game, player } = context.getState();
   const secretCargoObj = document.getElementById('secret-cargo');
@@ -8,17 +40,10 @@ function SecretCargo(el, context) {
     return el;
   }
 
-  const { tokens } = game;
-  const { secretCargo } = player;
-
   // Get the team-number of the player's team and use it to set the
   // background color of the element to the team's color
-  const {team} = player;
+  const { team } = player;
   secretCargoObj.style.backgroundColor = `var(--team-color-${team + 1})`;
-
-  const token = tokens[secretCargo.token]
-    ? tokens[secretCargo.token].name
-    : '-';
 
   // TODO: check if the cargo is activated (then display that timer as well)
 
@@ -89,43 +114,11 @@ function SecretCargo(el, context) {
       }
     }, 100);
 
-    el.subscribe('action:player:secret-cargo:faded', (e) => {
+    el.subscribe('action:player:secret-cargo:faded', () => {
       secretCargoObj.classList.remove('active');
       secretCargoObj.classList.add('inactive');
-    })
+    });
   });
-
-  function timerCaller() {
-    const minSpan = document.querySelector('#secret-cargo-timer > span:first-of-type');
-
-    const secSpan = document.querySelector('#secret-cargo-timer > span:last-of-type');
-
-    let secID = setInterval(() => {
-        timeSec();
-    }, 1000);
-
-    setTimeout(() => {
-        clearInterval(secID);
-        minSpan.innerHTML = '02';
-        secSpan.innerHTML = '00';
-    }, 122000);
-  }
-
-  function timeSec() {
-      const secSpan = document.querySelector('#secret-cargo-timer > span:last-of-type');
-      let secVal = secSpan.innerHTML;
-
-      if (secVal == '00' || secVal == '0') {
-          const minSpan = document.querySelector('#secret-cargo-timer > span:first-of-type');
-          let minVal = minSpan.innerHTML;
-          minVal--;
-          minSpan.innerHTML = ('0' + minVal).slice(-2);
-          secSpan.innerHTML = '59';
-      } else {
-          secVal--;
-          secSpan.innerHTML = ('0' + secVal).slice(-2);
-      }
-  }
   return el;
 }
 
