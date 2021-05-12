@@ -1,5 +1,5 @@
 function LobbyTeams(el, context) {
-  const { game, player, username } = context.getState();
+  const { game, player } = context.getState();
 
   if (!game) {
     return el;
@@ -43,9 +43,8 @@ function LobbyTeams(el, context) {
       teamDivs.forEach((element) => {
         element.classList.remove('markedTeam');
       });
-      
+
       div.classList.add('markedTeam');
-      
       if (player.team === teamIndex) {
         console.log('player is already in team');
       } else {
