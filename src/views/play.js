@@ -27,7 +27,7 @@ function PlayView(context) {
       </div>
       <div class="cargos-base inactive" id="secret-cargo">
         <img id="secret-cargo-slot" src="../../assets/-.png">
-        <p id="secret-cargo-timer"><span>02</span>:<span>00</span></p>
+        <div id="secret-cargo-timer"><span>02</span>:<span>00</span></div>
       </div>
     </div>
     <h3>Your actions</h3>

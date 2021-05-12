@@ -14,7 +14,7 @@ function SecretCargo(el, context) {
   // Get the team-number of the player's team and use it to set the
   // background color of the element to the team's color
   const {team} = player;
-  secretCargoObj.style.backgroundColor = `var(--team-color-${team})`;
+  secretCargoObj.style.backgroundColor = `var(--team-color-${team + 1})`;
 
   const token = tokens[secretCargo.token]
     ? tokens[secretCargo.token].name
@@ -108,7 +108,7 @@ function SecretCargo(el, context) {
         clearInterval(secID);
         minSpan.innerHTML = '02';
         secSpan.innerHTML = '00';
-    }, 121000);
+    }, 122000);
   }
 
   function timeSec() {

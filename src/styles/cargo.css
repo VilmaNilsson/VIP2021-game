@@ -38,4 +38,5 @@
     transform: rotate(90deg);
     font-family: var(--font-primary);
     margin: 0px;
+    text-align: center;
 }
