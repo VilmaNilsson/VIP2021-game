@@ -183,6 +183,7 @@ function createTokens() {
 function createTeam(state = {}) {
   const team = {
     name: '',
+    color: '',
     crew: -1,
     ...state,
     defaults: {
@@ -256,8 +257,8 @@ function filterGame(game) {
       return { name, ...properties };
     }),
     teams: game.teams.map((team) => {
-      const { name, properties } = team;
-      return { name, ...properties };
+      const { name, color, properties } = team;
+      return { name, color, ...properties };
     }),
     players: Object.entries(game.players).reduce((players, entry) => {
       const [id, player] = entry;

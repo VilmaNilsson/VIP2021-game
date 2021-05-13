@@ -1,0 +1,182 @@
+@import "variables.css";
+
+#lobbyWrapper {
+    background-color: var(--background-color);
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--text-color);
+}
+
+#lobbyWrapper h1,
+#lobbyWrapper h2,
+#lobbyWrapper h3,
+#lobbyWrapper p {
+    margin: 0;
+}
+
+#lobbyWrapper h1 {
+    font-family: var(--font-primary);
+    text-shadow: 0 0 5px var(--logo-color);
+    letter-spacing: .8px;
+    font-size: 35px;
+    margin: 40px 0 20px;
+}
+
+#lobbyWrapper h2 {
+    font-family: var(--font-primary);
+    font-weight: 300;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+#teams {
+    width: 85%;
+    max-height: 420px;
+    overflow-y: scroll;
+    flex-grow: 1;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 15px;
+}
+
+.teamDiv {
+    width: 70%;
+    background-color: white;
+    color: var(--background-color);
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    flex-direction: column;
+    align-items: center;
+    font-family: var(--font-primary);
+    font-weight: 600;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+    box-shadow: 0px 15px 20px #1c1b20;
+    flex-basis: 15%;
+}
+
+.teamDiv:hover {
+    cursor: pointer;
+}
+
+.markedTeamBlue {
+    box-shadow: 0px 0px 10px 3px #5fffff;
+}
+
+.markedTeamPink {
+    box-shadow: 0px 0px 10px 3px #ff7abc;
+}
+
+.markedTeamPurple {
+    box-shadow: 0px 0px 10px 3px #e375ff;
+}
+
+.markedTeamDarkblue {
+    box-shadow: 0px 0px 10px 3px #3686ff;
+}
+
+.markedTeam {
+    box-shadow: 0 0 10px 5px white;
+}
+
+.no-click {
+    pointer-events: none;
+}
+
+#teamName {
+    font-size: 25px;
+}
+
+#playerDiv {
+    margin-top: 5px;
+    color: #353338;
+}
+
+#playerDiv > span {
+    width: 1px;
+    height: 11px;
+    background-color: rgb(37, 36, 36);
+    display: inline-block;
+    margin: 0 5px;
+}
+
+#players {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    overflow-x: scroll;
+}
+
+#players > div:last-child > span {
+    width: 0;
+    margin: 0;
+}
+
+.lobby-buttons {
+    width: 90%;
+    flex-basis: 120px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.lobby-buttons button {
+    letter-spacing: .5px;
+    font-family: var(--font-primary);
+    font-weight: 600;
+    font-size: 20px;
+    height: 50px;
+    padding: 10px 5px;
+    width: 145px;
+    border-radius: 60px;
+    -webkit-border-radius: 60px;
+    -moz-border-radius: 60px;
+    -ms-border-radius: 60px;
+    -o-border-radius: 60px;
+    background-color: transparent;
+    border: none;
+    color: var(--text-color);
+    transition: background-color .2s ease-out;
+    -webkit-transition: background-color .2s ease-out;
+    -moz-transition: background-color .2s ease-out;
+    -ms-transition: background-color .2s ease-out;
+    -o-transition: background-color .2s ease-out;
+}
+
+.lobby-buttons button:hover {
+    cursor: pointer;
+}
+
+#startBtn, #continue {
+    color: var(--logo-color);
+    background-color: #f4f4f4;
+    border-color: transparent;
+}
+
+#startBtn:hover, #startBtn:active {
+    background-color: #ffffffc9;
+}
+
+#quit {
+    color: #f4f4f4;
+    border: 2px solid #f4f4f4;
+}
+
+#quit:hover, #quit:active {
+    background-color: #2c2e33;
+}
