@@ -6,16 +6,17 @@ body {
     background-color: var(--background-color);
     color: var(--text-color);
     font-family: var(--font-primary);
+    overflow-x: hidden;
 }
 
 #create-game-main {
     box-sizing: border-box;
     text-align: center;
     width: 100vw;
-    max-width: 500px;
+    max-width: 650px;
     margin: 0 auto;
     overflow-x: hidden;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
     padding: 3vw;
     min-height: 100vh;
 }
@@ -166,6 +167,7 @@ div.create-game-inputs {
     align-items: center;
     justify-content: center;
     /* display: none; */
+    overflow-x: hidden;
 }
 
 #choose-overlay * {
@@ -178,7 +180,7 @@ div.create-game-inputs {
     position: absolute;
     top: 0;
     right: 0;
-    font-size: 15vw;
+    font-size: 10vh;
     transform: rotate(45deg);
     -webkit-transform: rotate(45deg);
     -moz-transform: rotate(45deg);
@@ -193,17 +195,23 @@ div.create-game-inputs {
 }
 
 #choose-overlay-container {
-    height: 50vh;
+    min-height: 60vh;
     text-align: center;
     width: 80%;
+    max-width: 650px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+    padding: 3vw;
+}
+
+#duration-information {
+    font-size: 2vh;
 }
 
 #choose-overlay-container h2 {
-    font-size: 10vw;
+    font-size: 6vh;
     text-shadow: 0 0 20px var(--logo-color);
 }
 
@@ -226,8 +234,12 @@ div.create-game-inputs {
     justify-content: space-between;
     align-items: center;
     margin-top: 20px;
-    width: 100%;
+    width: 90%;
     flex-basis: 10vh;
+}
+
+#picker-container *.overlayFlexItems {
+    flex-basis: 1;
 }
 
 .inputFieldsOverlay {
@@ -235,11 +247,12 @@ div.create-game-inputs {
     border: none;
     color: var(--text-color);
     height: 100%;
-    flex: 48% 1 1;
+    width: 48%;
+    font-size: 3vh;
 }
 
 #picker-seperator {
-    font-size: 7vw;
+    font-size: 30px;
     text-shadow: 0 0 10px var(--text-color);
 }
 

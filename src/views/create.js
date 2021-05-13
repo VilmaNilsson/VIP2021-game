@@ -21,7 +21,7 @@ function CreateView() {
       </div>
       <div id="create-game-teams">
         <div id="create-game-nr-div">
-          <span>Number of teams</span>
+          <span>Number of teams (4 by default)</span>
           <div id="create-game-nr-drop" class="create-game-nr-drop"></div>
         </div>
         <input id="create-game-nr-input" type="number" name="nrOfTeams" value="4" hidden>
@@ -260,8 +260,25 @@ function CreateView() {
 
   //-----------------------EVENTS---------------------------//
 
-  errorEl.subscribe('game:create:fail', () => {
-    errorEl.textContent = 'Game already exists';
+  // handles the error codes
+  errorEl.subscribe('game:create:fail', (e) => {
+    // if the game doesn't have a name (already blocked but just in case)
+    let createGameError;
+    switch(e.detail.errorCode) {
+      case 0:
+        createGameError = 'Please enter a name for the game';
+        break;
+      case 1:
+        createGameError = 'Check if you are logged in or already in a game';
+        break;
+      case 2:
+        createGameError = 'A game with this name already exists';
+        break;
+      default:
+        break;
+    }
+    
+    errorEl.textContent = createGameError;
   });
 
   // shows the dropDown
@@ -382,7 +399,7 @@ function CreateView() {
     }
     e.preventDefault();
     const payload = utils.serializeForm(e.target);
-    console.log(payload);
+    // console.log(payload);
     el.send('game:create', payload);
   });
 
@@ -392,7 +409,7 @@ function CreateView() {
 
   gameNameGenerator(); // creates a random game name
   updateDurationDivValue(true); // updates the durations
-  createTeamNrDivs();
+  createTeamNrDivs(); // creates the dropdown for amount of teams
   return el;
 }
 
