@@ -7,6 +7,7 @@ function gameCreate(context, payload) {
     name,
     nrOfTeams,
     nrOfStations,
+    crewDuration,
     planDuration,
     playDuration,
   } = payload;
