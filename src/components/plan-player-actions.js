@@ -14,8 +14,10 @@ function PlanPlayerActions(el, context) {
     div.innerHTML = name;
 
     div.click(() => {
-      div.send('player:action:deselect', { event });
-      div.remove();
+      setTimeout(() => {
+        div.send('player:action:deselect', { event });
+        div.remove();
+      }, 300);
     });
 
     el.append(div);
@@ -35,8 +37,10 @@ function PlanPlayerActions(el, context) {
       div.innerHTML = name;
 
       div.click(() => {
-        div.send('player:action:deselect', { event });
-        div.remove();
+        setTimeout(() => {
+          div.send('player:action:deselect', { event });
+          div.remove();
+        }, 300);
       });
 
       el.append(div);
