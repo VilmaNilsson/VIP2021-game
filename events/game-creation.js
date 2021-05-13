@@ -7,8 +7,10 @@ function gameCreate(context, payload) {
     name,
     nrOfTeams,
     nrOfStations,
+    crewDuration,
     planDuration,
     playDuration,
+    loginTimer,
   } = payload;
 
   // A game must have a name

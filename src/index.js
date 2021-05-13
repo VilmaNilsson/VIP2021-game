@@ -2,6 +2,7 @@
 import './styles/index.css';
 import './styles/game-actions.css';
 import './styles/login.css';
+import './styles/create-game.css';
 import './styles/mainPage.css';
 import './styles/lobby.css';
 import './styles/join.css';
