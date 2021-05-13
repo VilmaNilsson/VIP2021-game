@@ -11,21 +11,40 @@ import {
 function PlayView(context) {
   const el = document.createElement('div');
 
-  el.innerHTML = `
-    <div id="teams"></div>
-    <h1>Play</h1>
-    <div id="timer"></div>
-    <h2>Stations</h2>
-    <div id="stations"></div>
-    <h2>Racks</h2>
-    <div id="racks"></div>
-    <h2>Cargo</h2>
-    <div id="cargo"></div>
-    <div id="secret-cargo"></div>
-    <h3>Your actions</h3>
-    <div id="actions"></div>
-    <button id="quit">Quit</button>
-    <button id="menu">Menu</button>
+    el.innerHTML = `
+
+    <div class = radar-bkg>
+
+              <div id="teams"></div>
+
+      <div id="timer"></div>
+
+      <div id="stations"></div>
+
+    </div>
+
+            <div>
+
+              <h2>Racks</h2>
+
+      <div id="racks"></div>
+
+      <h2>Cargo</h2>
+
+      <div id="cargo"></div>
+
+      <div id="secret-cargo"></div>
+
+      <h3>Your actions</h3>
+
+      <div id="actions"></div>
+
+      <button id="quit">Quit</button>
+
+      <button id="menu">Menu</button>
+
+              </div>
+
   `;
 
   const timerEl = el.querySelector('#timer');

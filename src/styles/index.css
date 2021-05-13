@@ -1,8 +1,35 @@
 @import "variables.css";
 @import "team-rocket.css";
+@import "timer.css";
+@import "stations.css";
+
 
 body {
+
     margin: 0;
+
+    background-image: url('../../assets/play-bg.png');
+
+            background-repeat: no-repeat;
+
+            background-position: top;
+
+            background-size: cover;
+
+}
+
+.radar-bkg {
+
+    margin: 0;
+
+    background-image: url('../../assets/play-bg.png');
+
+    background-repeat: no-repeat;
+
+    background-position: top;
+
+    background-size: cover;
+
 }
 
 

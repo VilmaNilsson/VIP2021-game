@@ -1,0 +1,131 @@
+.station-master-div {
+
+            display: grid;
+
+            grid-template-columns: repeat(3, 33%);
+
+            height: 200px;
+
+            margin-top: 2%;
+
+            margin-bottom: 2%;
+
+}
+
+.station-upper {
+
+            background-repeat: no-repeat;
+
+            background-position: bottom;
+
+            background-size: 40%;
+
+            height: 90%;
+
+            display: flex;
+
+            align-items: flex-end;
+
+            justify-content: center;
+
+            font-family: verdana, sans-serif;
+
+            color: white;
+
+            border: 2px;
+
+            margin: 2%;
+
+}
+
+ 
+
+.station-lower {
+
+            background-repeat: no-repeat;
+
+            background-position: top;
+
+            background-size: 40%;
+
+            height: 90%;
+
+            display: flex;
+
+            align-items: flex-end;
+
+            justify-content: center;
+
+            font-family: verdana, sans-serif;
+
+            color: white;
+
+            border: 2px;
+
+            margin: 2%;
+
+}
+
+ 
+
+.station-selectable {
+
+            border: solid;
+
+}
+
+ 
+
+.Urmom {
+
+            background-image: url('../../assets/ur-mama.svg');
+
+}
+
+ 
+
+.Uranus {
+
+            background-image: url('../../assets/uranus.svg');
+
+}
+
+ 
+
+.Moo {
+
+            background-image: url('../../assets/moo.svg');
+
+}
+
+ 
+
+.Blandito {
+
+            background-image: url('../../assets/blandito.svg');
+
+}
+
+ 
+
+.Margreth {
+
+            background-image: url('../../assets/margareth.svg');
+
+}
+
+ 
+
+.Pluto {
+
+            background-image: url('../../assets/pluto.svg');
+
+}
+
+ 
+
+.Kim {
+
+            background-image: url('../../assets/kim.svg');
+
+}

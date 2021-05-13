@@ -1,149 +1,43 @@
-.grille{
-	
-	display:grid;
-	
-	grid-template-columns: auto auto auto auto;
-	
-	align-items: center;
-	margin-top: 3%;
-	
-	
-	
-	
+.rocket-team-master-div {
+
+            display: grid;
+
+            grid-template-columns: auto auto auto auto auto auto;
+
+            align-items: center;
+
+            margin-top: 3%;
 
 }
 
-.rocket-team1 {
-	background-image: url('../../assets/rocket.svg');
-	background-repeat: no-repeat;
-	background-position: center;
-	
-	text-align:center;
-	justify-items: center;
-	
-	align-items: center;
-	
-	color:red;
-	font-family: Fantasy;
-	
-	height: 3.1vh;
-	
-	background-size:80%;
-	grid-column: auto; 
-   grid-row: auto;
-	
-	
-	
-	margin-top:1%;
+.rocket-team {
 
-	
-}
+            background-image: url('../../assets/rocket.svg');
 
-.text-rocket{
-	
+            background-repeat: no-repeat;
 
-	text-align: center;
-	
-	color:red;
-	font-family: Fantasy;
-	
-	font-size:200%;
+            background-position: center;
 
-	height: 150%;
-	width:100%;
+            text-align: center;
 
-	left:12%;
-	top:2vw;
-	
-	
-	
-	
-}
+            background-size: 80%;
 
+            grid-column: auto;
 
+    grid-row: auto;
 
-.rocket-team2 {
-	
-	background-image: url('../../assets/rocket.svg');
-	background-repeat: no-repeat;
-	background-position: center;
-	text-align: center;
-	
-	display: inline-block;
-	
-	
-	background-size:80%;
-	
-	grid-column: auto; 
-  grid-row: auto;
-	margin-top:2%;
-	
-	text-align:center;
-	justify-items: center;
-	
-	align-items: center;
-	
-	color:red;
-	font-family: Fantasy;
-	
-	height: 3.1vh;
-	
-	
-}
-.rocket-team3 {
-	background-image: url('../../assets/rocket.svg');
-	background-repeat: no-repeat;
-	background-position: center;
-	text-align: center;
-	
-	
-	
-	background-size:80%;
-	
-	grid-column: auto; 
-  grid-row: auto;
-	
-	margin-top:4%;
-	
-	text-align: center;
-	
-	text-align:center;
-	justify-items: center;
-	
-	align-items: center;
-	
-	color:red;
-	font-family: Fantasy;
-	
-	height: 3.1vh;
-	
-	
-	
-	
-}
-.rocket-team4 {
-	background-image: url('../../assets/rocket.svg');
-	background-repeat: no-repeat;
-	background-position:center;
-	text-align: center;
-	
-	
-	
-	background-size:80%;
-	
-	grid-column: auto; 
-  grid-row: auto;
-	
-	margin-top:4%;
-	
-	text-align:center;
-	justify-items: center;
-	
-	align-items: center;
-	
-	color:red;
-	font-family: Fantasy;
-	
-	height:3.1vh;
-	
+            /* margin-top: 4%; */
+
+            text-align: center;
+
+            justify-items: center;
+
+            align-items: center;
+
+            color: red;
+
+            font-family: verdana, sans-serif; /* Too much variabilities on Fantasy font */
+
+            /* height: 3.1vh;*/
+
 }

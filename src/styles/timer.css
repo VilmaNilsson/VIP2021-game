@@ -1,0 +1,13 @@
+.timer {
+
+            line-height: 2.5;
+
+            font-size: 100%;
+
+            font-family: Menlo, sans-serif;              /* Need a fix length police */
+
+            text-align: center;
+
+            color: Cyan;
+
+}
