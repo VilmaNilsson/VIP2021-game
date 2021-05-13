@@ -1,5 +1,6 @@
 function Stations(el, context) {
   const { game, player } = context.getState();
+  let lockInterval;
 
   if (!game || !player) {
     return el;
@@ -28,6 +29,7 @@ function Stations(el, context) {
 
     div.click(() => {
       const { action } = context.getState();
+      console.log(action);
 
       // If our client state contains a action and our stations can be selected
       if (action && selectable) {
@@ -70,7 +72,7 @@ function Stations(el, context) {
       // The end time (ie. 'that many seconds far ahead')
       const end = start + duration;
 
-      const interval = context.setInterval(() => {
+      lockInterval = context.setInterval(() => {
         // We take a timestamp ('now' in seconds)
         const now = Date.now();
         // Calculate how many seconds are left
@@ -78,6 +80,99 @@ function Stations(el, context) {
         div.textContent = `${station.name} (Locked ${sec}s)`;
 
         // If none are, stop our interval
+        if (sec <= 0) {
+          clearInterval(lockInterval);
+          div.textContent = station.name;
+        }
+      }, 100);
+    });
+
+    div.subscribe('action:station:unlocked', () => {
+      clearInterval(lockInterval);
+      div.textContent = station.name;
+    });
+
+    div.subscribe('action:station:double-points', (e) => {
+      const payload = e.detail;
+
+      if (payload.station !== i) {
+        return;
+      }
+
+      const { start, duration } = payload;
+
+      const end = start + duration;
+
+      const interval = context.setInterval(() => {
+        const now = Date.now();
+        const sec = ((end - now) / 1000).toFixed(1);
+
+        div.textContent = `${station.name} (Double ${sec}s)`;
+
+        if (sec <= 0) {
+          clearInterval(interval);
+          div.textContent = station.name;
+        }
+      }, 100);
+    });
+
+    div.subscribe('action:station:half-points', (e) => {
+      const payload = e.detail;
+
+      if (payload.station !== i) {
+        return;
+      }
+
+      const { start, duration } = payload;
+
+      const end = start + duration;
+
+      const interval = context.setInterval(() => {
+        const now = Date.now();
+        const sec = ((end - now) / 1000).toFixed(1);
+
+        div.textContent = `${station.name} (Half ${sec}s)`;
+
+        if (sec <= 0) {
+          clearInterval(interval);
+          div.textContent = station.name;
+        }
+      }, 100);
+    });
+
+    div.subscribe('action:stations:double-points', (e) => {
+      const payload = e.detail;
+
+      const { start, duration } = payload;
+
+      const end = start + duration;
+
+      const interval = context.setInterval(() => {
+        const now = Date.now();
+        const sec = ((end - now) / 1000).toFixed(1);
+
+        div.textContent = `${station.name} (Double ${sec}s)`;
+
+        if (sec <= 0) {
+          clearInterval(interval);
+          div.textContent = station.name;
+        }
+      }, 100);
+    });
+
+    div.subscribe('action:stations:half-points', (e) => {
+      const payload = e.detail;
+
+      const { start, duration } = payload;
+
+      const end = start + duration;
+
+      const interval = context.setInterval(() => {
+        const now = Date.now();
+        const sec = ((end - now) / 1000).toFixed(1);
+
+        div.textContent = `${station.name} (Half ${sec}s)`;
+
         if (sec <= 0) {
           clearInterval(interval);
           div.textContent = station.name;
@@ -128,7 +223,8 @@ function Stations(el, context) {
     // When they log into another station lets clear the bg
     div.subscribe('station:login:done', (e) => {
       const payload = e.detail;
-
+      player.inStation = payload;
+      context.setState({ player });
       if (payload.station !== i) {
         div.style.background = 'white';
       }

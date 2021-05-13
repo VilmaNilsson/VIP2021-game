@@ -1,0 +1,55 @@
+@import "variables.css";
+
+#mainWrapper {
+    background-color: var(--background-color);
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--text-color);
+}
+
+#mainWrapper > img {
+    margin-bottom: 0;
+}
+
+#mainWrapper > h2 {
+    font-family: var(--font-primary);
+    font-weight: 300;
+    font-size: 25px;
+    margin-bottom: 20px;
+    text-align: center;
+    width: 80%;
+}
+
+#mainWrapper button {
+    padding: 15px 10px;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+    text-align: center;
+    border: none;
+    margin-bottom: 20px;
+    width: 70%;
+    max-width: 260px;
+    background-color: transparent;
+    box-shadow: 0 0 15px var(--text-color);
+    color: var(--text-color);
+    font-family: var(--font-primary);
+    font-weight: 600;
+    font-size: 22px;
+    margin-top: 20px;
+    transition: box-shadow .3s ease;
+    -webkit-transition: box-shadow .3s ease;
+    -moz-transition: box-shadow .3s ease;
+    -ms-transition: box-shadow .3s ease;
+    -o-transition: box-shadow .3s ease;
+}
+
+#mainWrapper button:hover, #mainWrapper button:active {
+    box-shadow: 0 0 10px 5px var(--logo-color);
+    cursor: pointer;
+}
