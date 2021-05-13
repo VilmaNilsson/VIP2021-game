@@ -6,12 +6,14 @@ function increaseLoginTimePlayer(context, payload) {
   const LOGIN_MULTIPLIER = 1.5;
   const DEFAULT_LOGIN_TIME = gameState.players[targetedPlayerId].default.loginTimeMultiplier;
 
+  const start = Date.now();
+
   gameState.players[targetedPlayerId].properties.loginTimeMultiplier *= LOGIN_MULTIPLIER;
 
   const newGameState = { ...gameState };
 
   context.updateGameState(newGameState);
-  context.sendTo(targetedPlayerId, 'player:slowed', { duration });
+  context.sendTo(targetedPlayerId, 'player:slowed', { start, duration });
 
   context.setTimeout(() => {
     gameState.players[targetedPlayerId].properties.loginTimeMultiplier = DEFAULT_LOGIN_TIME;
