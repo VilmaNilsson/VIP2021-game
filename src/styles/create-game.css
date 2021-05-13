@@ -29,6 +29,10 @@ body {
     box-sizing: border-box;
 }
 
+#error {
+    margin: 0 auto;
+}
+
 #create-game-main h1, #create-form h2 {
     text-shadow: 0 0 20px var(--logo-color);
 }
@@ -87,6 +91,23 @@ body {
     position: relative;
     margin-left: auto;
     margin-right: auto;
+}
+
+.create-game-nr-drop {
+    position: absolute;
+    top: 8vh;
+    width: 90%;
+    border: 1px solid var(--text-color);
+    display: none;
+}
+
+.team-divs {
+    background-color: var(--background-color);
+    height: 8vh;
+    border-bottom: 1px solid var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #game-mode {
@@ -250,4 +271,8 @@ div.create-game-inputs {
 .activeBtn {
     box-shadow: 0 0 10px 2px var(--logo-color);
     border: 1px solid var(--logo-color);
+}
+
+.showDropDown {
+    display: block;
 }

@@ -13,16 +13,18 @@ function CreateView() {
       <div id="create-game-name">
         <label>
           Name your game
-          <input id="create-game-name-input" type="text" name="name" placeholder="name">
+          <input id="create-game-name-input" type="text" name="name" placeholder="Choose Game Name" maxlength="10">
         </label>
       </div>
       <div id="real-life-gameplay">
         In real life is currently unavailable due to the pandemic. Pleawse enjoy our game online until it can be played safely in real life.
       </div>
       <div id="create-game-teams">
-        <div id="create-game-nr-div">Number of teams</div>
+        <div id="create-game-nr-div">
+          <span>Number of teams</span>
+          <div id="create-game-nr-drop" class="create-game-nr-drop"></div>
+        </div>
         <input id="create-game-nr-input" type="number" name="nrOfTeams" value="4" hidden>
-        <div id="create-game-nr-drop"></div>
       </div>
       <div id="create-game-mode">
         <label>
@@ -87,6 +89,8 @@ function CreateView() {
   const allInputs = el.querySelectorAll(".create-game-inputs");
   const nameInput = el.querySelector("#create-game-name-input");
   const teamNrInput = el.querySelector("#create-game-nr-input");
+  const teamNrDiv = el.querySelector("#create-game-nr-div");
+  const teamNrDropDown = el.querySelector("#create-game-nr-drop");
   const durationCrewInput = el.querySelector("#create-game-crew-input");
   const durationCrewDiv = el.querySelector("#advanced-crew");
   const durationPlanDiv = el.querySelector("#advanced-plan");
@@ -140,72 +144,89 @@ function CreateView() {
 
   //------------------------FUNCTIONS---------------------------//
 
-    // converts to seconds
-    function convertToSeconds(val) {
-      val = val.split(":"); // split the string into array with min & sec
-      let inSeconds = (parseInt(val[0])*60) + parseInt(val[1]);
-      return inSeconds;
-    }
-    // console.log(convertToSeconds("50:30")); // == 3030sec
+  // converts to seconds
+  function convertToSeconds(val) {
+    val = val.split(":"); // split the string into array with min & sec
+    let inSeconds = (parseInt(val[0])*60) + parseInt(val[1]);
+    return inSeconds;
+  }
   
-    // converts seconds to minutes:seconds
-    function convertToMinutesSeconds(val) {
-      // Minutes & seconds
-      let mins = ~~((val % 3600) / 60); // ~~ == double NOT bitwise operator (math.floor)
-      let secs = ~~val % 60;
-  
-      // create output like 50:30 or 00:30 or 00:07
-      let ret = ""; // make it to a string
-  
-      // if the minutes are between 0 and 10 we need 1x 0
-      // else only minutes and seconds
-      if (0 <= mins && mins < 10) {
-        ret += "0" + mins + ":" + (secs < 10 ? `0${secs}` : secs);
-      } else {
-        ret += mins + ":" + (secs < 10 ? `0${secs}` : secs);
-      }
-      return ret;
-    }
-    // console.log(convertToMinutesSeconds(3030)); // == 50:30mins
-  
-  
-    // creates the divs for the number of teams
-  
-  
-    // creates the divs in the overlay
-    function createElementsPicker(currentVal, inputId) {
-      // currentVal = currentValue in seconds
-      // inputId = the input that is connected to the clicked div
-      // maxValue = is collected by checking the type of input
-  
-      switch(inputId) {
-        case "advanced-crew":
-          maxVal = allValues.crewPhase.maxValue;
-          chosenPhase = "Crew Phase";
-          minVal = convertToMinutesSeconds(allValues.crewPhase.defaultValue);
-          break;
-        case "advanced-plan":
-          maxVal = allValues.planPhase.maxValue;
-          chosenPhase = "Plan Phase";
-          minVal = convertToMinutesSeconds(allValues.planPhase.defaultValue);
-          break;
-        case "advanced-play":
-          maxVal = allValues.playPhase.maxValue;
-          chosenPhase = "Play Phase";
-          minVal = convertToMinutesSeconds(allValues.playPhase.defaultValue);
-          break;
-        case "advanced-land":
-          maxVal = allValues.landingTime.maxValue;
-          chosenPhase = "Landing Time";
-          minVal = convertToMinutesSeconds(allValues.landingTime.defaultValue);
-          break;
-        default:
-          return;
-      }
+  // converts seconds to minutes:seconds
+  function convertToMinutesSeconds(val) {
+    // Minutes & seconds
+    let mins = ~~((val % 3600) / 60); // ~~ == double NOT bitwise operator (math.floor)
+    let secs = ~~val % 60;
 
-      durationInformation.innerText = `For the ${chosenPhase} choose a duration between ${minVal} minutes and ${maxVal} minutes`;
+    // create output like 50:30 or 00:30 or 00:07
+    let ret = ""; // make it to a string
 
+    // if the minutes are between 0 and 10 we need 1x 0
+    // else only minutes and seconds
+    if (0 <= mins && mins < 10) {
+      ret += "0" + mins + ":" + (secs < 10 ? `0${secs}` : secs);
+    } else {
+      ret += mins + ":" + (secs < 10 ? `0${secs}` : secs);
     }
+    return ret;
+  }
+
+  // generates a random name
+  function gameNameGenerator() {
+    const randomName = `game#${Math.floor(1000 + Math.random() * 9000)}`;
+    nameInput.value = randomName;
+    // nameInput.setAttribute("placeholder", randomName);
+  }
+
+  // creates the divs for the number of teams
+  function createTeamNrDivs(){
+    for (let i = 1; i <= allValues.nrTeams.maxValue; i += 1) {
+      let nDiv = document.createElement("div");
+      nDiv.innerText = i;
+      nDiv.classList.add("team-divs");
+      nDiv.addEventListener("click", (e) => {
+        e.preventDefault();
+        teamNrDiv.firstElementChild.innerText = `Teams: ${e.target.innerText}`;
+        teamNrInput.value = e.target.innerText;
+        allValues.nrTeams.currentVal = e.target.innerText;
+      });
+      teamNrDropDown.append(nDiv);
+    }
+  }
+  
+  // creates the divs in the overlay
+  function createElementsPicker(currentVal, inputId) {
+    // currentVal = currentValue in seconds
+    // inputId = the input that is connected to the clicked div
+    // maxValue = is collected by checking the type of input
+
+    switch(inputId) {
+      case "advanced-crew":
+        maxVal = allValues.crewPhase.maxValue;
+        chosenPhase = "Crew Phase";
+        minVal = convertToMinutesSeconds(allValues.crewPhase.defaultValue);
+        break;
+      case "advanced-plan":
+        maxVal = allValues.planPhase.maxValue;
+        chosenPhase = "Plan Phase";
+        minVal = convertToMinutesSeconds(allValues.planPhase.defaultValue);
+        break;
+      case "advanced-play":
+        maxVal = allValues.playPhase.maxValue;
+        chosenPhase = "Play Phase";
+        minVal = convertToMinutesSeconds(allValues.playPhase.defaultValue);
+        break;
+      case "advanced-land":
+        maxVal = allValues.landingTime.maxValue;
+        chosenPhase = "Landing Time";
+        minVal = convertToMinutesSeconds(allValues.landingTime.defaultValue);
+        break;
+      default:
+        return;
+    }
+
+    durationInformation.innerText = `For the ${chosenPhase} choose a duration between ${minVal} minutes and ${maxVal} minutes`;
+
+  }
 
   // updates the divs with the advanced durations
   // changes the input values for the payload
@@ -241,6 +262,11 @@ function CreateView() {
 
   errorEl.subscribe('game:create:fail', () => {
     errorEl.textContent = 'Game already exists';
+  });
+
+  // shows the dropDown
+  teamNrDiv.addEventListener("click", (e) => {
+    teamNrDropDown.classList.toggle("showDropDown");
   });
 
   // shows box for making advanced settings
@@ -295,7 +321,8 @@ function CreateView() {
   overlayClose.addEventListener("click", (e) => {
     overlay.classList.toggle("showOverlayDuration");
   });
-
+  
+  // saves the new duration, makes some checks and closes overlay
   overlayBtn.addEventListener("click", (e) => {
     e.preventDefault();
     if (overlayMinutesPicker.value.length < 1 || overlaySecondsPicker.value.length < 1) {
@@ -347,11 +374,12 @@ function CreateView() {
     
   });
 
-  // on click on save button in overlay, save the values from the picker
-  // convert to seconds and put it as default into the input-field
-  // call function to sync the valueDivs with the chosen value
-
   formEl.addEventListener('submit', (e) => {
+    if (nameInput.value.length < 1) {
+      e.preventDefault();
+      nameInput.style.boxShadow = "0 0 10px 2px var(--logo-color)";
+      return;
+    }
     e.preventDefault();
     const payload = utils.serializeForm(e.target);
     console.log(payload);
@@ -362,7 +390,9 @@ function CreateView() {
     el.navigate('/lobby');
   });
 
-  updateDurationDivValue(true);
+  gameNameGenerator(); // creates a random game name
+  updateDurationDivValue(true); // updates the durations
+  createTeamNrDivs();
   return el;
 }
 
