@@ -16,7 +16,17 @@ function PlanTimer(el, context) {
     // Calculate how many seconds are left
     const sec = ((end - now) / 1000).toFixed(1);
 
-    el.textContent = `${sec}s`;
+    let min = Math.floor(sec / 60);
+    let remSec = Math.floor(sec % 60);
+
+    if (remSec < 10) {
+      remSec = 0 + remSec;
+    }
+    if (min < 10) {
+      min = 0 + min;
+    }
+
+    el.textContent = `${min} : ${remSec}`;
 
     // If none are, stop our interval
     if (sec <= 0) {

@@ -3,6 +3,8 @@ import './styles/index.css';
 import './styles/game-actions.css';
 import './styles/login.css';
 import './styles/mainPage.css';
+import './styles/lobby.css';
+import './styles/join.css';
 import views from './views';
 import events from './events';
 import PubSub from './pubsub';

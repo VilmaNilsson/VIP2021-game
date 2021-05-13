@@ -183,6 +183,7 @@ function createTokens() {
 function createTeam(state = {}) {
   const team = {
     name: '',
+    color: '',
     crew: -1,
     ...state,
     defaults: {
@@ -256,8 +257,8 @@ function filterGame(game) {
       return { name, ...properties };
     }),
     teams: game.teams.map((team) => {
-      const { name, properties } = team;
-      return { name, ...properties };
+      const { name, color, properties } = team;
+      return { name, color, ...properties };
     }),
     players: Object.entries(game.players).reduce((players, entry) => {
       const [id, player] = entry;
@@ -322,6 +323,47 @@ function getPlayersInStation(game, stationIndex) {
     });
 }
 
+// Returns true if station rack (for a specific team) is full
+function isRackFull(station, teamId) {
+  station.rack[teamId].slots.forEach((slot) => {
+    if(slot.token === -1){
+      return false;
+    }
+  });
+  return true;
+}
+
+// Checks and broadcast score for a given context, game, station and teamIndex
+function checkActionForScore(context, game, station, teamIndex) {
+  // This is how you get points:
+  // ===========================
+
+  // Check if the action means a rack has a row of same tokens
+  const slots = station.racks[teamIndex].slots.map((slot) => slot.token);
+  const sameSlots = slots.every((slot) => slot === slots[0]);
+  const noEmptySlots = slots.every((slot) => slot !== -1);
+
+  // All the tokens are the same = points!
+  if (noEmptySlots && sameSlots) {
+    game.teams[teamIndex].properties.score += 3;
+
+    // Broadcast the updated score
+    const score = getTeamScores(game);
+    context.broadcastToGame('game:score', { score });
+  } else {
+    // Only unique slots in a rack also gives points
+    const uniqueSlots = new Set(slots).size === slots.length;
+
+    if (noEmptySlots && uniqueSlots) {
+      game.teams[teamIndex].properties.score += 2;
+
+      // Broadcast the updated score
+      const score = getTeamScores(game);
+      context.broadcastToGame('game:score', { score });
+    }
+  }
+}
+
 module.exports = {
   randomHex,
   generateUUID,
@@ -345,4 +387,6 @@ module.exports = {
   getLoginTime,
   getTeamScores,
   getPlayersInStation,
+  isRackFull,
+  checkActionForScore,
 };

@@ -10,10 +10,11 @@ function PlanActions(el, context) {
   actions.forEach((action) => {
     const { name, desc, event } = action;
     const div = document.createElement('div');
+    div.setAttribute('class', 'availableAction');
 
     div.innerHTML = `
-      <p>${name}</p>
-      <p><em>${desc}</em></p>
+      <p class='aName'>${name}</p>
+      <p>${desc}</p>
     `;
 
     div.click(() => {
