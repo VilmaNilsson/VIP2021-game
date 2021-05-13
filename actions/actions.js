@@ -35,6 +35,13 @@ const actions = [
     cooldown: 2 * 60,
   },
   {
+    event: 'action:station:fill-empty',
+    name: 'Fill Empty',
+    desc: 'Places a random token in selected slot within the station',
+    target: 'slot',
+    cooldown: 2 * 60,
+  },
+  {
     event: 'action:teams:swap-rack',
     name: 'Swap Racks',
     desc: `Swap your team's rack of bins with team's rack.`,
