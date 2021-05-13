@@ -35,6 +35,20 @@ const actions = [
     cooldown: 2 * 60,
   },
   {
+    event: 'action:teams:lock',
+    name: 'Lock Team',
+    desc: 'Locks an entire team for 20 seconds',
+    target: 'teams',
+    cooldown: 2 * 60,
+  },
+  {
+    event: 'action:teams:unlock',
+    name: 'Unlocks Team',
+    desc: 'Unlocks your team',
+    target: 'teams',
+    cooldown: 2 * 60,
+  },
+  {
     event: 'action:station:fill-empty',
     name: 'Fill Empty',
     desc: 'Places a random token in selected slot within the station',

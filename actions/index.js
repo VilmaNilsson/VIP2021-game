@@ -4,8 +4,6 @@ const actions = require('./actions');
 // TODO: these needs fixing
 // const playerImmune = require('./player-immune');
 // const playerLoginTime = require('./player-increased-login');
-// const playerLocked = require('./player-locked');
-// const playerUnlock = require('./player-unlock');
 // const playerGetToken = require('./player-get-token');
 // const resetAll = require('./reset-all');
 // const stationDoubleSalary = require('./station-double-salary');
@@ -15,6 +13,8 @@ const actions = require('./actions');
 // const stationLoginTime = require('./station-increased-login');
 
 // NOTE: These are working
+const teamLock = require('./team-lock');
+const teamUnlock = require('./team-unlock');
 const stationLock = require('./station-lock');
 const playerSecretCargo = require('./player-secret-cargo');
 const teamsLoginIncreased = require('./teams-increased-login');
@@ -32,6 +32,8 @@ const actionHandlers = {
   stationLock,
   teamsLoginIncreased,
   stationLoginIncreased,
+  teamLock,
+  teamUnlock,
   teamsSwapRack,
   stationDoublePoints,
   stationHalfPoints,

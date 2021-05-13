@@ -323,6 +323,24 @@ function getPlayersInStation(game, stationIndex) {
     });
 }
 
+// Returns an array of player Ids for a given team
+function getPlayersInTeam(game, teamId) {
+  return Object.entries(game.players)
+    .filter((entry) => {
+      const player = entry[1];
+
+      if (player.team === null) {
+        return false;
+      }
+
+      return player.team === teamId;
+    })
+    .map((entry) => {
+      const id = entry[0];
+      return id;
+    });
+}
+  
 // Returns true if station rack (for a specific team) is full
 function isRackFull(station, teamId) {
   station.rack[teamId].slots.forEach((slot) => {
@@ -387,6 +405,7 @@ module.exports = {
   getLoginTime,
   getTeamScores,
   getPlayersInStation,
+  getPlayersInTeam,
   isRackFull,
   checkActionForScore,
 };
