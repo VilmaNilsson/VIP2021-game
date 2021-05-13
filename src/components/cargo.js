@@ -17,7 +17,7 @@ function Cargo(el, context) {
   const { team } = player;
   cargoObj.style.backgroundColor = `var(--team-color-${team + 1})`;
 
-  cargoSlot.src = `assets/${token}.png`;
+  cargoSlot.src = `/assets/${token}.png`;
 
   // Whenever we receive the changes to our cargo
   el.subscribe('player:cargos', (e) => {
@@ -26,7 +26,7 @@ function Cargo(el, context) {
     const { cargo } = e.detail;
     const token = tokens[cargo.token] ? tokens[cargo.token].name : '-';
 
-    cargoSlot.src = `assets/${token}.png`;
+    cargoSlot.src = `/assets/${token}.png`;
   });
 
   el.click(() => {
