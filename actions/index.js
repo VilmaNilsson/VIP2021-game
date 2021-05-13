@@ -10,17 +10,21 @@ const actions = require('./actions');
 // const resetAll = require('./reset-all');
 // const stationDoubleSalary = require('./station-double-salary');
 // const stationHalfSalary = require('./station-half-salary');
-// const stationUnlock = require('./station-unlock');
 // const stationsDoubleSalary = require('./stations-double-salary');
 // const stationsHalfSalary = require('./stations-half-salary');
 // const stationLoginTime = require('./station-increased-login');
-// const teamsSwapRack = require('./teams-swap-rack');
 
 // NOTE: These are working
 const stationLock = require('./station-lock');
 const playerSecretCargo = require('./player-secret-cargo');
 const teamsLoginIncreased = require('./teams-increased-login');
 const stationLoginIncreased = require('./station-increased-login');
+const teamsSwapRack = require('./teams-swap-rack');
+const stationDoublePoints = require('./station-double-salary');
+const stationHalfPoints = require('./station-half-salary');
+const stationsDoublePoints = require('./stations-double-salary');
+const stationsHalfPoints = require('./stations-half-salary');
+const stationUnlock = require('./station-unlock');
 
 // Combine the handlers
 const actionHandlers = {
@@ -28,6 +32,12 @@ const actionHandlers = {
   stationLock,
   teamsLoginIncreased,
   stationLoginIncreased,
+  teamsSwapRack,
+  stationDoublePoints,
+  stationHalfPoints,
+  stationsDoublePoints,
+  stationsHalfPoints,
+  stationUnlock,
   // NOTE: don't forget to add more here
 };
 

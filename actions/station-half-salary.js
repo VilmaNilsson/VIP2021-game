@@ -4,13 +4,13 @@ function halfSalaryStationSpell(context, payload) {
 
   // We're not in a game
   if (game === null) {
-    context.send('spell:station:half-salary:fail', { errorCode: 0 });
+    context.send('action:station:half-points:fail', { errorCode: 0 });
     return false;
   }
 
   // We're not in the play phase
   if (game.properties.phase.type !== 2) {
-    context.send('spell:station:half-salary:fail', { errorCode: 1 });
+    context.send('action:station:half-points:fail', { errorCode: 1 });
     return false;
   }
 
@@ -21,12 +21,13 @@ function halfSalaryStationSpell(context, payload) {
 
   // They tried targeting an unknown station
   if (station === undefined) {
-    context.send('spell:station:half-salary:fail', { errorCode: 2 });
+    context.send('action:station:half-points:fail', { errorCode: 2 });
     return false;
   }
 
   // 30 seconds
   const duration = 30 * 1000;
+  const start = Date.now();
 
   // We always use the `properties` key for changing values
   station.properties.salaryMultiplier = 0.5;
@@ -35,7 +36,7 @@ function halfSalaryStationSpell(context, payload) {
   // Save our changes
   context.updateGameState(game);
   // And broadcast it to all players
-  context.broadcastToGame('station:half-salary', { station: stationIndex, duration });
+  context.broadcastToGame('action:station:half-points', { station: stationIndex, start, duration });
 
   // Reset the station's salary on the next salary payout (ie. Tick)
   context.setTimeout(() => {
@@ -45,12 +46,12 @@ function halfSalaryStationSpell(context, payload) {
     station.properties.salaryMultiplier = 1;
     game.stations[stationIndex] = station;
     context.updateGameState(game);
-    context.broadcastToGame('station:half-salary:faded', { station: stationIndex });
+    context.broadcastToGame('action:station:half-points:faded', { station: stationIndex });
   }, duration);
 
   return true;
 }
 
 module.exports = {
-  'spell:station:half-salary': halfSalaryStationSpell,
+  'action:station:half-points': halfSalaryStationSpell,
 };

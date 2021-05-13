@@ -7,7 +7,7 @@ function unlockStationSpell(context, payload) {
 
   // there is no game
   if (gameState === null) {
-    context.send('spell:unlock:station:fail', { errorCode: 0 });
+    context.send('action:station:unlock:fail', { errorCode: 0 });
     return false;
   }
 
@@ -15,7 +15,7 @@ function unlockStationSpell(context, payload) {
 
   // not in the play phase
   if (gamePhase !== 2) {
-    context.send('spell:unlock:station:fail', { errorCode: 1 });
+    context.send('action:station:unlock:fail', { errorCode: 1 });
     return false;
   }
 
@@ -25,7 +25,7 @@ function unlockStationSpell(context, payload) {
   const station = gameState.stations[stationIndex];
   // the station does not exist
   if (station === undefined) {
-    context.send('spell:unlock:station:fail', { errorCode: 2 });
+    context.send('action:station:unlock:fail', { errorCode: 2 });
     return false;
   }
 
@@ -44,11 +44,11 @@ function unlockStationSpell(context, payload) {
   // save the changes
   context.updateGameState(gameState);
   // broadcast
-  context.broadcastToGame('station:unlocked', { station: stationIndex });
+  context.broadcastToGame('action:station:unlocked', { station: stationIndex });
 
   return true;
 }
 
 module.exports = {
-  'spell:station:unlock': unlockStationSpell,
+  'action:station:unlock': unlockStationSpell,
 };

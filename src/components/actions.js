@@ -78,15 +78,16 @@ function Actions(el, context) {
       const { action } = context.getState();
 
       const otherSelectedAction = document.querySelector('.game-action-selected');
-      if (otherSelectedAction) otherSelectedAction.classList.remove('.game-action-selected');
+      if (otherSelectedAction) otherSelectedAction.classList.remove('game-action-selected');
 
-      if (canBeCanceled) div.classList.toggle('game-action-selected');
       // Cancel a active action thats about to be cast
       if (action !== null && action !== undefined) {
+        div.classList.remove('game-action-selected');
         context.setState({ action: null });
         div.publish('player:action:cancel');
         return;
       }
+      if (canBeCanceled) div.classList.add('game-action-selected');
 
       // When they target themselves we dont need to select anything
       if (target === 'player') {
