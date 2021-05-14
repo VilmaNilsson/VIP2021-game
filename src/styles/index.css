@@ -1,11 +1,11 @@
 @import "variables.css";
 @import "cargo.css";
+@import "plan.css";
 
 body {
     margin: 0;
 }
 
-#teams div:hover,
 #actions div:hover,
 #player-actions div:hover,
 #stations div:hover,

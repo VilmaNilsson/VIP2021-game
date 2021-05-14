@@ -2,26 +2,27 @@ import utils from '../utils';
 
 function JoinView() {
   const el = document.createElement('div');
+  el.id = 'joinWrapper';
 
   el.innerHTML = `
-    <h1>Join</h1>
+    <h1>LOBBY</h1>
+    <h2>Join game</h2>
 
-    <div id="error"></div>
+    <div id="joinError"></div>
 
     <form id="join-form">
       <label>
-        Name
-        <input type="text" name="name">
+        <input id="nameInput" type="text" name="name" placeholder="name">
       </label>
 
-      <button type="submit">Join game</button>
+      <button id="joinBtn" type="submit">Join game</button>
     </form>
   `;
 
-  const errorEl = el.querySelector('#error');
+  const errorEl = el.querySelector('#joinError');
   const formEl = el.querySelector('#join-form');
 
-  errorEl.subscribe('game:join:fail', () => {
+  errorEl.subscribe('game:joined:fail', () => {
     errorEl.textContent = 'Game doesnt exist';
   });
 

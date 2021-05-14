@@ -7,8 +7,10 @@ function gameCreate(context, payload) {
     name,
     nrOfTeams,
     nrOfStations,
+    crewDuration,
     planDuration,
     playDuration,
+    loginTimer,
   } = payload;
 
   // A game must have a name
@@ -48,10 +50,13 @@ function gameCreate(context, payload) {
   // for now it dosnt take any arguments
   const tokens = utils.createTokens();
 
+  const colors = ['#33ffff', '#ff3399', '#cc00ff', '#0066ff'];
+
   // Our teams (based off of `nrOfTeams`)
   const teams = Array.from({ length: nrOfTeams || 4 }).map((_, index) => {
     return utils.createTeam({
       name: `Team ${index + 1}`,
+      color: colors[index],
     });
   });
 

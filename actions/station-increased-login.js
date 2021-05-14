@@ -25,6 +25,9 @@ function increasedLoginSpell(context, payload) {
     return false;
   }
 
+  const duration = 60;
+  const start = Date.now();
+
   // we change the value of the loginTime variable
   station.properties.loginMultiplier = 1.5;
   // we send back the modified station
@@ -32,7 +35,7 @@ function increasedLoginSpell(context, payload) {
   // we save the change
   context.updateGameState(game);
   // we broadcast the change to all player
-  context.broadcastToGame('action:station:slowed', { station: stationIndex, duration: 60 });
+  context.broadcastToGame('action:station:slowed', { station: stationIndex, start, duration });
 
   // we reset the parameter after 1 mins
   context.setTimeout(() => {

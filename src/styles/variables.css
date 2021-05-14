@@ -27,4 +27,9 @@ html {
     --game-action-text-color: rgb(0, 0, 0);
     --game-action-background-color: rgb(255, 255, 255);
     --game-action-font-size: 0.8rem;
+
+    /* Create game variables */
+    --font-size-title-big: 2vw;
+    --font-size-title-small: 2vw;
+    --font-size-label: 2vw;
 }

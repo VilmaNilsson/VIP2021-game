@@ -4,6 +4,7 @@ function increaseLoginTimeTeams(context, payload) {
   const { team } = payload;
   const LOGIN_MULTIPLIER = 1.5;
   const DEFAULT_LOGIN_TIME = game.teams[team].defaults.loginMultiplier;
+  const start = Date.now();
 
   if (game === null) {
     context.send('action:teams:slowed:fail', { errorCode: 0 });
@@ -22,7 +23,7 @@ function increaseLoginTimeTeams(context, payload) {
   const newGameState = { ...game };
   context.updateGameState(newGameState);
 
-  context.broadcastToGame('action:teams:slowed', { team });
+  context.broadcastToGame('action:teams:slowed', { team, start, DURATION });
 
   context.setTimeout(() => {
     game.teams[team].properties.loginMultiplier = DEFAULT_LOGIN_TIME;
