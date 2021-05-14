@@ -1,5 +1,7 @@
 function Cargo(el, context) {
   const { game, player } = context.getState();
+  const cargoObj = document.getElementById('cargo');
+  const cargoSlot = document.getElementById('cargo-slot');
 
   // We need both the game and the player for this component
   if (!game || !player) {
@@ -10,7 +12,12 @@ function Cargo(el, context) {
   const { cargo } = player;
   const token = tokens[cargo.token] ? tokens[cargo.token].name : '-';
 
-  el.textContent = `Cargo: ${token}`;
+  // Get the team-number of the player's team and use it to set the
+  // background color of the element to the team's color
+  const { team } = player;
+  cargoObj.style.backgroundColor = `var(--team-color-${team + 1})`;
+
+  cargoSlot.src = `/assets/${token}.png`;
 
   // Whenever we receive the changes to our cargo
   el.subscribe('player:cargos', (e) => {
@@ -19,7 +26,7 @@ function Cargo(el, context) {
     const { cargo } = e.detail;
     const token = tokens[cargo.token] ? tokens[cargo.token].name : '-';
 
-    el.textContent = `Cargo: ${token}`;
+    cargoSlot.src = `/assets/${token}.png`;
   });
 
   el.click(() => {

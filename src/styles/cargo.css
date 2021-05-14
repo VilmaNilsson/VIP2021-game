@@ -1,0 +1,43 @@
+#cargos_all {
+    display: flex;
+    justify-content: space-around;
+    width: 50vw;
+}
+
+.cargos-base {
+    background-color: var(--team-color-4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.cargos-base > img {
+    width: 17vw;
+    margin: 1vw;
+}
+
+.inactive {
+    opacity: .5;
+}
+
+.active {
+    opacity: 1;
+}
+
+#secret-cargo {
+    width: 25vw;
+}
+
+#secret-cargo > img {
+    margin-right: -1vw;
+}
+
+#secret-cargo-timer {
+    transform-origin: center;
+    transform: rotate(90deg);
+    font-family: var(--font-primary);
+    margin: 0px;
+    min-width: 40px;
+    text-align: center;
+}

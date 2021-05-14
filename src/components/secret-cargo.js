@@ -1,20 +1,51 @@
+function timeSec() {
+  const secSpan = document.querySelector('#secret-cargo-timer > span:last-of-type');
+  let secVal = secSpan.innerHTML;
+
+  if (secVal === '00' || secVal === '0') {
+    const minSpan = document.querySelector('#secret-cargo-timer > span:first-of-type');
+    let minVal = minSpan.innerHTML;
+    minVal -= 1;
+    minSpan.innerHTML = (`0${minVal}`).slice(-2);
+    secSpan.innerHTML = '59';
+  } else {
+    secVal -= 1;
+    secSpan.innerHTML = (`0${secVal}`).slice(-2);
+  }
+}
+
+function timerCaller() {
+  const minSpan = document.querySelector('#secret-cargo-timer > span:first-of-type');
+
+  const secSpan = document.querySelector('#secret-cargo-timer > span:last-of-type');
+
+  const secID = setInterval(() => {
+    timeSec();
+  }, 1000);
+
+  setTimeout(() => {
+    clearInterval(secID);
+    minSpan.innerHTML = '02';
+    secSpan.innerHTML = '00';
+  }, 122000);
+}
+
 function SecretCargo(el, context) {
   const { game, player } = context.getState();
+  const secretCargoObj = document.getElementById('secret-cargo');
+  const secretCargoSlot = document.getElementById('secret-cargo-slot');
 
   // We need both the game and the player for this component
   if (!game || !player) {
     return el;
   }
 
-  const { tokens } = game;
-  const { secretCargo } = player;
-
-  const token = tokens[secretCargo.token]
-    ? tokens[secretCargo.token].name
-    : '-';
+  // Get the team-number of the player's team and use it to set the
+  // background color of the element to the team's color
+  const { team } = player;
+  secretCargoObj.style.backgroundColor = `var(--team-color-${team + 1})`;
 
   // TODO: check if the cargo is activated (then display that timer as well)
-  el.textContent = `Secret: ${token}`;
 
   // Whenever we receive the changes to our cargo
   el.subscribe('player:cargos', (e) => {
@@ -26,7 +57,7 @@ function SecretCargo(el, context) {
       ? tokens[secretCargo.token].name
       : '-';
 
-    el.textContent = `Secret: ${token}`;
+    secretCargoSlot.src = `/assets/${token}.png`;
   });
 
   el.click(() => {
@@ -54,9 +85,12 @@ function SecretCargo(el, context) {
 
   // Whenever someone plays the activate secret cargo action
   el.subscribe('action:player:secret-cargo', (e) => {
+    secretCargoObj.classList.remove('inactive');
+    secretCargoObj.classList.add('active');
     const { start, duration } = e.detail;
     // The end time (ie. 'that many seconds far ahead')
     const end = start + duration;
+    timerCaller();
 
     const interval = context.setInterval(() => {
       const { game, player } = context.getState();
@@ -72,16 +106,19 @@ function SecretCargo(el, context) {
       const now = Date.now();
       // Calculate how many seconds are left
       const sec = ((end - now) / 1000).toFixed(1);
-      el.textContent = `Secret: ${token} (${sec}s)`;
 
       // If none are, stop our interval
       if (sec <= 0) {
         clearInterval(interval);
-        el.textContent = `Secret: ${token}`;
+        secretCargoSlot.src = `/assets/${token}.png`;
       }
     }, 100);
-  });
 
+    el.subscribe('action:player:secret-cargo:faded', () => {
+      secretCargoObj.classList.remove('active');
+      secretCargoObj.classList.add('inactive');
+    });
+  });
   return el;
 }
 
