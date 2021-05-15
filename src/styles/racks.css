@@ -1,0 +1,73 @@
+.racks-container {
+
+            display: grid;
+
+            grid-template-columns: repeat(6, 16.66%);
+
+            align-items: center;
+
+            padding-left: 1%;
+
+            padding-right: 1%;
+
+            height: 50px;
+
+            border: 1px solid Black;
+
+}
+
+.rack {
+
+            background-repeat: no-repeat;
+
+            background-position: center;
+
+            background-size: 250%;
+
+            text-align: center;
+
+            justify-content: center;
+
+   	    border: 1px solid Black;
+
+            color: var(--text-color);
+
+            font-family: var(--font-fix);
+
+            font-weight: bold;
+
+            line-height: 50px;
+
+}
+
+ 
+
+.rack-team1 {
+
+            background-image: url('../../assets/slot1.svg');
+
+}
+
+ 
+
+.rack-team2 {
+
+            background-image: url('../../assets/slot2.svg');
+
+}
+
+ 
+
+.rack-team3 {
+
+            background-image: url('../../assets/slot3.svg');
+
+}
+
+ 
+
+.rack-team4 {
+
+            background-image: url('../../assets/slot4.svg');
+
+}

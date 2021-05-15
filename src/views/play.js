@@ -13,37 +13,27 @@ function PlayView(context) {
 
     el.innerHTML = `
 
-    <div class = radar-bkg>
+     <div id="teams"></div>
 
-              <div id="teams"></div>
+    <div id="timer"></div>
 
-      <div id="timer"></div>
+    <div id="stations"></div>
 
-      <div id="stations"></div>
+    <div id="racks"></div>
 
-    </div>
+    <h2>Cargo</h2>
 
-            <div>
+    <div id="cargo"></div>
 
-              <h2>Racks</h2>
+    <div id="secret-cargo"></div>
 
-      <div id="racks"></div>
+    <h3>Your actions</h3>
 
-      <h2>Cargo</h2>
+    <div id="actions"></div>
 
-      <div id="cargo"></div>
+    <button id="quit">Quit</button>
 
-      <div id="secret-cargo"></div>
-
-      <h3>Your actions</h3>
-
-      <div id="actions"></div>
-
-      <button id="quit">Quit</button>
-
-      <button id="menu">Menu</button>
-
-              </div>
+    <button id="menu">Menu</button>
 
   `;
 

@@ -1,30 +1,62 @@
 html {
+
     /* Main colors */
+
     --background-color: #242328;
+
     --text-color: #f4f4f4;
+
     /* Complementery colors */
+
     --comp-color-1: #660066;
+
     --comp-color-2: #291039;
+
     /* Team colors */
+
     --team-color-1: #33ffff; /* neon */
+
     --team-color-2: #ff3399; /* pink */
+
     --team-color-3: #cc00ff; /* purple */
+
     --team-color-4: #0066ff; /* blue */
+
     /* Logo color */
+
     --logo-color: #ff00cc;
 
+ 
+
     /* Fonts
+
      * =====
+
      * Primary: Titles, buttons, etc
+
      * Secondary: Body text
+
      */
+
     --font-primary: "Rajdhani", Arial, sans-serif;
+
     --font-secondary: "Lato", Arial, sans-serif;
 
+    --font-fix: "Menlo", monospace;
+
+ 
+
     /*Game actions variables*/
+
     --game-action-on-cooldown-color: rgb(161, 189, 189);
+
     --game-action-selected-color: rgb(129, 161, 161);
+
     --game-action-text-color: rgb(0, 0, 0);
+
     --game-action-background-color: rgb(255, 255, 255);
+
     --game-action-font-size: 0.8rem;
+
 }
+

@@ -1,43 +1,39 @@
-.rocket-team-master-div {
-
-            display: grid;
-
-            grid-template-columns: auto auto auto auto auto auto;
-
-            align-items: center;
-
-            margin-top: 3%;
+.rocket-team-container {
+	
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    align-items: center;
+    padding: 1%;		
+    height :30px;
 
 }
 
-.rocket-team {
 
-            background-image: url('../../assets/rocket.svg');
 
-            background-repeat: no-repeat;
+.rocket {
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+	text-align: center;
+	color: black;
+	font-family: var(--font-fix);
+	font-weight: bold;
+	font-size: 100%;
+	line-height: 2;
+}
 
-            background-position: center;
+.rocket-team1 {
+	background-image: url('../../assets/rocket1.svg');
+}
 
-            text-align: center;
+.rocket-team2 {
+	background-image: url('../../assets/rocket2.svg');
+}
 
-            background-size: 80%;
+.rocket-team3 {
+	background-image: url('../../assets/rocket3.svg');
+}
 
-            grid-column: auto;
-
-    grid-row: auto;
-
-            /* margin-top: 4%; */
-
-            text-align: center;
-
-            justify-items: center;
-
-            align-items: center;
-
-            color: red;
-
-            font-family: verdana, sans-serif; /* Too much variabilities on Fantasy font */
-
-            /* height: 3.1vh;*/
-
+.rocket-team4 {
+	background-image: url('../../assets/rocket4.svg');
 }

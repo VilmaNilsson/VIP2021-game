@@ -2,41 +2,41 @@
 @import "team-rocket.css";
 @import "timer.css";
 @import "stations.css";
+@import "racks.css";
 
 
 body {
 
     margin: 0;
 
-    background-image: url('../../assets/play-bg.png');
+}
 
-            background-repeat: no-repeat;
+ 
 
-            background-position: top;
+#root {
 
-            background-size: cover;
+     width: 100vw;
+
+     height: 100vh;
+
+     background-image: url('../../assets/play-bg.png');
+
+     background-repeat: no-repeat;
+
+     background-position: center;
+
+     background-size: cover;
+
+     color: var(--text-color);
 
 }
 
-.radar-bkg {
 
-    margin: 0;
-
-    background-image: url('../../assets/play-bg.png');
-
-    background-repeat: no-repeat;
-
-    background-position: top;
-
-    background-size: cover;
-
-}
 
 
 #teams div:hover,
 #actions div:hover,
 #player-actions div:hover,
-#stations div:hover,
 #racks div:last-child span:hover,
 #pocket:hover,
 #temporary-pocket:hover {
@@ -46,9 +46,9 @@ body {
 
 #racks div span {
     display: inline-block;
-    padding: 3px;
+    /*padding: 3px;
     margin: 0 2px;
-    background: #eee;
+    background: #eee;*/
 }
 
 #menu {
@@ -62,3 +62,13 @@ body {
     right: 2vw;
 }
 
+#quit {
+    width: 18vw;
+    border-radius: 7px;
+
+    background-color: white;
+
+    position: absolute;
+    bottom: 2vw;
+    left: 2vw;
+}
