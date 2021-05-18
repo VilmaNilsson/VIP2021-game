@@ -1,0 +1,348 @@
+#play-view {
+  flex-grow: 1;
+  height: 100vh;
+  background-image: url('/assets/background.png');
+  background-color: #151824; /* same as image */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: -126px;
+  padding: 0 10px;
+}
+
+#play-view #teams {
+  display: grid;  
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  padding: 15px 0;
+}
+
+#play-view .team {
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  padding: 8px;
+  border: 1px solid transparent;
+  box-shadow: 0 0 5px 2px transparent,
+        inset 0 0 5px 2px transparent;
+  transition: box-shadow 120ms ease;
+}
+
+#play-view .team.selectable {
+  border-color: #fff;
+  box-shadow: 0 0 5px 2px rgba(255, 255, 255, 1),
+        inset 0 0 5px 2px rgba(255, 255, 255, 1);
+}
+
+#play-view .team.selectable:hover {
+  cursor: pointer;
+  box-shadow: 0 0 5px 2px var(--your-team-color),
+        inset 0 0 5px 2px var(--your-team-color);
+}
+
+#play-view .score {
+  color: #000;
+  text-align: center;
+  font-family: var(--font-secondary);
+  padding-left: 10px;
+}
+
+#play-view #stations {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 28px;
+  padding: 10px 0;
+  gap: 5px;
+}
+
+#play-view #stations #timer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  grid-column: 2; 
+  grid-row: 1;
+  font-size: 21px;
+  letter-spacing: 1px;
+}
+
+#play-view .station {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 10px 5px 10px;
+  grid-row: span 3;
+  border: 1px solid transparent;
+  box-shadow: 0 0 5px 2px transparent,
+        inset 0 0 5px 2px transparent;
+  transition: box-shadow 120ms ease, opacity 120ms ease;
+}
+
+#play-view .station:hover,
+#play-view .station.active {
+  cursor: pointer;
+  border-color: rgba(255, 255, 255, 1);
+  box-shadow: 0 0 5px 2px var(--your-team-color),
+        inset 0 0 5px 2px var(--your-team-color);
+}
+
+#play-view .station.selectable,
+#play-view .station.active.selectable {
+   border-color: #fff;
+   box-shadow: 0 0 5px 2px rgba(255, 255, 255, 1),
+          inset 0 0 5px 2px rgba(255, 255, 255, 1);
+}
+
+#play-view .station.selectable:hover,
+#play-view .station.active.selectable:hover {
+   border-color: #fff;
+   box-shadow: 0 0 5px 2px var(--your-team-color),
+   inset 0 0 5px 2px var(--your-team-color);
+}
+
+#play-view .station.locked {
+  opacity: 0.25;
+}
+
+#play-view .station.locked:hover,
+#play-view .station.active.locked:hover {
+  cursor: default;
+  border-color: transparent;
+  box-shadow: 0 0 0 0 transparent;
+}
+
+#play-view .station img {
+  max-width: 50px;
+}
+
+#play-view .station .name {
+  text-align: center;
+  padding-top: 5px;
+}
+
+#play-view #racks {
+  display: grid;
+  gap: 2px;
+  position: relative;
+  grid-auto-rows: 58px;
+  min-height: 238px;
+}
+
+#play-view .rack {
+  display: flex;
+  gap: 2px;
+}
+
+#play-view .rack.other-team {
+  opacity: 0.5;
+}
+
+#play-view .rack.your-rack {
+}
+
+#play-view .rack .slot {
+  padding: 5px;
+  border-radius: 8px;
+  flex: 1 1 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#play-view .your-rack .slot:hover {
+  cursor: pointer;
+}
+
+#play-view .slot .token {
+  background-color: #000;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  box-shadow: 0 0 0 0 transparent;
+  transition: box-shadow 120ms ease;
+}
+
+#play-view .slot.selected .token,
+#play-view .your-rack .slot:hover .token {
+  box-shadow: 0 0 5px 2px #fff;
+}
+
+#play-view .slot .token img {
+  max-width: 45px;
+}
+
+#play-view #racks .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.98);
+  color: #000;
+  font-size: 21px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  text-align: center;
+  padding: 0 15px;
+}
+
+#play-view #racks .overlay.no-racks {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+#play-view #bottom {
+  display: flex;
+  padding-top: 10px;
+}
+
+#play-view #actions {
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 5px;
+  padding-right: 5px;
+}
+
+#play-view .action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  color: #000;
+  border-radius: 10px;
+  font-size: 14px;
+  border: 1px solid transparent;
+  transition: border-color 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
+}
+
+#play-view .action:hover {
+  cursor: pointer;
+  border-color: var(--your-team-color);
+  box-shadow: 0 0 5px 2px var(--your-team-color);
+}
+
+#play-view .action.on-cooldown {
+  opacity: 0.4;
+}
+
+#play-view .action.selected {
+  border-color: var(--your-team-color);
+  box-shadow: 0 0 5px 2px var(--your-team-color);
+}
+
+#play-view .action.on-cooldown:hover {
+  cursor: default;
+  border-color: transparent;
+  box-shadow: 0 0 0 0 transparent;
+}
+
+#play-view .action .name {
+  text-align: center;
+}
+
+#play-view .action .cooldown {
+  text-align: center;
+}
+
+#play-view #bottom #right {
+  display: flex;
+  flex-direction: column;
+  padding-left: 3px;
+}
+
+#play-view #cargo-container {
+  display: flex;
+  flex-grow: 1;
+}
+
+#play-view #cargo {
+  border-radius: 8px;
+  padding: 5px;
+  margin-right: 5px;
+}
+
+#play-view #cargo:hover {
+  cursor: pointer;
+}
+
+#play-view #cargo .token {
+  background-color: #000;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  box-shadow: 0 0 0 0 transparent;
+  transition: box-shadow 120ms ease;
+}
+
+#play-view #cargo.selected .token,
+#play-view #cargo:hover .token {
+  box-shadow: 0 0 5px 2px #fff;
+}
+
+#play-view #cargo .token img {
+  max-width: 50px;
+}
+
+#play-view #secret-cargo {
+  border-radius: 8px;
+  padding: 5px;
+  position: relative;
+  padding-right: 30px;
+  transition: opacity 120ms ease;
+}
+
+#play-view #secret-cargo.locked {
+  opacity: 0.6;
+}
+
+#play-view #secret-cargo:hover {
+  cursor: pointer;
+}
+
+#play-view #secret-cargo .timer {
+  color: #000;
+  transform: rotate(90deg);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 18px;
+}
+
+#play-view #secret-cargo .token {
+  background-color: #000;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  box-shadow: 0 0 0 0 transparent;
+  transition: box-shadow 120ms ease;
+}
+
+#play-view #secret-cargo.selected .token,
+#play-view #secret-cargo:hover .token {
+  box-shadow: 0 0 5px 2px #fff;
+}
+
+#play-view #secret-cargo .token img {
+  max-width: 50px;
+}
+
+#play-view #menu {
+  align-self: flex-end;
+  border: 0;
+  border-radius: 10px;
+  padding: 5px 29px;
+  margin-top: 5px;
+}
+
+#play-view #menu:hover {
+  cursor: pointer;
+}

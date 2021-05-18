@@ -171,11 +171,14 @@ function createRacks(nrOfTeams, nrOfTokens) {
 }
 
 // Create tokens.....for now it dosnt take any arguments
-function createTokens() {
-  // Our tokes (for now) is just a simple array of { name: letter }
-  const tokens = 'ABCDEFGHIJ'.split('').map((letter) => {
+function createTokens(nrOfTokens = 6) {
+  // Shuffle an array of predefined letters and take a slice out of it
+  const letters = shuffle('ABCDEFGHIJ'.split('')).slice(0, 6);
+  // Our tokes is just a simple array of { name: letter }
+  const tokens = letters.map((letter) => {
     return { name: letter };
   });
+
   return tokens;
 }
 
@@ -234,13 +237,14 @@ function createPlayer(state = {}) {
 // Returns a shuffled array of station names
 function getStationNames() {
   return shuffle([
-    'Uranus',
-    'Blandito',
-    'Margreth',
-    'Urmom',
-    'Pluto',
-    'Moo',
-    'Kim',
+    'blandito',
+    'earth',
+    'kim',
+    'margeret',
+    'moo',
+    'pluto',
+    'uranus',
+    'yourmom',
   ]);
 }
 

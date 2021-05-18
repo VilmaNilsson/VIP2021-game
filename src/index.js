@@ -1,11 +1,5 @@
 // Import all of our CSS
 import './styles/index.css';
-import './styles/game-actions.css';
-import './styles/login.css';
-import './styles/create-game.css';
-import './styles/mainPage.css';
-import './styles/lobby.css';
-import './styles/join.css';
 import views from './views';
 import events from './events';
 import PubSub from './pubsub';
@@ -28,5 +22,7 @@ Object.values(events).forEach((eventGroup) => {
 // Open a WebSocket connection
 PubSub.connect('ws://localhost:7001');
 
-// NOTE: for debugging purposes we'll make our objects globally available
+// NOTE: for debugging purposes
 window.DEBUG = { PubSub, Router, Context };
+window.getState = () => PubSub.send('debug:state');
+window.clearState = () => PubSub.send('debug:state:clear');

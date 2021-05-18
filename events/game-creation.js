@@ -50,6 +50,7 @@ function gameCreate(context, payload) {
   // for now it dosnt take any arguments
   const tokens = utils.createTokens();
 
+  // Predefined team colors
   const colors = ['#33ffff', '#ff3399', '#cc00ff', '#0066ff'];
 
   // Our teams (based off of `nrOfTeams`)
@@ -68,9 +69,13 @@ function gameCreate(context, payload) {
   const stations = Array.from({ length: nrOfStations || 6 }).map((_, index) => {
     const racks = utils.createRacks(teams.length, tokens.length);
 
+    // Default login time
+    const defaults = loginTimer === undefined ? {} : { loginTime: loginTimer };
+
     return utils.createStation({
       name: stationNames[index],
       racks,
+      defaults,
     });
   });
 

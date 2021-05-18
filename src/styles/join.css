@@ -1,30 +1,32 @@
-@import "variables.css";
-
-#joinWrapper {
-    background-color: var(--background-color);
+#join {
     height: 100vh;
-    width: 100vw;
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: var(--text-color);
+    padding: 0 30px;
 }
 
-#joinWrapper h1 {
+#join h2 {
+    font-family: var(--font-primary);
+    font-weight: 300;
+    font-size: 25px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/*
+#join h1 {
     font-family: var(--font-primary);
     text-shadow: 0 0 5px var(--logo-color);
     letter-spacing: .8px;
     font-size: 35px;
     margin: 40px 0 20px;
 }
+*/
 
-#joinWrapper h2 {
-    font-family: var(--font-primary);
-    font-weight: 300;
-    font-size: 25px;
-    margin-bottom: 20px;
-}
 
+/*
 #join-form {
     display: flex;
     flex-direction: column;
@@ -32,15 +34,13 @@
     align-items: center;
     margin-top: 30px;
 }
+*/
 
+/*
 #nameInput {
     font-size: 25px;
     padding: 15px 10px;
     border-radius: 20px;
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    -ms-border-radius: 20px;
-    -o-border-radius: 20px;
     text-align: center;
     border: none;
     margin-bottom: 30px;
@@ -57,7 +57,9 @@
     color: var(--text-color);
     opacity: .8;
 }
+*/
 
+/*
 #join-form button {
     letter-spacing: .5px;
     font-family: var(--font-primary);
@@ -92,8 +94,11 @@
 #joinBtn:hover, #joinBtn:active {
     background-color: #ffffffc9;
 }
+*/
 
-#joinError {
+    /*
+#join-error {
     font-family: var(--font-primary);
     color: red;
 }
+*/

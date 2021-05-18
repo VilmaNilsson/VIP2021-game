@@ -6,7 +6,7 @@ import {
 
 function PlanView(context) {
   const el = document.createElement('div');
-  el.setAttribute('class', 'planWrapper');
+  el.id = 'plan-view';
 
   el.innerHTML = `
     <div id='controlPanel'>

@@ -1,32 +1,41 @@
 function Cargo(el, context) {
   const { game, player } = context.getState();
-  const cargoObj = document.getElementById('cargo');
-  const cargoSlot = document.getElementById('cargo-slot');
 
   // We need both the game and the player for this component
   if (!game || !player) {
     return el;
   }
 
-  const { tokens } = game;
-  const { cargo } = player;
+  const { tokens, teams } = game;
+  const { cargo, team } = player;
   const token = tokens[cargo.token] ? tokens[cargo.token].name : '-';
+
+  el.innerHTML = `
+    <div class="token">
+      <img src="/assets/${token}.png">
+    </div>
+  `;
+
+  const img = el.querySelector('img');
+  const teamColor = teams[team].color;
+
+  el.style.backgroundColor = teamColor;
 
   // Get the team-number of the player's team and use it to set the
   // background color of the element to the team's color
-  const { team } = player;
-  cargoObj.style.backgroundColor = `var(--team-color-${team + 1})`;
-
-  cargoSlot.src = `/assets/${token}.png`;
 
   // Whenever we receive the changes to our cargo
   el.subscribe('player:cargos', (e) => {
     const { game } = context.getState();
     const { tokens } = game;
     const { cargo } = e.detail;
-    const token = tokens[cargo.token] ? tokens[cargo.token].name : '-';
 
-    cargoSlot.src = `/assets/${token}.png`;
+    const token = tokens[cargo.token]
+      ? tokens[cargo.token].name
+      : '-';
+
+    img.src = `/assets/${token}.png`;
+    el.classList.remove('selected');
   });
 
   el.click(() => {
@@ -46,6 +55,13 @@ function Cargo(el, context) {
       const from = state.tokenSelection;
       el.send('token:swap', { to, from });
       state.tokenSelection = null;
+    }
+
+    // Visuals for (de)selecting
+    if (state.tokenSelection === null) {
+      el.classList.remove('selected');
+    } else {
+      el.classList.add('selected');
     }
 
     // Update our client state with our selection

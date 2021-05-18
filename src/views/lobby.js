@@ -2,7 +2,7 @@ import { LobbyTeams } from '../components';
 
 function LobbyView(context) {
   const el = document.createElement('div');
-  el.id = 'lobbyWrapper';
+  el.id = 'lobby';
   const { id, game } = context.getState();
 
   const name = game ? game.name : '';
@@ -12,7 +12,7 @@ function LobbyView(context) {
     <h2>Join your team</h2>
     <div id="teams"></div>
     <div id="lobby-buttons-container" class="lobby-buttons">
-      <button id="quit">Quit</button>
+      <button class="pregame-btn" id="quit">Quit</button>
     </div>
   `;
 
@@ -25,6 +25,7 @@ function LobbyView(context) {
   if (game && id === game.admin) {
     const startBtn = document.createElement('button');
     startBtn.id = 'startBtn';
+    startBtn.className = 'pregame-btn';
     startBtn.textContent = 'Start';
 
     startBtn.addEventListener('click', () => {
@@ -37,12 +38,15 @@ function LobbyView(context) {
   el.subscribe('player:reconnect', () => {
     const { id, game } = context.getState();
 
+    el.querySelector('h1').textContent = `Lobby: ${game.name}`;
+
     LobbyTeams(teamsEl, context);
 
     // If you're the admin
     if (game && id === game.admin) {
       const startBtn = document.createElement('button');
       startBtn.id = 'startBtn';
+      startBtn.className = 'pregame-btn';
       startBtn.textContent = 'Start';
 
       startBtn.addEventListener('click', () => {

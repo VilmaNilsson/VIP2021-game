@@ -38,13 +38,18 @@ function playerReconnect(context, payload) {
     return;
   }
 
+  const playerState = context.getPlayerState();
   const game = context.getGameState();
 
+  // They're not in an active game
   if (game === null) {
+    context.send('player:reconnect', {
+      id: playerState.id,
+      username: playerState.username,
+    });
     return;
   }
 
-  const playerState = context.getPlayerState();
   const player = game.players[id];
 
   // If they're inside of a game and in a station

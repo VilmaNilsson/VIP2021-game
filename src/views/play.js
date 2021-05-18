@@ -1,6 +1,5 @@
 import {
   Teams,
-  PlayTimer,
   Stations,
   Cargo,
   SecretCargo,
@@ -10,33 +9,25 @@ import {
 
 function PlayView(context) {
   const el = document.createElement('div');
+  el.id = 'play-view';
 
   el.innerHTML = `
-    <h1>Play</h1>
-    <div id="timer"></div>
-    <h2>Teams</h2>
     <div id="teams"></div>
-    <h2>Stations</h2>
     <div id="stations"></div>
-    <h2>Racks</h2>
     <div id="racks"></div>
-    <h2>Cargo</h2>
-    <div id="cargos_all">
-      <div class="cargos-base" id="cargo">
-        <img id="cargo-slot" src="/assets/-.png">
-      </div>
-      <div class="cargos-base inactive" id="secret-cargo">
-        <img id="secret-cargo-slot" src="/assets/-.png">
-        <div id="secret-cargo-timer"><span>02</span>:<span>00</span></div>
+    <div id="bottom">
+      <div id="actions"></div>
+      <div id="right">
+        <div id="cargo-container">
+          <div id="cargo"></div>
+          <div id="secret-cargo"></div>
+        </div>
+        <button id="menu">Menu</button>
       </div>
     </div>
-    <h3>Your actions</h3>
-    <div id="actions"></div>
-    <button id="quit">Quit</button>
-    <button id="menu">Menu</button>
   `;
 
-  const timerEl = el.querySelector('#timer');
+  // const timerEl = el.querySelector('#timer');
   const teamsEl = el.querySelector('#teams');
   const stationsEl = el.querySelector('#stations');
   const racksEl = el.querySelector('#racks');
@@ -45,7 +36,6 @@ function PlayView(context) {
   const actionsEl = el.querySelector('#actions');
 
   // Render all of our components
-  PlayTimer(timerEl, context);
   Teams(teamsEl, context);
   Stations(stationsEl, context);
   Racks(racksEl, context);
@@ -53,9 +43,22 @@ function PlayView(context) {
   SecretCargo(secretCargoEl, context);
   Actions(actionsEl, context);
 
+  const { game, player } = context.getState();
+
+  if (game && player) {
+    const c = game.teams[player.team].color;
+    document.documentElement.style.setProperty('--your-team-color', c);
+  }
+
   // We have to rerender them when e player reconnects
   el.subscribe('player:reconnect', () => {
-    PlayTimer(timerEl, context);
+    const { game, player } = context.getState();
+
+    if (game && player) {
+      const c = game.teams[player.team].color;
+      document.documentElement.style.setProperty('--your-team-color', c);
+    }
+
     Teams(teamsEl, context);
     Stations(stationsEl, context);
     Racks(racksEl, context);
@@ -83,10 +86,10 @@ function PlayView(context) {
     });
   });
 
-  el.click('#quit', () => {
-    el.send('game:leave');
-    el.navigate('/');
-  });
+  // el.click('#quit', () => {
+  //   el.send('game:leave');
+  //   el.navigate('/');
+  // });
 
   // el.click('#menu', () => {
   //   console.log('You pressed the menu button');

@@ -2,31 +2,40 @@ import Router from '../router';
 
 function MainView() {
   const el = document.createElement('div');
-  el.id = 'mainWrapper';
+  el.id = 'main';
 
   el.innerHTML = `
-    <img id="login-logo" src="/assets/logo.svg" alt="LOGO">
-    <h2>Are you the game master or a player?</h2>
-    <button id="create">Create Game</button>
-    <button id="join">Join Game</button>
+    <img src="/assets/logo.svg" alt="Logotype">
+    <h2>Are you the Gamemaster or a Player? Make your choice.</h2>
+    <button id="create-btn" class="pregame-btn">Create Game</button>
+    <button id="join-btn" class="pregame-btn">Join Game</button>
   `;
 
-  el.click('#create', () => el.navigate('/create'));
-  el.click('#join', () => el.navigate('/join'));
+  el.click('#create-btn', () => el.navigate('/create'));
+  el.click('#join-btn', () => el.navigate('/join'));
 
   return el;
 }
 
 export default {
   before: (context) => {
-    const uid = context.getCache('_uid');
+    // const { username } = context.getState();
+    // console.log('here?', username);
 
-    // Check if a username is cached, if not -> login
-    if (!uid) {
-      return Router.redirect('/login');
-    }
+    // if (!username) {
+    //   return Router.redirect('/login');
+    // }
 
     return true;
+
+    // const uid = context.getCache('_uid');
+
+    // // Check if a username is cached, if not -> login
+    // if (!uid) {
+    //   return Router.redirect('/login');
+    // }
+
+    // return true;
   },
   path: '/',
   view: MainView,

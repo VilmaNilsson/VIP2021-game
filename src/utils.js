@@ -10,6 +10,20 @@ function serializeForm(form) {
   return data;
 }
 
+// Left padding, takes a number (`n`) and the wanted length (eg. 2 = 01)
+function pad(n, length = 2, char = '0') {
+  const nr = String(n);
+  
+  if (nr.length >= length) {
+    return nr;
+  }
+
+  const padding = char.repeat(length - nr.length);
+
+  return `${padding}${nr}`;
+}
+
 export default {
   serializeForm,
+  pad,
 };

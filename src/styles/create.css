@@ -1,5 +1,4 @@
-@import "variables.css";
-
+/*
 body {
     margin: 0;
     padding: 0;
@@ -8,48 +7,77 @@ body {
     font-family: var(--font-primary);
     overflow-x: hidden;
 }
+*/
 
-#create-game-main {
+#create-view {
+    /*
     box-sizing: border-box;
     text-align: center;
     width: 100vw;
     max-width: 650px;
     margin: 0 auto;
     overflow-x: hidden;
-    /* overflow-y: scroll; */
+    overflow-y: scroll;
     padding: 3vw;
     min-height: 100vh;
-}
+    */
 
-#create-game-main * {
-    transition: height .8s ease-in-out, left .8s ease-in-out, box-shadow .8s, text-shadow .8s, padding .8s;
-    -webkit-transition: height .8s ease-in-out, left .8s ease-in-out, box-shadow .8s, text-shadow .8s, padding .8s;
-    -moz-transition: height .8s ease-in-out, left .8s ease-in-out, box-shadow .8s, text-shadow .8s, padding .8s;
-    -ms-transition: height .8s ease-in-out, left .8s ease-in-out, box-shadow .8s, text-shadow .8s, padding .8s;
-    -o-transition: height .8s ease-in-out, left .8s ease-in-out, box-shadow .8s, text-shadow .8s, padding .8s;
-    box-sizing: border-box;
-}
-
-#error {
-    margin: 0 auto;
-}
-
-#create-game-main h1, #create-form h2 {
-    text-shadow: 0 0 20px var(--logo-color);
-}
-
-#create-game-main label {
+    flex-grow: 1;
+    background-color: var(--background-color);
     display: flex;
     flex-direction: column;
     align-items: center;
+    color: var(--text-color);
+    padding: 0 30px 30px 30px;
+}
+
+#create-view * {
+    transition: height 400ms ease,
+        left 400ms ease,
+        box-shadow 200ms ease,
+        text-shadow 200ms ease,
+        padding 400ms ease;
+    box-sizing: border-box;
+}
+
+/*
+#error {
+    margin: 0 auto;
+}
+*/
+
+#create-view h1 {
+    margin: 30px 0 0 0;
+    text-shadow: 0 0 20px var(--logo-color);
+}
+
+#create-form h2 {
+    text-shadow: 0 0 20px var(--logo-color);
+}
+
+#create-view h3 {
+    text-align: center;
+    font-weight: normal;
+    font-size: 24px;
+    margin-bottom: 0;
+}
+
+#create-view label {
+    display: flex;
+    flex-direction: column;
     justify-content: space-evenly;
     margin-top: 15px;
     font-size: 25px;
 }
 
-#create-game-name-input, 
-#create-game-button,
-.game-mode-btn,
+#create-game-nr-div {
+    position: relative;
+}
+
+/* #create-game-name-input, */
+/* #create-game-button, */
+/* .game-mode-btn, */
+/*
 #create-game-nr-div {
     background-color: transparent;
     outline: none;
@@ -59,31 +87,42 @@ body {
     box-shadow: 0 0 10px 1px var(--text-color);
     color: var(--text-color);
     margin-top: 10px;
-    -webkit-border-radius: 15px;
-    -moz-border-radius: 15px;
-    -ms-border-radius: 15px;
-    -o-border-radius: 15px;
     width: 50%;
 }
+*/
 
-#create-game-main button {
-    flex-basis: 40%;
+/*
+.game-mode-btn {
+    width: 50%;
+}
+*/
+
+#create-view button {
+    flex-basis: 50%;
 }
 
-#create-game-main button#create-game-button {
+/*
+#create-view button#create-game-button {
     margin-top: 40px;
 }
+*/
 
-#create-game-main input {
+#create-view input {
     text-align: center;
 }
 
-#real-life-gameplay, 
-#create-game-nr-div, 
-#create-game-mode {
-    margin-top: 30px;
+#real-life-gameplay {
+/* #create-game-nr-div { */
+    text-align: center;
+    padding: 15px 0;
 }
 
+#create-game-mode {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+/*
 #create-game-nr-div {
     width: 80%;
     display: flex;
@@ -93,7 +132,9 @@ body {
     margin-left: auto;
     margin-right: auto;
 }
+*/
 
+/*
 .create-game-nr-drop {
     position: absolute;
     top: 8vh;
@@ -101,22 +142,46 @@ body {
     border: 1px solid var(--text-color);
     display: none;
 }
+*/
+.create-game-nr-drop {
+    position: absolute;
+    top: 58px;
+    left: 0;
+    right: 0;
+    border: 1px solid var(--text-color);
+    display: none;
+    border-radius: 4px;
+    overflow: hidden;
+}
 
 .team-divs {
     background-color: var(--background-color);
-    height: 8vh;
     border-bottom: 1px solid var(--text-color);
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 15px;
+    font-size: 28px;
+}
+
+.team-divs:hover {
+    cursor: pointer;
+    background-color: #343339;
+}
+
+.team-divs:last-child {
+    border: 0;
 }
 
 #game-mode {
     display: flex;
-    width: 70%;
-    margin: 0 auto;
     justify-content: space-around;
     align-items: center;
+}
+
+#game-mode p {
+    margin: 0 20px;
+    font-size: 21px;
 }
 
 /* ------------------ Advanced settings ------------------ */
@@ -129,12 +194,14 @@ body {
     align-items: center;
 }
 
-#create-game-main .create-game-advanced label {
-    width: 50%;
+#create-view .create-game-advanced label {
+    width: 75%;
+    text-align: center;
     font-size: 19px;
     margin-top: 20px;
 }
 
+/*
 .create-game-inputs {
     width: 100%;
     flex-basis: 8vh;
@@ -148,6 +215,7 @@ body {
     box-shadow: 0 0 10px 1px var(--text-color);
     padding: 3px;
 }
+*/
 
 div.create-game-inputs {
     display: flex;
@@ -182,10 +250,6 @@ div.create-game-inputs {
     right: 0;
     font-size: 10vh;
     transform: rotate(45deg);
-    -webkit-transform: rotate(45deg);
-    -moz-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    -o-transform: rotate(45deg);
     transform-origin: 15px 15px;
     text-shadow: 0 0 10px var(--text-color);
 }
@@ -215,27 +279,26 @@ div.create-game-inputs {
     text-shadow: 0 0 20px var(--logo-color);
 }
 
-#picker-container,
+
+/*
+#picker-container {
 #changedDurationsBtn {
     flex-basis: 40%;
     border: 1px solid var(--text-color);
     border-radius: 20px;
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    -ms-border-radius: 20px;
-    -o-border-radius: 20px;
     height: 10vh;
     box-shadow: 0 0 10px 2px var(--text-color);
     color: var(--text-color);
 }
+*/
 
 #picker-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 20px;
-    width: 90%;
     flex-basis: 10vh;
+    overflow: hidden;
 }
 
 #picker-container *.overlayFlexItems {
@@ -243,6 +306,7 @@ div.create-game-inputs {
 }
 
 .inputFieldsOverlay {
+    outline: none;
     background-color: transparent;
     border: none;
     color: var(--text-color);
@@ -250,19 +314,28 @@ div.create-game-inputs {
     width: 48%;
     font-size: 3vh;
 }
+.inputFieldsOverlay:hover {
+    background-color: #343339;
+    cursor: pointer;
+}
 
 #picker-seperator {
     font-size: 30px;
     text-shadow: 0 0 10px var(--text-color);
 }
 
-#create-game-main button#changedDurationsBtn {
+#create-view button#changedDurationsBtn {
+    padding: 15px 10px;
+}
+/*
+#create-view button#changedDurationsBtn {
     background-color: transparent;
     width: 70%;
     flex-basis: 8vh;
     text-shadow: 0 0 10px var(--text-color);
     font-size: 20px;
 }
+*/
 
 #durationError {
     color: var(--logo-color);
@@ -272,8 +345,7 @@ div.create-game-inputs {
 
 .advancedSettingsShow {
     /* display: block; */
-    height: 90vh;
-    padding: 4vh 0;
+    height: 730px;
 }
 
 .showOverlayDuration {
@@ -281,7 +353,7 @@ div.create-game-inputs {
     left: 0;
 }
 
-.activeBtn {
+#create-view .activeBtn {
     box-shadow: 0 0 10px 2px var(--logo-color);
     border: 1px solid var(--logo-color);
 }

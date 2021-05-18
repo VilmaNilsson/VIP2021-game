@@ -38,6 +38,7 @@ function playerCargos(context, payload) {
 // When we try to reconnect
 function playerReconnect(context, payload) {
   context.setState(payload);
+  // TODO: redirect to correct place?
 }
 
 export default {

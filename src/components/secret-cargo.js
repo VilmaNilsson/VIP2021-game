@@ -1,39 +1,7 @@
-function timeSec() {
-  const secSpan = document.querySelector('#secret-cargo-timer > span:last-of-type');
-  let secVal = secSpan.innerHTML;
-
-  if (secVal === '00' || secVal === '0') {
-    const minSpan = document.querySelector('#secret-cargo-timer > span:first-of-type');
-    let minVal = minSpan.innerHTML;
-    minVal -= 1;
-    minSpan.innerHTML = (`0${minVal}`).slice(-2);
-    secSpan.innerHTML = '59';
-  } else {
-    secVal -= 1;
-    secSpan.innerHTML = (`0${secVal}`).slice(-2);
-  }
-}
-
-function timerCaller() {
-  const minSpan = document.querySelector('#secret-cargo-timer > span:first-of-type');
-
-  const secSpan = document.querySelector('#secret-cargo-timer > span:last-of-type');
-
-  const secID = setInterval(() => {
-    timeSec();
-  }, 1000);
-
-  setTimeout(() => {
-    clearInterval(secID);
-    minSpan.innerHTML = '02';
-    secSpan.innerHTML = '00';
-  }, 122000);
-}
+import utils from '../utils';
 
 function SecretCargo(el, context) {
   const { game, player } = context.getState();
-  const secretCargoObj = document.getElementById('secret-cargo');
-  const secretCargoSlot = document.getElementById('secret-cargo-slot');
 
   // We need both the game and the player for this component
   if (!game || !player) {
@@ -42,8 +10,48 @@ function SecretCargo(el, context) {
 
   // Get the team-number of the player's team and use it to set the
   // background color of the element to the team's color
-  const { team } = player;
-  secretCargoObj.style.backgroundColor = `var(--team-color-${team + 1})`;
+  const { tokens, teams } = game;
+  const { secretCargo, team } = player;
+  const token = tokens[secretCargo.token] ? tokens[secretCargo.token].name : '-';
+
+  el.innerHTML = `
+    <div class="token">
+      <img src="/assets/${token}.png">
+    </div>
+    <div class="timer">
+      02:00
+    </div>
+  `;
+
+  const img = el.querySelector('img');
+  const timerEl = el.querySelector('.timer');
+
+  const teamColor = teams[team].color;
+
+  el.style.backgroundColor = teamColor;
+
+  if (secretCargo.locked) {
+    el.classList.add('locked');
+  } else {
+    const { start, duration } = secretCargo;
+
+    if (start && duration) {
+      context.setInterval({
+        start,
+        duration,
+        onTick: (time) => {
+          const m = utils.pad(time.minutes);
+          const s = utils.pad(time.seconds);
+          timerEl.textContent = `${m}:${s}`;
+          el.classList.remove('locked');
+        },
+        onEnd: () => {
+          timerEl.textContent = '02:00';
+          el.classList.add('locked');
+        },
+      });
+    }
+  }
 
   // TODO: check if the cargo is activated (then display that timer as well)
 
@@ -57,11 +65,17 @@ function SecretCargo(el, context) {
       ? tokens[secretCargo.token].name
       : '-';
 
-    secretCargoSlot.src = `/assets/${token}.png`;
+    img.src = `/assets/${token}.png`;
+    el.classList.remove('selected');
   });
 
   el.click(() => {
     const state = context.getState();
+
+    // Dont do anything if the secret cargo is locked
+    if (state.player && state.player.secretCargo.locked) {
+      return;
+    }
 
     // If nothing is in our cargo
     if (state.tokenSelection === null || state.tokenSelection === undefined) {
@@ -79,46 +93,46 @@ function SecretCargo(el, context) {
       state.tokenSelection = null;
     }
 
+    // Visuals for (de)selecting
+    if (state.tokenSelection === null) {
+      el.classList.remove('selected');
+    } else {
+      el.classList.add('selected');
+    }
+
     // Update our client state with our selection
     context.setState({ tokenSelection: state.tokenSelection });
   });
 
   // Whenever someone plays the activate secret cargo action
   el.subscribe('action:player:secret-cargo', (e) => {
-    secretCargoObj.classList.remove('inactive');
-    secretCargoObj.classList.add('active');
     const { start, duration } = e.detail;
-    // The end time (ie. 'that many seconds far ahead')
-    const end = start + duration;
-    timerCaller();
 
-    const interval = context.setInterval(() => {
-      const { game, player } = context.getState();
-      const { tokens } = game;
-      const { secretCargo } = player;
+    const { player } = context.getState();
+    player.secretCargo.locked = false;
+    context.setState({ player });
 
-      // First get our current token
-      const token = tokens[secretCargo.token]
-        ? tokens[secretCargo.token].name
-        : '-';
-
-      // We take a timestamp ('now' in seconds)
-      const now = Date.now();
-      // Calculate how many seconds are left
-      const sec = ((end - now) / 1000).toFixed(1);
-
-      // If none are, stop our interval
-      if (sec <= 0) {
-        clearInterval(interval);
-        secretCargoSlot.src = `/assets/${token}.png`;
-      }
-    }, 100);
-
-    el.subscribe('action:player:secret-cargo:faded', () => {
-      secretCargoObj.classList.remove('active');
-      secretCargoObj.classList.add('inactive');
+    context.setInterval({
+      start,
+      duration,
+      onTick: (time) => {
+        const m = utils.pad(time.minutes);
+        const s = utils.pad(time.seconds);
+        timerEl.textContent = `${m}:${s}`;
+        el.classList.remove('locked');
+      },
+      onEnd: () => {
+        timerEl.textContent = '02:00';
+        el.classList.add('locked');
+      },
     });
   });
+
+  // Whenever the active cargo action fades
+  el.subscribe('action:player:secret-cargo:faded', () => {
+    el.classList.add('locked');
+  });
+
   return el;
 }
 

@@ -12,6 +12,8 @@ function activateSecretCargo(context) {
   }
 
   player.properties.secretCargo.locked = false;
+  player.properties.secretCargo.start = start;
+  player.properties.secretCargo.duration = duration;
   game.players[playerId] = player;
   context.updateGameState(game);
 
@@ -22,6 +24,8 @@ function activateSecretCargo(context) {
     const game = context.getGameState();
     const player = game.players[playerId];
     player.properties.secretCargo.locked = true;
+    delete player.properties.secretCargo.start;
+    delete player.properties.secretCargo.duration;
     game.players[playerId] = player;
     context.updateGameState(game);
     context.send('action:player:secret-cargo:faded', {});

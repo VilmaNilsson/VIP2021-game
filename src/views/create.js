@@ -2,68 +2,63 @@ import utils from '../utils';
 
 function CreateView() {
   const el = document.createElement('div');
-  el.setAttribute('id', 'create-game-main');
+  el.id = 'create-view';
 
   el.innerHTML = `
     <h1>Game Setup</h1>
+    <div id='error' class="pregame-errmsg"></div>
 
-    <div id='error'></div>
-
-    <form id='create-form'>
+    <form>
       <div id='create-game-name'>
-        <label>
-          Name your game
-          <input id='create-game-name-input' type='text' name='name' placeholder='Choose Game Name' maxlength='10'>
-        </label>
+        <h3>Name your game</h3>
+        <input class="pregame-input" id='create-game-name-input' type='text' name='name' placeholder='Choose Game Name' maxlength='10'>
       </div>
       <div id='real-life-gameplay'>
         In real life is currently unavailable due to the pandemic. Pleawse enjoy our game online until it can be played safely in real life.
       </div>
       <div id='create-game-teams'>
-        <div id='create-game-nr-div'>
+        <div id='create-game-nr-div' class="pregame-btn">
           <span>Number of teams (4 by default)</span>
           <div id='create-game-nr-drop' class='create-game-nr-drop'></div>
         </div>
         <input id='create-game-nr-input' type='number' name='nrOfTeams' value='4' hidden>
       </div>
       <div id='create-game-mode'>
-        <label>
-          Mode
-          <div id='game-mode'>
-            <button class='game-mode-btn activeBtn' id='game-mode-basic'>Basic</button>
-            <p>or</p>
-            <button class='game-mode-btn' id='game-mode-advanced'>Advanced</button>
-          </div>          
-        </label>
+        <h3>Mode</h3>
+        <div id='game-mode'>
+          <button class='pregame-btn game-mode-btn activeBtn' id='game-mode-basic'>Basic</button>
+          <p>or</p>
+          <button class='pregame-btn game-mode-btn' id='game-mode-advanced'>Advanced</button>
+        </div>          
       </div>
       <div class='create-game-advanced'>
         <h2>Advanced Mode</h2>
         <label>
           Duration of crew phase
-          <div id='advanced-crew' class='create-game-inputs'></div>
+          <div id='advanced-crew' class='pregame-input create-game-inputs'></div>
           <input class='create-game-inputs' id='create-game-crew-input' type='number' name='crewDuration' value='30' hidden>
         </label>
         <br>
         <label>
           Duration of plan phase
-          <div id='advanced-plan' class='create-game-inputs'></div>
+          <div id='advanced-plan' class='pregame-input create-game-inputs'></div>
           <input class='create-game-inputs' id='create-game-plan-input' type='number' name='planDuration' value='60' hidden>
         </label>
         <br>
         <label>
           Duration of play phase
-          <div id='advanced-play' class='create-game-inputs'></div>
+          <div id='advanced-play' class='pregame-input create-game-inputs'></div>
           <input class='create-game-inputs' id='create-game-play-input' type='number' name='playDuration' value='300' hidden>
         </label>
         <br>
         <label>
           Landing Time
-          <div id='advanced-land' class='create-game-inputs'></div>
+          <div id='advanced-land' class='pregame-input create-game-inputs'></div>
           <input class='create-game-inputs' id='create-game-landing-input' type='number' name='loginTimer' value='7' hidden>
         </label>
         <br>
       </div>
-      <button id='create-game-button' type='submit'>Create Game</button>
+      <button class="pregame-btn" id='create-game-button' type='submit'>Create Game</button>
     </form>
     <div id='choose-overlay' class='choose-overlay'>
       <div id='choose-overlay-close'>
@@ -72,20 +67,20 @@ function CreateView() {
       <div id='choose-overlay-container'>
         <h2>Choose duration</h2>
         <h4 id='duration-information'></h4>
-        <div id='picker-container'>
+        <div id='picker-container' class="pregame-input">
           <input class='inputFieldsOverlay' type='text' id='picker-frame-minutes' maxlength='2' onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
           <p id='picker-seperator'>:</p>
           <input class='inputFieldsOverlay' type='text' id='picker-frame-seconds' maxlength='2' onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
         </div>
         <div id='durationError'></div>
-        <button id='changedDurationsBtn'>OK</button>
+        <button class="pregame-btn" id='changedDurationsBtn'>OK</button>
       </div>
     </div>
   `;
 
   // -------------------VARIABLES--------------------------------//
   const errorEl = el.querySelector('#error');
-  const formEl = el.querySelector('#create-form');
+  const formEl = el.querySelector('form');
   const allInputs = el.querySelectorAll('.create-game-inputs');
   const nameInput = el.querySelector('#create-game-name-input');
   const teamNrInput = el.querySelector('#create-game-nr-input');
@@ -385,14 +380,15 @@ function CreateView() {
     }
   });
   formEl.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    // TODO:
     if (nameInput.value.length < 1) {
-      e.preventDefault();
       nameInput.style.boxShadow = '0 0 10px 2px var(--logo-color)';
       return;
     }
-    e.preventDefault();
+
     const payload = utils.serializeForm(e.target);
-    // console.log(payload);
     el.send('game:create', payload);
   });
 
