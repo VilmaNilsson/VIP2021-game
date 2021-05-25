@@ -100,7 +100,7 @@ function selectAction(context, payload) {
 
   // NOTE: this is where we assign the max limit of actions to own
   // Too many actions
-  if (player.properties.actions.length >= 4) {
+  if (player.properties.actions.length >= 2) {
     context.send('player:action:select:fail', { errorCode: 2 });
     return;
   }

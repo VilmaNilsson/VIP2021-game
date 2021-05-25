@@ -7,6 +7,29 @@ function PlanPlayerActions(el, context) {
 
   const { actions } = player;
 
+  // Render actions
+  function renderActions (actions) {
+
+    // Chosen actions
+    actions.forEach((action) => {
+      const { name, event } = action;
+      const div = document.createElement('div');
+      div.innerHTML = name;
+  
+      div.click(() => {
+        setTimeout(() => {
+          div.send('player:action:deselect', { event });
+          div.remove();
+        }, 300);
+      });
+  
+      el.append(div);
+    });  
+    
+    // Empty actions
+    
+  }
+
   // Render initial actions
   actions.forEach((action) => {
     const { name, event } = action;
