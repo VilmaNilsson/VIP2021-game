@@ -11,13 +11,16 @@
 }
 
 #play-view #teams {
-  display: grid;  
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;  
+  justify-content: center;
   gap: 15px;
   padding: 15px 0;
 }
 
 #play-view .team {
+  max-width: 75px;
+  flex-basis: 75px;
+  box-sizing: border-box;
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
@@ -121,6 +124,7 @@
 
 #play-view #racks {
   display: grid;
+  align-content: end;
   gap: 2px;
   position: relative;
   grid-auto-rows: 58px;
@@ -140,12 +144,10 @@
 }
 
 #play-view .rack .slot {
-  padding: 5px;
+  padding: 4px;
   border-radius: 8px;
   flex: 1 1 0;
   display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 #play-view .your-rack .slot:hover {
@@ -153,19 +155,19 @@
 }
 
 #play-view .slot .token {
+  flex-grow: 1;
   background-color: #000;
   border-radius: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 1px solid transparent;
-  box-shadow: 0 0 0 0 transparent;
-  transition: box-shadow 120ms ease;
+  transition: background-color 120ms ease;
 }
 
 #play-view .slot.selected .token,
 #play-view .your-rack .slot:hover .token {
-  box-shadow: 0 0 5px 2px #fff;
+  background-color: var(--your-team-color);
 }
 
 #play-view .slot .token img {
@@ -217,13 +219,14 @@
   border-radius: 10px;
   font-size: 14px;
   border: 1px solid transparent;
-  transition: border-color 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
+  transition: border-color 120ms ease,
+              background-color 120ms ease,
+              opacity 120ms ease;
 }
 
 #play-view .action:hover {
   cursor: pointer;
-  border-color: var(--your-team-color);
-  box-shadow: 0 0 5px 2px var(--your-team-color);
+  background-color: var(--your-team-color);
 }
 
 #play-view .action.on-cooldown {
@@ -231,8 +234,7 @@
 }
 
 #play-view .action.selected {
-  border-color: var(--your-team-color);
-  box-shadow: 0 0 5px 2px var(--your-team-color);
+  background-color: var(--your-team-color);
 }
 
 #play-view .action.on-cooldown:hover {
@@ -277,13 +279,12 @@
   align-items: center;
   justify-content: center;
   border: 1px solid transparent;
-  box-shadow: 0 0 0 0 transparent;
-  transition: box-shadow 120ms ease;
+  transition: background-color 120ms ease;
 }
 
 #play-view #cargo.selected .token,
 #play-view #cargo:hover .token {
-  box-shadow: 0 0 5px 2px #fff;
+  background-color: var(--your-team-color);
 }
 
 #play-view #cargo .token img {
@@ -322,13 +323,20 @@
   align-items: center;
   justify-content: center;
   border: 1px solid transparent;
-  box-shadow: 0 0 0 0 transparent;
-  transition: box-shadow 120ms ease;
+  transition: background-color 120ms ease;
 }
 
 #play-view #secret-cargo.selected .token,
 #play-view #secret-cargo:hover .token {
-  box-shadow: 0 0 5px 2px #fff;
+  background-color: var(--your-team-color);
+}
+
+#play-view #secret-cargo.locked:hover .token {
+  background-color: #000;
+}
+
+#play-view #secret-cargo.locked:hover {
+  cursor: default;
 }
 
 #play-view #secret-cargo .token img {
