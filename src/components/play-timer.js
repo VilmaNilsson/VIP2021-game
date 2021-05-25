@@ -22,11 +22,11 @@ function PlayTimer(el, context) {
     onTick: (time) => {
       const m = utils.pad(time.minutes);
       const s = utils.pad(time.seconds);
-      // const i = utils.pad(time.milliseconds);
-      // el.textContent = `${m} : ${s} : ${i}`;
-      el.textContent = `${m}:${s}:00`;
+      const i = utils.pad(Math.floor(time.milliseconds / 10));
+      el.textContent = `${m}:${s}:${i}`;
+      // el.textContent = `${m}:${s}:00`;
     },
-  }, 100);
+  }, 50);
 }
 
 export default PlayTimer;
