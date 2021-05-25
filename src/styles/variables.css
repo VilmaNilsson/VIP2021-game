@@ -20,6 +20,7 @@ html {
      */
     --font-primary: "Rajdhani", Arial, sans-serif;
     --font-secondary: "Lato", Arial, sans-serif;
+    --font-mono: 'Courier New', Courier, monospace;
 
     /*Game actions variables*/
     --game-action-on-cooldown-color: rgb(161, 189, 189);

@@ -111,7 +111,7 @@ function CreateView() {
     },
     planPhase: {
       defaultValue: 60, // in seconds
-      maxValue: '06:00', // in minutes
+      maxValue: '59:00', // in minutes
       currentVal: 60,
     },
     playPhase: {

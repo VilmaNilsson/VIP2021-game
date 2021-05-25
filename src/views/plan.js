@@ -1,5 +1,6 @@
 import {
   PlanTimer,
+  PlayTimer,
   PlanActions,
   PlanPlayerActions,
 } from '../components';
@@ -51,12 +52,14 @@ function PlanView(context) {
   const playerActionsEl = el.querySelector('#player-actions');
 
   // NOTE: we should probably create a `PlanTimer` if their looks differ
-  PlanTimer(timerEl, context);
+  // PlanTimer(timerEl, context);
+  PlayTimer(timerEl, context);
   PlanActions(actionsEl, context);
   PlanPlayerActions(playerActionsEl, context);
 
   el.subscribe('player:reconnect', () => {
-    PlanTimer(timerEl, context);
+    // PlanTimer(timerEl, context);
+    PlayTimer(timerEl, context);
     PlanActions(actionsEl, context);
     PlanPlayerActions(playerActionsEl, context);
   });
