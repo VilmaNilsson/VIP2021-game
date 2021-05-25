@@ -67,6 +67,14 @@ function PlanView(context) {
   PlanActions(actionsEl, context);
   PlanPlayerActions(playerActionsEl, context);
 
+  if (game && player) {
+    const teamIndex = player.team;
+    const teamEl = el.querySelector(`#teams .team:nth-child(${teamIndex + 1})`);
+    if (teamEl) {
+      teamEl.classList.add('your-team');
+    }
+  }
+
   el.subscribe('player:reconnect', () => {
     const { game, player } = context.getState();
 
@@ -80,6 +88,14 @@ function PlanView(context) {
     PlayTimer(timerEl, context);
     PlanActions(actionsEl, context);
     PlanPlayerActions(playerActionsEl, context);
+
+    if (game && player) {
+      const teamIndex = player.team;
+      const teamEl = el.querySelector(`#teams .team:nth-child(${teamIndex + 1})`);
+      if (teamEl) {
+        teamEl.classList.add('your-team');
+      }
+    }
   });
 
   el.subscribe('game:phase', () => {

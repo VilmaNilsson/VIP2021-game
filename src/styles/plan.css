@@ -34,6 +34,11 @@
   transition: box-shadow 120ms ease;
 }
 
+#plan-view .team.your-team {
+  border-color: #fff;
+  box-shadow: 0 0 5px 2px #fff;
+}
+
 #plan-view .score {
   color: #000;
   text-align: center;
