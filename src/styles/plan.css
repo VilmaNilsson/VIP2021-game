@@ -63,26 +63,30 @@
 
 #plan-view #timer {
   margin-top: 3%;
+  font-family: var(--font-mono);
   font-size: 16px;
-  font-weight: 800;
   color: var(--text-color);
-  background-color:rgba(000,000,000,.5);
-  border: 2px solid var(--text-color);
-  padding: 0 10px;
+  background-color:rgba(000,000,000,.7);
+  border: 1px solid rgba(255,255,255,.4);
+  padding: 2px 10px;
   min-width: 10%;
   text-align: center;
   border-radius: 5px;
 }
 
+#plan-view #actionsExplainer {
+  margin-top: 8%;
+}
+
 #plan-view #actions {
-  border: 5px double var(--text-color);
+  border: 1px solid transparent; /* Color set in JS */
   border-radius: 10px;
-  height: 63%;
+  flex-grow: 1;
   width: 90vw;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(8, 35%);
-  grid-gap: 5px;
+  grid-auto-rows: 25%;
+  gap: 5px;
   overflow-y: scroll;
   padding: 5px;
 }
@@ -91,35 +95,53 @@
   background-color: var(--game-action-background-color);
   border: 2px solid var(--text-color);
   color: var(--game-action-text-color);
-  padding: 10px;
+  padding: 7px;
   border-radius: 10px;
+}
+
+#plan-view .availableAction p {
+  margin: 5px;
+}
+
+#plan-view .availableAction p.cooldown {
+  margin-top: 5px;
 }
 
 #plan-view .aName {
   font-weight: 800;
 }
 
+#plan-view .cooldown {
+  font-family: var(--font-mono);
+}
+
 #plan-view #player-actions {
-  min-height: 10%;
-  border: 5px double var(--text-color);
+  flex-basis: 6%;
+  margin-bottom: 2%;
+
+  border: 1px solid var(--text-color);
   border-radius: 10px;
-  padding: 10px;
-  width: 87vw;
+  padding: 5px;
+  width: 90vw;
   display: grid;
-  grid-template-columns: repeat(4,1fr);
-  grid-gap: 5px;
-  justify-content: space-between;
+  grid-template-columns: repeat(2,1fr);
+  gap: 5px;
 }
 
 #plan-view #player-actions > div {
-  border:2px solid var(--text-color);
+  border: 1px solid var(--text-color);
   border-radius: 10px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   text-align: center;
   justify-content: center;
   padding: 5px;
   background-color: var(--game-action-on-cooldown-color);
+}
+
+#plan-view #player-actions > div > p {
+  margin: 0px;
 }
 
 #plan-view #actions, #player-actions {
