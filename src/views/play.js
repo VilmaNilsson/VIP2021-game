@@ -1,3 +1,4 @@
+import utils from '../utils';
 import {
   Teams,
   Stations,
@@ -48,6 +49,7 @@ function PlayView(context) {
   if (game && player) {
     const c = game.teams[player.team].color;
     document.documentElement.style.setProperty('--your-team-color', c);
+    document.documentElement.style.setProperty('--your-team-color-bright', utils.increaseBrightness(c, 50));
   }
 
   // We have to rerender them when e player reconnects
@@ -57,6 +59,7 @@ function PlayView(context) {
     if (game && player) {
       const c = game.teams[player.team].color;
       document.documentElement.style.setProperty('--your-team-color', c);
+      document.documentElement.style.setProperty('--your-team-color-bright', utils.increaseBrightness(c, 50));
     }
 
     Teams(teamsEl, context);

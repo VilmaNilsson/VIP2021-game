@@ -181,7 +181,7 @@
 
 #play-view .slot.selected .token,
 #play-view .your-rack .slot:hover .token {
-  background-color: var(--your-team-color);
+  background-color: var(--your-team-color-bright);
 }
 
 #play-view .slot .token img {
@@ -301,7 +301,7 @@
 
 #play-view #cargo.selected .token,
 #play-view #cargo:hover .token {
-  background-color: var(--your-team-color);
+  background-color: var(--your-team-color-bright);
 }
 
 #play-view #cargo .token img {
@@ -347,7 +347,7 @@
 
 #play-view #secret-cargo.selected .token,
 #play-view #secret-cargo:hover .token {
-  background-color: var(--your-team-color);
+  background-color: var(--your-team-color-bright);
 }
 
 #play-view #secret-cargo.locked:hover .token {

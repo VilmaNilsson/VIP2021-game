@@ -6,13 +6,13 @@ const actions = [
     target: 'stations',
     cooldown: 60,
   },
-  // {
-  //   event: 'action:station:unlock',
-  //   name: 'Unlock Station',
-  //   desc: 'Unlocks a locked station.',
-  //   target: 'stations',
-  //   cooldown: 60,
-  // },
+  {
+    event: 'action:station:unlock',
+    name: 'Unlock Planet',
+    desc: 'Unlocks a locked planet',
+    target: 'stations',
+    cooldown: 60,
+  },
   {
     event: 'action:player:secret-cargo',
     name: 'Secret Cargo',
@@ -58,7 +58,7 @@ const actions = [
   {
     event: 'action:teams:swap-rack',
     name: 'Swap Racks',
-    desc: `Swap your team's rack of bins with team's rack.`,
+    desc: `Swap your team's rack of bins with team's rack`,
     target: 'racks',
     cooldown: 3 * 60,
   },
