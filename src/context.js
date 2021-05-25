@@ -76,7 +76,7 @@ const Context = {
       if (onTick !== undefined && typeof onTick === 'function') {
         const d = new Date(timeLeft);
         onTick({
-          timestamp: timeLeft,
+          timestamp: timeLeft < 0 ? 0 : timeLeft,
           hours: d.getHours(),
           minutes: d.getMinutes(),
           seconds: d.getSeconds(),

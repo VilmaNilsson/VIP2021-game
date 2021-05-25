@@ -12,8 +12,10 @@ function Teams(el, context) {
     div.className = 'team';
     div.style.backgroundImage = `url('/assets/rocket_${i}.svg')`;
 
+    const score = utils.pad(team.score);
+
     div.innerHTML = `
-      <div class="score">${team.score}</div>
+      <div class="score">${score}</div>
     `;
 
     const scoreEl = div.querySelector('.score');

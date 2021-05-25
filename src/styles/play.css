@@ -46,7 +46,7 @@
 #play-view .score {
   color: #000;
   text-align: center;
-  font-family: var(--font-secondary);
+  font-family: var(--font-mono);
   padding-left: 10px;
 }
 
@@ -65,7 +65,7 @@
   grid-column: 2; 
   grid-row: 1;
   font-size: 21px;
-  letter-spacing: 1px;
+  font-family: var(--font-mono);
 }
 
 #play-view .station {
@@ -134,6 +134,7 @@
 #play-view .rack {
   display: flex;
   gap: 2px;
+  transition: opacity 120ms ease;
 }
 
 #play-view .rack.other-team {
@@ -144,14 +145,27 @@
 }
 
 #play-view .rack .slot {
-  padding: 4px;
+  padding: 3px;
   border-radius: 8px;
   flex: 1 1 0;
   display: flex;
+  border: 1px solid transparent;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
 }
 
 #play-view .your-rack .slot:hover {
   cursor: pointer;
+}
+
+#play-view .rack.other-team.selectable {
+  opacity: 1;
+}
+
+#play-view .rack.your-rack.not-selectable {
+  opacity: 0.5;
+}
+
+#play-view .rack.other-team.selectable .slot {
 }
 
 #play-view .slot .token {
@@ -180,7 +194,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255, 255, 255, 0.98);
+  background-color: rgba(255, 255, 255, 0.98);
   color: #000;
   font-size: 21px;
   display: flex;
@@ -189,6 +203,7 @@
   border-radius: 2px;
   text-align: center;
   padding: 0 15px;
+  transition: background-color 120ms ease;
 }
 
 #play-view #racks .overlay.no-racks {
@@ -202,14 +217,13 @@
 
 #play-view #actions {
   flex-grow: 1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  display: flex;
   gap: 5px;
   padding-right: 5px;
 }
 
 #play-view .action {
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -230,7 +244,8 @@
 }
 
 #play-view .action.on-cooldown {
-  opacity: 0.4;
+  background-color: var(--your-team-color);
+  opacity: 0.5;
 }
 
 #play-view .action.selected {
@@ -240,7 +255,6 @@
 #play-view .action.on-cooldown:hover {
   cursor: default;
   border-color: transparent;
-  box-shadow: 0 0 0 0 transparent;
 }
 
 #play-view .action .name {
@@ -248,6 +262,8 @@
 }
 
 #play-view .action .cooldown {
+  font-family: var(--font-mono);
+  font-size: 14px;
   text-align: center;
 }
 
@@ -259,7 +275,6 @@
 
 #play-view #cargo-container {
   display: flex;
-  flex-grow: 1;
 }
 
 #play-view #cargo {
@@ -313,7 +328,9 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  right: 18px;
+  right: 17px;
+  font-family: var(--font-mono);
+  font-size: 14px;
 }
 
 #play-view #secret-cargo .token {
@@ -341,6 +358,11 @@
 
 #play-view #secret-cargo .token img {
   max-width: 50px;
+}
+
+#play-view #misc {
+  display: flex;
+  justify-content: flex-end;
 }
 
 #play-view #menu {

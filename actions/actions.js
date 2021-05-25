@@ -1,8 +1,8 @@
 const actions = [
   {
     event: 'action:station:lock',
-    name: 'Lock Station',
-    desc: 'Lock a station for 30 seconds',
+    name: 'Lock Planet',
+    desc: 'Lock a planet for 30 seconds',
     target: 'stations',
     cooldown: 60,
   },
@@ -59,7 +59,7 @@ const actions = [
     event: 'action:teams:swap-rack',
     name: 'Swap Racks',
     desc: `Swap your team's rack of bins with team's rack.`,
-    target: 'teams',
+    target: 'racks',
     cooldown: 3 * 60,
   },
   // {
