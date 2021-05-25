@@ -95,6 +95,41 @@ function renderRack(rack, teamIndex, context) {
     });
   });
 
+  // When a player selects a station for a action
+  let selectable = false;
+  // Simple on-off toggle, should probably just be classes
+  function setSelectable(s) {
+    selectable = s;
+
+    if (s) {
+      div.classList.add('selectable');
+    } else {
+      div.classList.remove('selectable');
+      div.classList.remove('not-selectable');
+    }
+  }
+
+  // When the rack is selectable for actions
+  div.subscribe('player:action:racks', () => {
+    // Don't make your own team selectable
+    if (team !== teamIndex) {
+      setSelectable(true)
+    } else {
+      div.classList.add('not-selectable');
+    }
+  });
+  // Otherwise remove the selection
+  div.subscribe('player:action:cooldown', () => setSelectable(false));
+  div.subscribe('player:action:cancel', () => setSelectable(false));
+  div.subscribe('player:action:fail', () => setSelectable(false));
+
+  div.click(() => {
+    if (team === teamIndex) {
+      return;
+    }
+
+  });
+
   return div;
 }
 
@@ -137,7 +172,27 @@ function Racks(el, context) {
 
   // Reset everything once a player has logged into a station
   el.subscribe('station:login:done', (e) => {
-    const { racks } = e.detail;
+    // const { racks } = e.detail;
+
+    // // Always reset this
+    // el.innerHTML = '';
+
+    // const rackElements = racks.map((rack, teamIndex) => {
+    //   return renderRack(rack, teamIndex, context);
+    // });
+
+    // // Place your own rack at the bottom
+    // rackElements
+    //   .concat(rackElements.splice(player.team, 1))
+    //   .forEach((rack) => el.append(rack));
+  });
+  
+  // Login overlay (while waiting)
+  el.subscribe('station:login:wait', (e) => {
+    const { stations } = game;
+    const { station, racks, start, duration } = e.detail;
+    const overlay = document.createElement('div');
+    overlay.className = 'overlay';
 
     // Always reset this
     el.innerHTML = '';
@@ -150,20 +205,10 @@ function Racks(el, context) {
     rackElements
       .concat(rackElements.splice(player.team, 1))
       .forEach((rack) => el.append(rack));
-  });
-  
-  // Login overlay (while waiting)
-  el.subscribe('station:login:wait', (e) => {
-    const { stations } = game;
-    const payload = e.detail;
-    const name = stations[payload.station].name;
-
-    const overlay = document.createElement('div');
-    overlay.className = 'overlay';
 
     el.append(overlay);
 
-    const { start, duration } = payload;
+    const name = stations[station].name;
 
     context.setInterval({
       start,
@@ -172,6 +217,9 @@ function Racks(el, context) {
         overlay.textContent = `
           Landing on ${name} in ${time.seconds + 1}s
         `;
+
+        const alpha = (time.timestamp / duration).toFixed(2);
+        overlay.style.backgroundColor = `rgba(255, 255, 255, ${alpha}`;
       },
       onEnd: () => {
         overlay.remove();

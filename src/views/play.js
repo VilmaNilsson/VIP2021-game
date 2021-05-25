@@ -17,13 +17,13 @@ function PlayView(context) {
     <div id="racks"></div>
     <div id="bottom">
       <div id="actions"></div>
-      <div id="right">
-        <div id="cargo-container">
-          <div id="cargo"></div>
-          <div id="secret-cargo"></div>
-        </div>
-        <button id="menu">Menu</button>
+      <div id="cargo-container">
+        <div id="cargo"></div>
+        <div id="secret-cargo"></div>
       </div>
+    </div>
+    <div id="misc">
+      <button id="menu">Menu</button>
     </div>
   `;
 
