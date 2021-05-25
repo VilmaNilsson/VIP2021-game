@@ -18,25 +18,6 @@ function MainView() {
 }
 
 export default {
-  before: (context) => {
-    // const { username } = context.getState();
-    // console.log('here?', username);
-
-    // if (!username) {
-    //   return Router.redirect('/login');
-    // }
-
-    return true;
-
-    // const uid = context.getCache('_uid');
-
-    // // Check if a username is cached, if not -> login
-    // if (!uid) {
-    //   return Router.redirect('/login');
-    // }
-
-    // return true;
-  },
   path: '/',
   view: MainView,
 };

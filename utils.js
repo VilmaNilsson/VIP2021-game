@@ -237,14 +237,14 @@ function createPlayer(state = {}) {
 // Returns a shuffled array of station names
 function getStationNames() {
   return shuffle([
-    'blandito',
-    'earth',
-    'kim',
-    'margeret',
-    'moo',
-    'pluto',
-    'uranus',
-    'yourmom',
+    'Blandito',
+    'Earth',
+    'Kim',
+    'Margeret',
+    'Moo',
+    'Pluto',
+    'Uranus',
+    'Your Mom',
   ]);
 }
 

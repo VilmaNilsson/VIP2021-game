@@ -87,6 +87,7 @@ function Teams(el, context) {
     // TODO: this should be a rack instead?
     div.click(() => {
       const { action } = context.getState();
+
       if (action.event === 'action:teams:swap-rack' && action && selectable) {
         const station = player.inStation.station;
         div.send('player:action', { ...action, team: i, station });
@@ -97,7 +98,12 @@ function Teams(el, context) {
     });
 
     // When the station is selectable for actions (all station-actions)
-    div.subscribe('player:action:teams', () => setSelectable(true));
+    div.subscribe('player:action:teams', () => {
+      // Don't make your own team selectable
+      if (player.team !== i) {
+        setSelectable(true)
+      }
+    });
     // Otherwise remove the selection
     div.subscribe('player:action:cooldown', () => setSelectable(false));
     div.subscribe('player:action:cancel', () => setSelectable(false));

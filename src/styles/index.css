@@ -1,11 +1,9 @@
 @import "variables.css";
+@import "login.css";
 @import "main.css";
 @import "join.css";
 @import "create.css";
-@import "cargo.css";
 @import "plan.css";
-@import "game-actions.css";
-@import "login.css";
 @import "lobby.css";
 @import "play.css";
 

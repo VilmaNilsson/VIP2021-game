@@ -40,14 +40,14 @@ function LobbyTeams(el, context) {
     // Join a team when you click on it
     div.click(() => {
       const teamDivs = el.querySelectorAll('.teamDiv');
+
       teamDivs.forEach((element) => {
         element.classList.remove('markedTeam');
       });
 
       div.classList.add('markedTeam');
-      if (player.team === teamIndex) {
-        console.log('player is already in team');
-      } else {
+
+      if (player.team !== teamIndex) {
         div.send('team:join', { team: teamIndex });
       }
     });

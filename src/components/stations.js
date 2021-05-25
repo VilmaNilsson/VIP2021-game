@@ -26,8 +26,10 @@ function Stations(el, context) {
     const div = document.createElement('div');
     div.className = 'station';
 
+    const src = station.name.toLowerCase().replace(/\s/g, '');
+
     div.innerHTML = `
-      <img src="/assets/${station.name}.png">
+      <img src="/assets/${src}.png">
       <div class="name">${station.name}</div>
     `;
 
@@ -203,6 +205,19 @@ function Stations(el, context) {
     });
   });
 
+  // Only show the border on the planet you're logging into
+  el.subscribe('station:login:wait', (e) => {
+    const payload = e.detail;
+
+    stations.forEach((s, i) => {
+      if (payload.station === i) {
+        s.classList.add('active');
+      } else {
+        s.classList.remove('active');
+      }
+    });
+  });
+
   // When the station gets locked
   el.subscribe('action:station:locked', (e) => {
     const payload = e.detail;
@@ -226,9 +241,7 @@ function Stations(el, context) {
     context.setInterval({
       start,
       duration,
-      onTick: (time) => {
-        // TODO?
-      },
+      onTick: (time) => {},
       onEnd: () => {
         stationEl.classList.remove('locked');
       },

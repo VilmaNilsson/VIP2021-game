@@ -1,27 +1,4 @@
-/*
-body {
-    margin: 0;
-    padding: 0;
-    background-color: var(--background-color);
-    color: var(--text-color);
-    font-family: var(--font-primary);
-    overflow-x: hidden;
-}
-*/
-
 #create-view {
-    /*
-    box-sizing: border-box;
-    text-align: center;
-    width: 100vw;
-    max-width: 650px;
-    margin: 0 auto;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    padding: 3vw;
-    min-height: 100vh;
-    */
-
     flex-grow: 1;
     background-color: var(--background-color);
     display: flex;
@@ -39,12 +16,6 @@ body {
         padding 400ms ease;
     box-sizing: border-box;
 }
-
-/*
-#error {
-    margin: 0 auto;
-}
-*/
 
 #create-view h1 {
     margin: 30px 0 0 0;
@@ -74,76 +45,25 @@ body {
     position: relative;
 }
 
-/* #create-game-name-input, */
-/* #create-game-button, */
-/* .game-mode-btn, */
-/*
-#create-game-nr-div {
-    background-color: transparent;
-    outline: none;
-    border: 1px solid var(--text-color);
-    height: 8vh;
-    border-radius: 15px;
-    box-shadow: 0 0 10px 1px var(--text-color);
-    color: var(--text-color);
-    margin-top: 10px;
-    width: 50%;
-}
-*/
-
-/*
-.game-mode-btn {
-    width: 50%;
-}
-*/
-
 #create-view button {
     flex-basis: 50%;
 }
-
-/*
-#create-view button#create-game-button {
-    margin-top: 40px;
-}
-*/
 
 #create-view input {
     text-align: center;
 }
 
-#real-life-gameplay {
-/* #create-game-nr-div { */
+#create-view #real-life-gameplay {
     text-align: center;
     padding: 15px 0;
 }
 
-#create-game-mode {
+#create-view #create-game-mode {
     margin-top: 30px;
     margin-bottom: 30px;
 }
 
-/*
-#create-game-nr-div {
-    width: 80%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
-}
-*/
-
-/*
-.create-game-nr-drop {
-    position: absolute;
-    top: 8vh;
-    width: 90%;
-    border: 1px solid var(--text-color);
-    display: none;
-}
-*/
-.create-game-nr-drop {
+#create-view .create-game-nr-drop {
     position: absolute;
     top: 58px;
     left: 0;
@@ -154,7 +74,7 @@ body {
     overflow: hidden;
 }
 
-.team-divs {
+#create-view .team-divs {
     background-color: var(--background-color);
     border-bottom: 1px solid var(--text-color);
     display: flex;
@@ -164,29 +84,28 @@ body {
     font-size: 28px;
 }
 
-.team-divs:hover {
+#create-view .team-divs:hover {
     cursor: pointer;
     background-color: #343339;
 }
 
-.team-divs:last-child {
+#create-view .team-divs:last-child {
     border: 0;
 }
 
-#game-mode {
+#create-view #game-mode {
     display: flex;
     justify-content: space-around;
     align-items: center;
 }
 
-#game-mode p {
+#create-view #game-mode p {
     margin: 0 20px;
     font-size: 21px;
 }
 
 /* ------------------ Advanced settings ------------------ */
-.create-game-advanced {
-    /* display: none; */
+#create-view .create-game-advanced {
     height: 0;
     overflow: hidden;
     display: flex;
@@ -201,30 +120,14 @@ body {
     margin-top: 20px;
 }
 
-/*
-.create-game-inputs {
-    width: 100%;
-    flex-basis: 8vh;
-    border: 1px solid var(--text-color);
-    border-radius: 15px;
-    -webkit-border-radius: 15px;
-    -moz-border-radius: 15px;
-    -ms-border-radius: 15px;
-    -o-border-radius: 15px;
-    margin-top: 8px;
-    box-shadow: 0 0 10px 1px var(--text-color);
-    padding: 3px;
-}
-*/
-
-div.create-game-inputs {
+#create-view div.create-game-inputs {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 /* ------- Overlay for choosing certain parameters ------- */
-.choose-overlay {
+#create-view .choose-overlay {
     width: 100vw;
     position: fixed;
     top: 0;
@@ -234,17 +137,16 @@ div.create-game-inputs {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* display: none; */
     overflow-x: hidden;
 }
 
-#choose-overlay * {
+#create-view #choose-overlay * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-#choose-overlay-close p {
+#create-view #choose-overlay-close p {
     position: absolute;
     top: 0;
     right: 0;
@@ -254,11 +156,11 @@ div.create-game-inputs {
     text-shadow: 0 0 10px var(--text-color);
 }
 
-#choose-overlay-close p:hover {
+#create-view #choose-overlay-close p:hover {
     cursor: pointer;
 }
 
-#choose-overlay-container {
+#create-view #choose-overlay-container {
     min-height: 60vh;
     text-align: center;
     width: 80%;
@@ -270,29 +172,16 @@ div.create-game-inputs {
     padding: 3vw;
 }
 
-#duration-information {
+#create-view #duration-information {
     font-size: 2vh;
 }
 
-#choose-overlay-container h2 {
+#create-view #choose-overlay-container h2 {
     font-size: 6vh;
     text-shadow: 0 0 20px var(--logo-color);
 }
 
-
-/*
-#picker-container {
-#changedDurationsBtn {
-    flex-basis: 40%;
-    border: 1px solid var(--text-color);
-    border-radius: 20px;
-    height: 10vh;
-    box-shadow: 0 0 10px 2px var(--text-color);
-    color: var(--text-color);
-}
-*/
-
-#picker-container {
+#create-view #picker-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -301,11 +190,11 @@ div.create-game-inputs {
     overflow: hidden;
 }
 
-#picker-container *.overlayFlexItems {
+#create-view #picker-container *.overlayFlexItems {
     flex-basis: 1;
 }
 
-.inputFieldsOverlay {
+#create-view .inputFieldsOverlay {
     outline: none;
     background-color: transparent;
     border: none;
@@ -314,12 +203,13 @@ div.create-game-inputs {
     width: 48%;
     font-size: 3vh;
 }
-.inputFieldsOverlay:hover {
+
+#create-view .inputFieldsOverlay:hover {
     background-color: #343339;
     cursor: pointer;
 }
 
-#picker-seperator {
+#create-view #picker-seperator {
     font-size: 30px;
     text-shadow: 0 0 10px var(--text-color);
 }
@@ -327,29 +217,18 @@ div.create-game-inputs {
 #create-view button#changedDurationsBtn {
     padding: 15px 10px;
 }
-/*
-#create-view button#changedDurationsBtn {
-    background-color: transparent;
-    width: 70%;
-    flex-basis: 8vh;
-    text-shadow: 0 0 10px var(--text-color);
-    font-size: 20px;
-}
-*/
 
-#durationError {
+#create-view #durationError {
     color: var(--logo-color);
 }
 
 /* ----------------- Toggle-classes ------------------- */
 
-.advancedSettingsShow {
-    /* display: block; */
+#create-view .advancedSettingsShow {
     height: 730px;
 }
 
-.showOverlayDuration {
-    /* display: flex; */
+#create-view .showOverlayDuration {
     left: 0;
 }
 
@@ -358,6 +237,6 @@ div.create-game-inputs {
     border: 1px solid var(--logo-color);
 }
 
-.showDropDown {
+#create-view .showDropDown {
     display: block;
 }

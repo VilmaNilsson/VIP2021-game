@@ -13,6 +13,7 @@
   font-family: var(--font-primary);
   font-size: 0.9rem;
 }
+
 #plan-view #controlPanel {
   height: 10%;
   width: 100%;
@@ -21,44 +22,45 @@
   flex-direction: column;
   align-items: center;
 }
+
 #plan-view #rocketBox {
   width: 90%;
   display: flex;
   flex-direction: row;
   margin: 0 5px 0 5px;
   justify-content: space-around;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  -o-border-radius: 10px;
+  border-radius: 10px;
 }
+
 #plan-view .rocketDiv {
   height: 30px;
   width: 20%;
   background-repeat: no-repeat;
   background-position: center;
 }
+
 #plan-view .yourTeam {
   border: 2px solid var(--text-color);
   border-radius: 10px;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  -o-border-radius: 10px;
   box-shadow: 0px 0px 20px 1px var(--text-color);
 }
+
 #plan-view .lBlue {
   background-image: url(../../assets/rocket_lBlue.svg);
 }
+
 #plan-view .pink {
   background-image: url(../../assets/rocket_pink.svg);
 }
+
 #plan-view .purple {
   background-image: url(../../assets/rocket_purple.svg);
 }
+
 #plan-view .dBlue {
   background-image: url(../../assets/rocket_dBlue.svg);
 }
+
 #plan-view #timer {
   margin-top: 3%;
   font-size: 16px;
@@ -70,21 +72,13 @@
   min-width: 10%;
   text-align: center;
   border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
 }
+
 #plan-view #actions {
   border: 5px double var(--text-color);
   border-radius: 10px;
   height: 63%;
   width: 90vw;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  -o-border-radius: 10px;
-
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(8, 35%);
@@ -92,20 +86,19 @@
   overflow-y: scroll;
   padding: 5px;
 }
+
 #plan-view .availableAction {
   background-color: var(--game-action-background-color);
   border: 2px solid var(--text-color);
   color: var(--game-action-text-color);
   padding: 10px;
   border-radius: 10px;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  -o-border-radius: 10px;
 }
+
 #plan-view .aName {
   font-weight: 800;
 }
+
 #plan-view #player-actions {
   min-height: 10%;
   border: 5px double var(--text-color);
@@ -116,11 +109,8 @@
   grid-template-columns: repeat(4,1fr);
   grid-gap: 5px;
   justify-content: space-between;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  -o-border-radius: 10px;
 }
+
 #plan-view #player-actions > div {
   border:2px solid var(--text-color);
   border-radius: 10px;
@@ -130,11 +120,8 @@
   justify-content: center;
   padding: 5px;
   background-color: var(--game-action-on-cooldown-color);
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  -o-border-radius: 10px;
 }
+
 #plan-view #actions, #player-actions {
   margin-top: 2%;
 }

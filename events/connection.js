@@ -35,6 +35,7 @@ function playerReconnect(context, payload) {
 
   // We first try to connect this new WebSocket ID with an old player
   if (!reconnected) {
+    context.send('player:reconnect:fail', { errorCode: 0 });
     return;
   }
 
@@ -47,6 +48,7 @@ function playerReconnect(context, payload) {
       id: playerState.id,
       username: playerState.username,
     });
+
     return;
   }
 

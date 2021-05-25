@@ -23,7 +23,10 @@ function PlanView(context) {
   `;
 
   const { player } = context.getState();
-  console.log(player.team);
+
+  if (!player) {
+    return el;
+  }
 
   // Get the rocket divs
   const controlPanel = el.querySelector('#controlPanel');
@@ -32,6 +35,7 @@ function PlanView(context) {
   const pink = rocketBox.querySelector('.pink');
   const purple = rocketBox.querySelector('.purple');
   const dBlue = rocketBox.querySelector('.dBlue');
+
   if (player.team === 0) {
     lBlue.classList.add('yourTeam');
   } else if (player.team === 1) {

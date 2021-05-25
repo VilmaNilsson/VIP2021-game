@@ -72,9 +72,10 @@ function renderRack(rack, teamIndex, context) {
   }
 
   // Render the slots
-  rack.slots.forEach((slot, tokenIndex) => {
-    const slotElem = renderSlot(slot, tokenIndex, teamIndex, context);
-    div.append(slotElem);
+  const slots = rack.slots.map((slot, tokenIndex) => {
+    const el = renderSlot(slot, tokenIndex, teamIndex, context);
+    div.append(el);
+    return slot;
   });
 
   // Whenever we receive a rack update to a station
@@ -131,6 +132,9 @@ function Racks(el, context) {
     .concat(rackElements.splice(player.team, 1))
     .forEach((rack) => el.append(rack));
 
+  // Listeners
+  // =========
+
   // Reset everything once a player has logged into a station
   el.subscribe('station:login:done', (e) => {
     const { racks } = e.detail;
@@ -147,10 +151,10 @@ function Racks(el, context) {
       .concat(rackElements.splice(player.team, 1))
       .forEach((rack) => el.append(rack));
   });
-
-  const { stations } = game;
   
+  // Login overlay (while waiting)
   el.subscribe('station:login:wait', (e) => {
+    const { stations } = game;
     const payload = e.detail;
     const name = stations[payload.station].name;
 
