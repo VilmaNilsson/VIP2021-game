@@ -1,0 +1,79 @@
+@import "variables.css";
+@import "login.css";
+@import "main.css";
+@import "join.css";
+@import "create.css";
+@import "plan.css";
+@import "lobby.css";
+@import "play.css";
+
+body {
+    margin: 0;
+    font-family: var(--font-primary);
+    color: var(--text-color);
+    background-color: var(--background-color);
+}
+
+#root {
+    display: flex;
+}
+
+.pregame-btn {
+    font-family: var(--font-primary);
+    font-weight: 600;
+    font-size: 22px;
+    text-align: center;
+    color: var(--text-color);
+    width: 100%;
+    padding: 15px 10px;
+    margin: 20px 0;
+    border-radius: 20px;
+    border: none;
+    background-color: transparent;
+    box-shadow: 0 0 15px var(--text-color);
+    transition: box-shadow 120ms ease;
+    box-sizing: border-box;
+}
+
+.pregame-btn:hover,
+.pregame-btn:active {
+    box-shadow: 0 0 10px 5px var(--logo-color);
+    cursor: pointer;
+}
+
+.pregame-input {
+    font-family: var(--font-primary);
+    font-weight: 600;
+    font-size: 22px;
+    text-align: center;
+    color: var(--text-color);
+    width: 100%;
+    padding: 15px 10px;
+    margin: 20px 0;
+    border-radius: 20px;
+    border: none;
+    background-color: transparent;
+    box-shadow: 0 0 15px var(--text-color);
+    transition: box-shadow 120ms ease;
+    outline: none;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+}
+
+.pregame-input:hover,
+.pregame-input:active {
+    box-shadow: 0 0 10px 5px var(--logo-color);
+    cursor: pointer;
+}
+
+.pregame-input::placeholder {
+    color: #f484de;
+    opacity: 1;
+}
+
+.pregame-errmsg {
+    font-family: var(--font-primary);
+    color: #ff5e5e;
+    padding: 15px;
+    text-align: center;
+}

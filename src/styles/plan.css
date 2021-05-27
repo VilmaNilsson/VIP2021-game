@@ -1,0 +1,214 @@
+#plan-view {
+  flex-grow: 1;
+  height: 100vh;
+  background-image: url('/assets/background.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: -126px;
+  padding: 0 10px;
+  background-color: #151824; /* same as image */
+  color: var(--text-color);
+  display: flex;
+  flex-direction: column;
+}
+
+#plan-view #teams {
+  display: flex;  
+  justify-content: space-around;
+  padding: 15px 0;
+}
+
+#plan-view .team {
+  display: flex;
+  flex-grow: 1;
+  position: relative;
+  max-width: 100px;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  box-shadow: 0 0 5px 2px transparent,
+        inset 0 0 5px 2px transparent;
+  transition: box-shadow 120ms ease;
+  padding: 2px;
+  margin-right: 10px;
+}
+
+#play-view .team:last-child {
+  margin-right: 0;
+}
+
+#plan-view .team.team-1 svg {
+  fill: var(--team-color-1);
+}
+#plan-view .team.team-2 svg {
+  fill: var(--team-color-2);
+}
+#plan-view .team.team-3 svg {
+  fill: var(--team-color-3);
+}
+#plan-view .team.team-4 svg {
+  fill: var(--team-color-4);
+}
+
+#plan-view .team.your-team {
+  border-color: var(--your-team-color);
+  box-shadow: 0 0 5px 2px var(--your-team-color);
+}
+
+#plan-view .score {
+  padding-left: 10px;
+  margin-top: 1px;
+  color: #000;
+  text-align: center;
+  font-family: var(--font-mono);
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+#plan-view #controlPanel {
+  height: 10%;
+  width: 100%;
+  margin: 4% 0 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#plan-view #rocketBox {
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  margin: 0 5px 0 5px;
+  justify-content: space-around;
+  border-radius: 10px;
+}
+
+#plan-view .rocketDiv {
+  height: 30px;
+  width: 20%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#plan-view .yourTeam {
+  border: 2px solid var(--text-color);
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px 1px var(--text-color);
+}
+
+#plan-view #timer {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  grid-column: 2; 
+  grid-row: 1;
+  font-size: 21px;
+  font-family: var(--font-mono);
+  color: var(--your-team-color);
+}
+
+#plan-view #available-actions {
+  text-align: center;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 14px;
+  margin: 15px 0 5px 0;
+}
+
+#plan-view #your-actions {
+  text-align: center;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 14px;
+  margin: 10px 0 5px 0;
+}
+
+#plan-view #actions {
+  border: 1px solid var(--your-team-color);
+  border-radius: 10px;
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5px;
+  overflow-y: scroll;
+  padding: 5px;
+  box-shadow: 0 0 5px 2px var(--your-team-color);
+}
+
+#plan-view .availableAction {
+  background-color: var(--game-action-background-color);
+  border: 2px solid var(--text-color);
+  color: var(--game-action-text-color);
+  padding: 7px;
+  border-radius: 10px;
+}
+
+#plan-view #actions p {
+  margin: 5px;
+}
+
+#plan-view #actions .cooldown {
+  margin-top: 5px;
+}
+
+#plan-view #actions .cooldown span {
+  font-weight: bold;
+}
+
+#plan-view #actions .desc {
+  font-size: 14px;
+}
+
+#plan-view #actions .aName {
+  font-weight: bold;
+}
+
+#plan-view #actions .cooldown {
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+
+#plan-view #player-actions {
+  border: 1px solid var(--your-team-color);
+  border-radius: 10px;
+  padding: 5px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5px;
+  margin-bottom: 10px;
+  box-shadow: 0 0 5px 2px var(--your-team-color);
+}
+
+#plan-view #player-actions > div {
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  padding: 5px;
+  background-color: #fff;
+  color: #000;
+}
+
+#plan-view #player-actions > div > p {
+  margin: 0px;
+}
+
+#plan-view #player-actions .aName {
+  font-weight: normal;
+}
+
+#plan-view #player-actions .cooldown {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: bold;
+}
