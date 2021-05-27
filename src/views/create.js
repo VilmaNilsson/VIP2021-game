@@ -113,7 +113,7 @@ function CreateView() {
       currentVal: 30,
     },
     planPhase: {
-      defaultValue: 15, // in seconds
+      defaultValue: 60, // in seconds
       maxValue: '59:00', // in minutes
       currentVal: 60,
     },
