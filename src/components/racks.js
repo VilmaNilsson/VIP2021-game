@@ -4,13 +4,10 @@ function renderSlot(slot, tokenIndex, teamIndex, context) {
   const { team } = player;
   const { tokens } = game;
 
-  const teamColor = game.teams[teamIndex].color;
-
   // Slots should most likely be divs
   const el = document.createElement('div');
-  el.className = 'slot';
-  el.style.backgroundColor = teamColor;
-
+  el.className = `slot team-${teamIndex + 1}`;
+  // Current token name (image path)
   const token = tokens[slot.token] ? tokens[slot.token].name : '-';
   
   // And the divs should be styled via classes
@@ -57,7 +54,7 @@ function renderSlot(slot, tokenIndex, teamIndex, context) {
   return el;
 }
 
-// Render a rack (and update it when we receive updates)
+// Render a rack (and updates it when we receive updates)
 function renderRack(rack, teamIndex, context) {
   const div = document.createElement('div');
   div.className = 'rack';
@@ -109,7 +106,7 @@ function renderRack(rack, teamIndex, context) {
     }
   }
 
-  // When the rack is selectable for actions
+  // When other racks are selectable
   div.subscribe('player:action:racks', () => {
     // Don't make your own team selectable
     if (team !== teamIndex) {
@@ -118,16 +115,34 @@ function renderRack(rack, teamIndex, context) {
       div.classList.add('not-selectable');
     }
   });
+
+  // When your rack is selectable
+  div.subscribe('player:action:rack', () => {
+    // Don't make other teams racks selectable
+    if (team === teamIndex) {
+      setSelectable(true)
+    } else {
+      div.classList.add('not-selectable');
+    }
+  });
+
   // Otherwise remove the selection
   div.subscribe('player:action:cooldown', () => setSelectable(false));
   div.subscribe('player:action:cancel', () => setSelectable(false));
   div.subscribe('player:action:fail', () => setSelectable(false));
 
   div.click(() => {
-    if (team === teamIndex) {
+    const { action } = context.getState();
+
+    // Unable to click on this rack
+    if (div.classList.contains('not-selectable')) {
       return;
     }
 
+    if (action && selectable) {
+      setSelectable(false);
+      div.send('player:action', { ...action, rack: teamIndex });
+    }
   });
 
   return div;
@@ -146,6 +161,7 @@ function Racks(el, context) {
   // Racks gets changed with every login, this is the first ones
   const initialRacks = racks ? racks : [];
 
+  // TODO: change into an image
   if (initialRacks.length === 0) {
     el.innerHTML = `
       <div class="overlay no-racks">
@@ -153,8 +169,6 @@ function Racks(el, context) {
       </div> 
     `;
   }
-
-  // NOTE: maybe we should render something when there are no racks?
 
   // Render each rack
   const rackElements = initialRacks.map((rack, teamIndex) => {
@@ -167,24 +181,11 @@ function Racks(el, context) {
     .concat(rackElements.splice(player.team, 1))
     .forEach((rack) => el.append(rack));
 
-  // Listeners
-  // =========
+  // LOGIN LISTENERS
+  // ===============
 
-  // Reset everything once a player has logged into a station
+  // NOTE: this is currently already handled by our wait-listeners
   el.subscribe('station:login:done', (e) => {
-    // const { racks } = e.detail;
-
-    // // Always reset this
-    // el.innerHTML = '';
-
-    // const rackElements = racks.map((rack, teamIndex) => {
-    //   return renderRack(rack, teamIndex, context);
-    // });
-
-    // // Place your own rack at the bottom
-    // rackElements
-    //   .concat(rackElements.splice(player.team, 1))
-    //   .forEach((rack) => el.append(rack));
   });
   
   // Login overlay (while waiting)
@@ -197,6 +198,7 @@ function Racks(el, context) {
     // Always reset this
     el.innerHTML = '';
 
+    // Render all racks
     const rackElements = racks.map((rack, teamIndex) => {
       return renderRack(rack, teamIndex, context);
     });
@@ -206,10 +208,12 @@ function Racks(el, context) {
       .concat(rackElements.splice(player.team, 1))
       .forEach((rack) => el.append(rack));
 
+    // And then append our overlay
     el.append(overlay);
 
     const name = stations[station].name;
 
+    // Landing
     context.setInterval({
       start,
       duration,
@@ -225,35 +229,6 @@ function Racks(el, context) {
         overlay.remove();
       },
     });
-
-    // If the login-wait event isnt for this station
-    // if (payload.station !== i) {
-    //   // But we had an interval going, lets clear it
-    //   if (loginInterval) {
-    //     clearInterval(loginInterval);
-    //     div.textContent = station.name;
-    //   }
-
-    //   return;
-    // }
-
-    // // Here we go again with the timer-component-to-be
-    // const { start, duration } = payload;
-    // const end = start + duration;
-
-    // clearInterval(loginInterval);
-
-    // loginInterval = context.setInterval(() => {
-    //   const now = Date.now();
-    //   const sec = ((end - now) / 1000).toFixed(1);
-    //   div.textContent = `${station.name} (Logging in ${sec}s)`;
-
-    //   if (sec <= 0) {
-    //     clearInterval(loginInterval);
-    //     div.textContent = station.name;
-    //     div.style.background = '#ddd';
-    //   }
-    // }, 100);
   });
 
   return el;

@@ -56,7 +56,19 @@
     font-family: var(--font-primary);
     font-weight: 600;
     box-shadow: 0px 15px 20px #1c1b20;
-    flex-basis: 15%;
+}
+
+#lobby .teamDiv.team-1 {
+    background-color: var(--team-color-1);
+}
+#lobby .teamDiv.team-2 {
+    background-color: var(--team-color-2);
+}
+#lobby .teamDiv.team-3 {
+    background-color: var(--team-color-3);
+}
+#lobby .teamDiv.team-4 {
+    background-color: var(--team-color-4);
 }
 
 #lobby .teamDiv:hover {

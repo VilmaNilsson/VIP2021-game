@@ -3,6 +3,7 @@
   height: 100vh;
   background-image: url('/assets/background.png');
   background-color: #151824; /* same as image */
+  /* background-color: var(--background-color); */
   background-size: cover;
   background-repeat: no-repeat;
   background-position-x: center;
@@ -13,22 +14,38 @@
 #play-view #teams {
   display: flex;  
   justify-content: space-around;
-  gap: 15px;
   padding: 15px 0;
 }
 
 #play-view .team {
-  max-width: 75px;
-  flex-basis: 75px;
+  display: flex;
+  flex-grow: 1;
+  position: relative;
+  max-width: 100px;
   box-sizing: border-box;
-  background-position: center;
-  background-size: contain;
-  background-repeat: no-repeat;
-  padding: 8px;
   border: 1px solid transparent;
   box-shadow: 0 0 5px 2px transparent,
         inset 0 0 5px 2px transparent;
   transition: box-shadow 120ms ease;
+  padding: 2px;
+  margin-right: 10px;
+}
+
+#play-view .team:last-child {
+  margin-right: 0;
+}
+
+#play-view .team.team-1 svg {
+  fill: var(--team-color-1);
+}
+#play-view .team.team-2 svg {
+  fill: var(--team-color-2);
+}
+#play-view .team.team-3 svg {
+  fill: var(--team-color-3);
+}
+#play-view .team.team-4 svg {
+  fill: var(--team-color-4);
 }
 
 #play-view .team.selectable {
@@ -37,25 +54,37 @@
         inset 0 0 5px 2px rgba(255, 255, 255, 1);
 }
 
+/*
 #play-view .team.selectable:hover {
   cursor: pointer;
   box-shadow: 0 0 5px 2px var(--your-team-color),
         inset 0 0 5px 2px var(--your-team-color);
 }
+*/
 
 #play-view .score {
+  padding-left: 10px;
+  margin-top: 1px;
   color: #000;
   text-align: center;
   font-family: var(--font-mono);
-  padding-left: 10px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
 }
 
 #play-view #stations {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-auto-rows: 28px;
-  padding: 10px 0;
   gap: 5px;
+  margin-bottom: 5px;
 }
 
 #play-view #stations #timer {
@@ -66,6 +95,8 @@
   grid-row: 1;
   font-size: 21px;
   font-family: var(--font-mono);
+  color: var(--your-team-color);
+  text-shadow: 0 2px 2px #000;
 }
 
 #play-view .station {
@@ -80,7 +111,7 @@
   transition: box-shadow 120ms ease, opacity 120ms ease;
 }
 
-#play-view .station:hover,
+/* #play-view .station:hover, */
 #play-view .station.active {
   cursor: pointer;
   border-color: rgba(255, 255, 255, 1);
@@ -88,30 +119,40 @@
         inset 0 0 5px 2px var(--your-team-color);
 }
 
-#play-view .station.selectable,
-#play-view .station.active.selectable {
-   border-color: #fff;
-   box-shadow: 0 0 5px 2px rgba(255, 255, 255, 1),
-          inset 0 0 5px 2px rgba(255, 255, 255, 1);
-}
-
-#play-view .station.selectable:hover,
-#play-view .station.active.selectable:hover {
-   border-color: #fff;
-   box-shadow: 0 0 5px 2px var(--your-team-color),
-   inset 0 0 5px 2px var(--your-team-color);
-}
-
 #play-view .station.locked {
   opacity: 0.25;
 }
 
+#play-view .station.locked.selectable {
+  opacity: 1;
+}
+
+/*
 #play-view .station.locked:hover,
 #play-view .station.active.locked:hover {
   cursor: default;
   border-color: transparent;
   box-shadow: 0 0 0 0 transparent;
 }
+*/
+
+#play-view .station.selectable,
+#play-view .station.locked.selectable,
+#play-view .station.active.selectable {
+   border-color: #fff;
+   box-shadow: 0 0 5px 2px rgba(255, 255, 255, 1),
+          inset 0 0 5px 2px rgba(255, 255, 255, 1);
+}
+
+/*
+#play-view .station.selectable:hover,
+#play-view .station.locked.selectable:hover,
+#play-view .station.active.selectable:hover {
+   border-color: #fff;
+   box-shadow: 0 0 5px 2px var(--your-team-color),
+   inset 0 0 5px 2px var(--your-team-color);
+}
+*/
 
 #play-view .station img {
   max-width: 50px;
@@ -120,21 +161,24 @@
 #play-view .station .name {
   text-align: center;
   padding-top: 5px;
+  text-shadow: 0 3px 2px #000;
+}
+
+#play-view .station.active .name {
 }
 
 #play-view #racks {
   display: grid;
   align-content: end;
-  gap: 2px;
   position: relative;
   grid-auto-rows: 58px;
-  min-height: 238px;
+  min-height: 230px;
 }
 
 #play-view .rack {
   display: flex;
-  gap: 2px;
-  transition: opacity 120ms ease;
+  transition: opacity 120ms ease, gap 120ms ease;
+  margin-bottom: 2px;
 }
 
 #play-view .rack.other-team {
@@ -150,15 +194,41 @@
   flex: 1 1 0;
   display: flex;
   border: 1px solid transparent;
-  transition: border-color 120ms ease, box-shadow 120ms ease;
+  transition: border-radius 120ms ease;
+  margin-right: 2px;
 }
 
+#play-view .rack .slot:last-child {
+  margin-right: 0;
+}
+
+#play-view .rack .slot.team-1 {
+  background-color: var(--team-color-1);
+}
+#play-view .rack .slot.team-2 {
+  background-color: var(--team-color-2);
+}
+#play-view .rack .slot.team-3 {
+  background-color: var(--team-color-3);
+}
+#play-view .rack .slot.team-4 {
+  background-color: var(--team-color-4);
+}
+
+/*
 #play-view .your-rack .slot:hover {
   cursor: pointer;
 }
+*/
 
 #play-view .rack.other-team.selectable {
   opacity: 1;
+  gap: 0;
+}
+
+#play-view .rack.other-team.selectable .slot {
+  border-radius: 0;
+  margin-right: 0;
 }
 
 #play-view .rack.your-rack.not-selectable {
@@ -171,17 +241,18 @@
 #play-view .slot .token {
   flex-grow: 1;
   background-color: #000;
-  border-radius: 18px;
+  border-radius: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 1px solid transparent;
   transition: background-color 120ms ease;
+  overflow: hidden;
 }
 
-#play-view .slot.selected .token,
-#play-view .your-rack .slot:hover .token {
-  background-color: var(--your-team-color-bright);
+/* #play-view .your-rack .slot:hover .token, */
+#play-view .slot.selected .token {
+  background-color: var(--your-team-color-dark);
 }
 
 #play-view .slot .token img {
@@ -200,7 +271,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 2px;
+  border-radius: 8px;
   text-align: center;
   padding: 0 15px;
   transition: background-color 120ms ease;
@@ -214,18 +285,21 @@
 
 #play-view #bottom {
   display: flex;
-  padding-top: 10px;
+  padding-top: 4px;
 }
 
 #play-view #actions {
   flex-grow: 1;
   display: flex;
-  gap: 5px;
   padding-right: 5px;
 }
 
+#play-view .action:first-child {
+  margin-right: 5px;
+}
+
 #play-view .action {
-  flex-grow: 1;
+  flex: 1 1 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -240,24 +314,28 @@
               opacity 120ms ease;
 }
 
+/*
 #play-view .action:hover {
   cursor: pointer;
   background-color: var(--your-team-color);
 }
+*/
 
 #play-view .action.on-cooldown {
   background-color: var(--your-team-color);
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
 #play-view .action.selected {
   background-color: var(--your-team-color);
 }
 
+/*
 #play-view .action.on-cooldown:hover {
   cursor: default;
   border-color: transparent;
 }
+*/
 
 #play-view .action .name {
   text-align: center;
@@ -267,6 +345,7 @@
   font-family: var(--font-mono);
   font-size: 14px;
   text-align: center;
+  font-weight: bold;
 }
 
 #play-view #bottom #right {
@@ -283,25 +362,29 @@
   border-radius: 8px;
   padding: 5px;
   margin-right: 5px;
+  background-color: var(--your-team-color);
 }
 
+/*
 #play-view #cargo:hover {
   cursor: pointer;
 }
+*/
 
 #play-view #cargo .token {
   background-color: #000;
-  border-radius: 20px;
+  border-radius: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 1px solid transparent;
   transition: background-color 120ms ease;
+  overflow: hidden;
 }
 
-#play-view #cargo.selected .token,
-#play-view #cargo:hover .token {
-  background-color: var(--your-team-color-bright);
+/* #play-view #cargo:hover .token, */
+#play-view #cargo.selected .token {
+  background-color: var(--your-team-color-dark);
 }
 
 #play-view #cargo .token img {
@@ -314,15 +397,18 @@
   position: relative;
   padding-right: 30px;
   transition: opacity 120ms ease;
+  background-color: var(--your-team-color);
 }
 
 #play-view #secret-cargo.locked {
-  opacity: 0.6;
+  opacity: 0.4;
 }
 
+/*
 #play-view #secret-cargo:hover {
   cursor: pointer;
 }
+*/
 
 #play-view #secret-cargo .timer {
   color: #000;
@@ -333,30 +419,36 @@
   right: 17px;
   font-family: var(--font-mono);
   font-size: 14px;
+  font-weight: bold;
 }
 
 #play-view #secret-cargo .token {
   background-color: #000;
-  border-radius: 20px;
+  border-radius: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 1px solid transparent;
   transition: background-color 120ms ease;
+  overflow: hidden;
 }
 
-#play-view #secret-cargo.selected .token,
-#play-view #secret-cargo:hover .token {
-  background-color: var(--your-team-color-bright);
+/* #play-view #secret-cargo:hover .token, */
+#play-view #secret-cargo.selected .token {
+  background-color: var(--your-team-color-dark);
 }
 
+/*
 #play-view #secret-cargo.locked:hover .token {
   background-color: #000;
 }
+*/
 
+/*
 #play-view #secret-cargo.locked:hover {
   cursor: default;
 }
+*/
 
 #play-view #secret-cargo .token img {
   max-width: 50px;
@@ -373,8 +465,85 @@
   border-radius: 10px;
   padding: 5px 29px;
   margin-top: 5px;
+  background: #fff;
 }
 
+/*
 #play-view #menu:hover {
   cursor: pointer;
 }
+*/
+
+/* GAME OVER */
+
+#game-over {
+  padding: 15px;
+  border-radius: 6px;
+  background-color: var(--background-color);
+  margin-top: 10px;
+  box-shadow: 0 0 10px 2px #000;
+}
+
+#game-over h1 {
+  text-align: center;
+}
+
+#game-over h3 {
+  font-style: italic;
+  font-weight: normal;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+#game-over .team-scores {
+  margin-bottom: 30px;
+}
+
+#game-over .team-score {
+  color: #000;
+  padding: 10px;
+  margin-bottom: 5px;
+  border-radius: 10px;
+  box-shadow: 0 0 5px 2px #000;
+}
+
+#game-over .points {
+  font-weight: bold;
+  font-size: 32px;
+  display: block;
+  text-align: center;
+  width: 100%;
+}
+
+#game-over .team-1 {
+  background-color: var(--team-color-1);
+}
+#game-over .team-2 {
+  background-color: var(--team-color-2);
+}
+#game-over .team-3 {
+  background-color: var(--team-color-3);
+}
+#game-over .team-4 {
+  background-color: var(--team-color-4);
+}
+
+#game-over #leave {
+  align-self: flex-end;
+  border: 0;
+  border-radius: 10px;
+  padding: 15px;
+  margin-top: 5px;
+  width: 100%;
+  font-size: 18px;
+  margin-bottom: 10px;
+  box-shadow: 0 0 5px 2px #000;
+  background: #fff;
+  font-weight: bold;
+}
+
+/*
+#game-over #leave:hover {
+  cursor: pointer;
+}
+*/

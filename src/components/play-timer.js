@@ -8,12 +8,6 @@ function PlayTimer(el, context) {
     return el;
   }
 
-  const { teams } = game;
-  const { team } = player;
-  const teamColor = teams[team].color;
-
-  el.style.color = teamColor;
-
   const { start, duration } = game.phase;
 
   context.setInterval({
@@ -24,7 +18,6 @@ function PlayTimer(el, context) {
       const s = utils.pad(time.seconds);
       const i = utils.pad(Math.floor(time.milliseconds / 10));
       el.textContent = `${m}:${s}:${i}`;
-      // el.textContent = `${m}:${s}:00`;
     },
   }, 50);
 }

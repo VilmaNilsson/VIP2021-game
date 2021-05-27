@@ -19,20 +19,15 @@ function SecretCargo(el, context) {
       <img src="/assets/${token}.png">
     </div>
     <div class="timer">
-      02:00
+      01:00
     </div>
   `;
 
   const img = el.querySelector('img');
   const timerEl = el.querySelector('.timer');
 
-  const teamColor = teams[team].color;
-
-  el.style.backgroundColor = teamColor;
-
-  if (secretCargo.locked) {
-    el.classList.add('locked');
-  } else {
+  // If our secret cargo isn't locked, display the timer
+  if (!secretCargo.locked) {
     const { start, duration } = secretCargo;
 
     if (start && duration) {
@@ -46,14 +41,15 @@ function SecretCargo(el, context) {
           el.classList.remove('locked');
         },
         onEnd: () => {
-          timerEl.textContent = '02:00';
+          timerEl.textContent = '01:00';
           el.classList.add('locked');
         },
       });
     }
+  } else {
+    // Otherwise show it as locked
+    el.classList.add('locked');
   }
-
-  // TODO: check if the cargo is activated (then display that timer as well)
 
   // Whenever we receive the changes to our cargo
   el.subscribe('player:cargos', (e) => {
@@ -107,8 +103,8 @@ function SecretCargo(el, context) {
   // Whenever someone plays the activate secret cargo action
   el.subscribe('action:player:secret-cargo', (e) => {
     const { start, duration } = e.detail;
-
     const { player } = context.getState();
+
     player.secretCargo.locked = false;
     context.setState({ player });
 
@@ -122,7 +118,7 @@ function SecretCargo(el, context) {
         el.classList.remove('locked');
       },
       onEnd: () => {
-        timerEl.textContent = '02:00';
+        timerEl.textContent = '01:00';
         el.classList.add('locked');
       },
     });

@@ -31,6 +31,7 @@
     font-weight: normal;
     font-size: 24px;
     margin-bottom: 0;
+    margin-top: 0;
 }
 
 #create-view label {
@@ -225,7 +226,7 @@
 /* ----------------- Toggle-classes ------------------- */
 
 #create-view .advancedSettingsShow {
-    height: 730px;
+    height: 530px;
 }
 
 #create-view .showOverlayDuration {
@@ -239,4 +240,9 @@
 
 #create-view .showDropDown {
     display: block;
+}
+
+#create-view .pregame-errmsg {
+    padding: 0;
+    margin: 5px 0;
 }

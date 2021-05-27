@@ -3,23 +3,18 @@ import PlayTimer from './play-timer';
 function Stations(el, context) {
   const { game, player } = context.getState();
 
-  let lockInterval;
-
   if (!game || !player) {
     return el;
   }
 
-  el.innerHTML = `
-    <div id="timer"></div>
-  `;
+  el.innerHTML = `<div id="timer"></div>`;
 
   const timerEl = el.querySelector('#timer');
 
-  const { teams } = game;
-  const { team } = player;
-  const teamColor = teams[team].color;
-
   PlayTimer(timerEl, context);
+
+  // RENDER ALL STATIONS
+  // ===================
 
   // This should most likely be broken into functions
   const stations = game.stations.map((station, i) => {
@@ -54,11 +49,6 @@ function Stations(el, context) {
     div.click(() => {
       const { action, game } = context.getState();
 
-      // The station is locked, dont do anything
-      if (game.stations[i].locked) {
-        return false;
-      }
-
       // If our client state contains a action and our stations can be selected
       if (action && selectable) {
         // Deselect it (just for the looks)
@@ -69,13 +59,20 @@ function Stations(el, context) {
         // Deselect the action in our client state
         context.setState({ action: null });
       } else {
+        // Don't allow login if the station is locked
+        if (game.stations[i].locked) {
+          return;
+        }
+
         // Otherwise they wanted to login
         div.send('station:login', { station: i });
       }
     });
 
+    // div.subscribe('player:action:stations', () => setSelectable(true));
+
     // When the station is selectable for actions (all station-actions)
-    div.subscribe('player:action:stations', () => setSelectable(true));
+    div.subscribe('player:action:station', () => setSelectable(true));
     // Otherwise remove the selection
     div.subscribe('player:action:cooldown', () => setSelectable(false));
     div.subscribe('player:action:cancel', () => setSelectable(false));
@@ -85,110 +82,15 @@ function Stations(el, context) {
     if (player.inStation && player.inStation.station === i) {
       div.classList.add('active');
     }
-    //
-    // We need to store our login interval outside because they can click on
-    // another station _while_ logging into another, this makes it resettable
-    // let loginInterval = null;
 
-    // ACTIONS ==========
-
-
-    // div.subscribe('action:station:unlocked', () => {
-    //   clearInterval(lockInterval);
-    //   div.textContent = station.name;
-    // });
-
-    div.subscribe('action:station:double-points', (e) => {
-      const payload = e.detail;
-
-      if (payload.station !== i) {
-        return;
-      }
-
-      const { start, duration } = payload;
-
-      const end = start + duration;
-
-      const interval = context.setInterval(() => {
-        const now = Date.now();
-        const sec = ((end - now) / 1000).toFixed(1);
-
-        div.textContent = `${station.name} (Double ${sec}s)`;
-
-        if (sec <= 0) {
-          clearInterval(interval);
-          div.textContent = station.name;
-        }
-      }, 100);
-    });
-
-    div.subscribe('action:station:half-points', (e) => {
-      const payload = e.detail;
-
-      if (payload.station !== i) {
-        return;
-      }
-
-      const { start, duration } = payload;
-
-      const end = start + duration;
-
-      const interval = context.setInterval(() => {
-        const now = Date.now();
-        const sec = ((end - now) / 1000).toFixed(1);
-
-        div.textContent = `${station.name} (Half ${sec}s)`;
-
-        if (sec <= 0) {
-          clearInterval(interval);
-          div.textContent = station.name;
-        }
-      }, 100);
-    });
-
-    div.subscribe('action:stations:double-points', (e) => {
-      const payload = e.detail;
-
-      const { start, duration } = payload;
-
-      const end = start + duration;
-
-      const interval = context.setInterval(() => {
-        const now = Date.now();
-        const sec = ((end - now) / 1000).toFixed(1);
-
-        div.textContent = `${station.name} (Double ${sec}s)`;
-
-        if (sec <= 0) {
-          clearInterval(interval);
-          div.textContent = station.name;
-        }
-      }, 100);
-    });
-
-    div.subscribe('action:stations:half-points', (e) => {
-      const payload = e.detail;
-
-      const { start, duration } = payload;
-
-      const end = start + duration;
-
-      const interval = context.setInterval(() => {
-        const now = Date.now();
-        const sec = ((end - now) / 1000).toFixed(1);
-
-        div.textContent = `${station.name} (Half ${sec}s)`;
-
-        if (sec <= 0) {
-          clearInterval(interval);
-          div.textContent = station.name;
-        }
-      }, 100);
-    });
+    // TODO: upon initial render, we need to check what active actions we have
 
     el.append(div);
     return div;
   });
+
+  // ACTION LISTENERS
+  // ================
   
   // When they log into another station lets clear the bg
   el.subscribe('station:login:done', (e) => {
@@ -220,48 +122,58 @@ function Stations(el, context) {
 
   // When the station gets locked
   el.subscribe('action:station:locked', (e) => {
-    const payload = e.detail;
-
-    // If the lock action wasn't for this station, do nothing
-    // if (payload.station !== i) {
-    //   return;
-    // }
-    //
+    const { station } = e.detail;
     const { game } = context.getState();
-    game.stations[payload.station].locked = true;
+    game.stations[station].locked = true;
     context.setState({ game });
 
-    const stationEl = stations[payload.station];
-
+    const stationEl = stations[station];
     stationEl.classList.add('locked');
-
-    // The timer could be some component that we can reuse instead
-    const { start, duration } = payload;
-
-    context.setInterval({
-      start,
-      duration,
-      onTick: (time) => {},
-      onEnd: () => {
-        stationEl.classList.remove('locked');
-      },
-    });
   });
 
+  // When the lock action fades
   el.subscribe('action:station:locked:faded', (e) => {
-    const payload = e.detail;
+    const { station } = e.detail;
     const { game } = context.getState();
-    game.stations[payload.station].locked = false;
+    game.stations[station].locked = false;
     context.setState({ game });
-    stations[payload.station].classList.remove('locked');
+
+    const stationEl = stations[station];
+    stationEl.classList.remove('locked');
   });
-  
+
+  // Station gets unlocked
   el.subscribe('action:station:unlocked', (e) => {
-    const payload = e.detail;
+    const { station } = e.detail;
     const { game } = context.getState();
-    game.stations[payload.station].locked = false;
+    game.stations[station].locked = false;
     context.setState({ game });
-    stations[payload.station].classList.remove('locked');
+
+    const stationEl = stations[station];
+    stationEl.classList.remove('locked');
+  });
+
+  // Double points for a Planet
+  el.subscribe('action:station:x2', (e) => {
+    const { station } = e.detail;
+    console.log('x2' , station);
+  });
+
+  // Double points for a Planet
+  el.subscribe('action:station:x2:faded', (e) => {
+    const { station } = e.detail;
+
+  });
+
+  // Double points for all Planets
+  el.subscribe('action:stations:x2', (e) => {
+    // const payload = e.detail;
+    console.log('x2 all');
+  });
+
+  // Double points for all Planets faded
+  el.subscribe('action:stations:x2:faded', (e) => {
+    // const payload = e.detail;
   });
 
   return el;

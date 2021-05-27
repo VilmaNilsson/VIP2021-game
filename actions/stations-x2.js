@@ -1,25 +1,20 @@
-function doubleSalary(context) {
+function planetsDoublePoints(context) {
   // First we'll get the game state
   const game = context.getGameState();
-  console.log('hejsansaldmas');
 
   // Some error-handling
   // We're not in a game
   if (game === null) {
-    context.send('action:stations:double-points:fail', { errorCode: 0 });
-    return false;
+    return { errorCode: 0 };
   }
   // We're not in the play phase
   if (game.properties.phase.type !== 2) {
-    context.send('action:stations:double-points:fail', { errorCode: 1 });
-    return false;
+    return { errorCode: 1 };
   }
-
-  const POINT_MULTIPLIER = 2;
 
   // Loop through all stations in the gamestate and change their salaryMultiplier
   game.stations.forEach((station) => {
-    station.properties.pointsMultiplier = POINT_MULTIPLIER;
+    station.properties.pointsMultiplier = 2;
   });
 
   // 30 seconds
@@ -30,21 +25,21 @@ function doubleSalary(context) {
   context.updateGameState(game);
 
   // Broadcast the event to everyone
-  context.broadcastToGame('action:stations:double-points', { start, duration });
+  context.broadcastToGame('action:stations:x2', { start, duration });
 
   // Reset all multipliers after the next salaries have been given
   context.setTimeout(() => {
     game.stations.forEach((station) => {
-      const DEFAULT_MUILTIPLER = station.defaults.pointsMultiplier;
-      station.properties.pointsMultiplier = DEFAULT_MUILTIPLER;
+      station.properties.pointsMultiplier = station.defaults.pointsMultiplier;
     });
+
     context.updateGameState(game);
-    context.broadcastToGame('action:stations:double-points:faded', {});
+    context.broadcastToGame('action:stations:x2:faded', {});
   }, duration);
 
   return true;
 }
 
 module.exports = {
-  'action:stations:double-points': doubleSalary,
+  'action:stations:x2': planetsDoublePoints,
 };

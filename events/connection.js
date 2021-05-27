@@ -39,6 +39,8 @@ function playerReconnect(context, payload) {
     return;
   }
 
+  context.updatePlayerState({ online: true });
+
   const playerState = context.getPlayerState();
   const game = context.getGameState();
 

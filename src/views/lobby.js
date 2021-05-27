@@ -3,6 +3,7 @@ import { LobbyTeams } from '../components';
 function LobbyView(context) {
   const el = document.createElement('div');
   el.id = 'lobby';
+
   const { id, game } = context.getState();
 
   const name = game ? game.name : '';

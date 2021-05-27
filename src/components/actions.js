@@ -23,18 +23,15 @@ function Actions(el, context) {
     const cooldownTime = `${utils.pad(mins)}:${utils.pad(secs)}`;
 
     div.innerHTML = `
-      <div class="name">
-        ${name}
-      </div>
-      <div class="cooldown">
-        ${cooldownTime}
-      </div>
+      <div class="name">${name}</div>
+      <div class="cooldown">${cooldownTime}</div>
     `;
 
     const cdEl = div.querySelector('.cooldown');
+
     let onCooldown = false;
 
-    // The action is already on cooldown
+    // The action is already on cooldown (upon initial render)
     if (start) {
       div.classList.add('on-cooldown');
       onCooldown = true;
@@ -87,13 +84,14 @@ function Actions(el, context) {
         });
       }
 
-      // When they target themselves we dont need to select anything
-      if (target === 'player') {
+      // Some actions affect all entities (or yourself) of some sort, in that
+      // case we'll activate the action immediately
+      if (['player', 'stations', 'teams'].includes(target)) {
         context.setState({ action: null });
         div.send('player:action', { event, index: actionIndex });
         div.classList.remove('selected');
       } else {
-        // Now the event contains the target as well
+        // Otherwise we'll pass on the action to the entity to handle it further
         context.setState({ action: { event, index: actionIndex } });
         div.publish(`player:action:${target}`);
       }

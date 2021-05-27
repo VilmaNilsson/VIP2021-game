@@ -186,7 +186,6 @@ function createTokens(nrOfTokens = 6) {
 function createTeam(state = {}) {
   const team = {
     name: '',
-    color: '',
     crew: -1,
     ...state,
     defaults: {
@@ -261,8 +260,8 @@ function filterGame(game) {
       return { name, ...properties };
     }),
     teams: game.teams.map((team) => {
-      const { name, color, properties } = team;
-      return { name, color, ...properties };
+      const { name, properties } = team;
+      return { name, ...properties };
     }),
     players: Object.entries(game.players).reduce((players, entry) => {
       const [id, player] = entry;
@@ -278,23 +277,29 @@ function filterPlayer(player) {
   return { team, ...properties };
 }
 
+// Filter out unecessary keys of a team
+function filterTeam(team)  {
+  return { name: team.name, score: team.properties.score, };
+}
+
 // Calculate the login time for a station
 function getLoginTime(gameState, playerId, stationIndex) {
   // Unpack the needed properties from the gamestate
-  const { stations, players } = gameState;
+  const { stations, players, teams } = gameState;
 
   // Get the specified objects
   const station = stations[stationIndex];
   const player = players[playerId];
+  const team = teams[player.team];
 
   // Calculate the logintime based on the station's and the player's properties
   const loginTime = (
-    (station.properties.loginTime * station.properties.loginMultiplier)
-    * player.properties.loginMultiplier
+    station.properties.loginTime
+    * (station.properties.loginMultiplier * team.properties.loginMultiplier)
   );
 
-  // Return it
-  return loginTime;
+  // Make login times whole numbers
+  return Math.round(loginTime);
 }
 
 // Get all team scores as [team 1 score, team 2 score, ...]
@@ -347,12 +352,7 @@ function getPlayersInTeam(game, teamId) {
   
 // Returns true if station rack (for a specific team) is full
 function isRackFull(station, teamId) {
-  station.rack[teamId].slots.forEach((slot) => {
-    if(slot.token === -1){
-      return false;
-    }
-  });
-  return true;
+  return station.rack[teamId].slots.every((s) => s.token === -1);
 }
 
 // Checks and broadcast score for a given context, game, station and teamIndex
@@ -365,9 +365,15 @@ function checkActionForScore(context, game, station, teamIndex) {
   const sameSlots = slots.every((slot) => slot === slots[0]);
   const noEmptySlots = slots.every((slot) => slot !== -1);
 
+  // Points multipliers
+  const multipliers = (
+    game.teams[teamIndex].properties.pointsMultiplier *
+    station.properties.pointsMultiplier
+  );
+
   // All the tokens are the same = points!
   if (noEmptySlots && sameSlots) {
-    game.teams[teamIndex].properties.score += 3;
+    game.teams[teamIndex].properties.score += (3 * multipliers);
 
     // Broadcast the updated score
     const score = getTeamScores(game);
@@ -377,7 +383,7 @@ function checkActionForScore(context, game, station, teamIndex) {
     const uniqueSlots = new Set(slots).size === slots.length;
 
     if (noEmptySlots && uniqueSlots) {
-      game.teams[teamIndex].properties.score += 2;
+      game.teams[teamIndex].properties.score += (2 * multipliers);
 
       // Broadcast the updated score
       const score = getTeamScores(game);
@@ -405,6 +411,7 @@ module.exports = {
   createPlayer,
   filterGame,
   filterPlayer,
+  filterTeam,
   getStationNames,
   getLoginTime,
   getTeamScores,

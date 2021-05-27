@@ -8,8 +8,10 @@ function LobbyTeams(el, context) {
   // This could possibly be broken into a function (to increase readability)
   game.teams.forEach((team, teamIndex) => {
     const div = document.createElement('div');
-    div.classList.add('teamDiv');
-    div.style.backgroundColor = team.color;
+    div.className = `teamDiv team-${teamIndex + 1}`;
+
+    // div.classList.add('teamDiv');
+    // div.style.backgroundColor = team.color;
 
     div.innerHTML = `
       <p id="teamName">${team.name}</p>
@@ -34,6 +36,9 @@ function LobbyTeams(el, context) {
         const verticalLine = document.createElement('span');
         newPlayer.append(verticalLine);
         playersEl.append(newPlayer);
+
+        // Highlight your current team upon rendering
+        div.classList.add('markedTeam');
       }
     });
 

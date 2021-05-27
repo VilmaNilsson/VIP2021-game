@@ -1,14 +1,13 @@
 function activateSecretCargo(context) {
   const start = Date.now();
-  const duration = 122 * 1000;
+  const duration = 60 * 1000;
   const playerId = context.id();
   const game = context.getGameState();
   const player = game.players[playerId];
 
   // Already unlocked
   if (player.properties.secretCargo.locked === false) {
-    context.send('action:player:secret-cargo:fail', { errorCode: 0 });
-    return false;
+    return { errorCode: 0 };
   }
 
   player.properties.secretCargo.locked = false;

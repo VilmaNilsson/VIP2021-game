@@ -1,4 +1,27 @@
-import utils from "../utils";
+import utils from '../utils';
+
+// Render one player action
+function renderPlayerAction(action) {
+  const div = document.createElement('div');
+  const { event, name, cooldown } = action;
+  const m = utils.pad(Math.floor(cooldown / 60));
+  const s = utils.pad(cooldown % 60);
+
+  div.innerHTML = `
+    <p class="aName">${action.name}</p>
+    <p class="cooldown">${m}:${s}</p>
+  `;
+
+  // Don't make placeholders clickable
+  if (name !== '-') {
+    div.click(() => {
+      div.send('player:action:deselect', { event });
+      div.remove();
+    });
+  }
+
+  return div;
+}
 
 function PlanPlayerActions(el, context) {
   const { player } = context.getState();
@@ -7,91 +30,35 @@ function PlanPlayerActions(el, context) {
     return el;
   }
 
-  const { actions } = player;
-  renderActions(actions);
+  // If the player has selected fewer then 2 actions we'll use these as visual
+  // placeholders for now
+  const placeholders = [
+    { name: '-', cooldown: 0 },
+    { name: '-', cooldown: 0 }
+  ];
 
-  // When actions are added
-  el.subscribe('player:actions', (e) => {
-    // The new array of the chosen actions
-    const { actions } = e.detail;
-    renderActions(actions);
+  // Initial rendering
+  const { actions } = player;
+  const paddedActions = actions.concat(placeholders).slice(0, 2);
+
+  paddedActions.forEach((action) => {
+    const actionEl = renderPlayerAction(action);
+    el.append(actionEl);
   });
 
-  function renderActions (_actions) {
-    
+  // (De)selections rerender everything
+  el.subscribe('player:actions', (e) => {
+    const { actions } = e.detail;
+    const paddedActions = actions.concat(placeholders).slice(0, 2);
+
+    // Reset our current HTML
     el.innerHTML = '';
 
-    // Chosen and Empty actions
-    // NOTE: Should we connect this max number of actions with the server side?
-    for (let i = 0; i < 2; i++) {
-
-
-      const div = document.createElement('div');
-
-      let action = _actions[i] || {name: "-", cooldown: 0};
-      let m = utils.pad(Math.floor(action.cooldown / 60));
-      let s = utils.pad(action.cooldown % 60);
-
-      div.innerHTML = `
-        <p class="aName">${action.name}</p>
-        <p class="cooldown">${m}:${s}</p>
-      `;
-
-      if (action.event) {
-        div.click(() => {
-          setTimeout(() => {
-            div.send('player:action:deselect', { event: action.event });
-            div.remove();
-          }, 300);
-        });
-      } 
-
-      el.append(div)
-
-    }
-
-  }
-
-  // // Render initial actions
-  // actions.forEach((action) => {
-  //   const { name, event } = action;
-  //   const div = document.createElement('div');
-  //   div.innerHTML = name;
-
-  //   div.click(() => {
-  //     setTimeout(() => {
-  //       div.send('player:action:deselect', { event });
-  //       div.remove();
-  //     }, 300);
-  //   });
-
-  //   el.append(div);
-  // });
-  // When actions are added
-
-  // el.subscribe('player:actions', (e) => {
-  //   // The new array of the chosen actions
-  //   const { actions } = e.detail;
-  //   // Clear out all the old ones
-  //   el.innerHTML = '';
-
-  //   // Re-render all of the player actions
-  //   actions.forEach((action) => {
-  //     const { name, event } = action;
-  //     const div = document.createElement('div');
-  //     div.innerHTML = name;
-
-  //     div.click(() => {
-  //       setTimeout(() => {
-  //         div.send('player:action:deselect', { event });
-  //         div.remove();
-  //       }, 300);
-  //     });
-
-  //     el.append(div);
-  //   });
-  // });
-
+    paddedActions.forEach((action) => {
+      const actionEl = renderPlayerAction(action);
+      el.append(actionEl);
+    });
+  });
 }
 
 export default PlanPlayerActions;

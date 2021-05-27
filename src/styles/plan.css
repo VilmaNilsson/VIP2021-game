@@ -16,22 +16,38 @@
 #plan-view #teams {
   display: flex;  
   justify-content: space-around;
-  gap: 15px;
   padding: 15px 0;
 }
 
 #plan-view .team {
-  max-width: 75px;
-  flex-basis: 75px;
+  display: flex;
+  flex-grow: 1;
+  position: relative;
+  max-width: 100px;
   box-sizing: border-box;
-  background-position: center;
-  background-size: contain;
-  background-repeat: no-repeat;
-  padding: 8px;
   border: 1px solid transparent;
   box-shadow: 0 0 5px 2px transparent,
         inset 0 0 5px 2px transparent;
   transition: box-shadow 120ms ease;
+  padding: 2px;
+  margin-right: 10px;
+}
+
+#play-view .team:last-child {
+  margin-right: 0;
+}
+
+#plan-view .team.team-1 svg {
+  fill: var(--team-color-1);
+}
+#plan-view .team.team-2 svg {
+  fill: var(--team-color-2);
+}
+#plan-view .team.team-3 svg {
+  fill: var(--team-color-3);
+}
+#plan-view .team.team-4 svg {
+  fill: var(--team-color-4);
 }
 
 #plan-view .team.your-team {
@@ -40,10 +56,20 @@
 }
 
 #plan-view .score {
+  padding-left: 10px;
+  margin-top: 1px;
   color: #000;
   text-align: center;
   font-family: var(--font-mono);
-  padding-left: 10px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
 }
 
 #plan-view #controlPanel {
@@ -77,22 +103,6 @@
   box-shadow: 0px 0px 20px 1px var(--text-color);
 }
 
-#plan-view .lBlue {
-  background-image: url(../../assets/rocket_lBlue.svg);
-}
-
-#plan-view .pink {
-  background-image: url(../../assets/rocket_pink.svg);
-}
-
-#plan-view .purple {
-  background-image: url(../../assets/rocket_purple.svg);
-}
-
-#plan-view .dBlue {
-  background-image: url(../../assets/rocket_dBlue.svg);
-}
-
 #plan-view #timer {
   margin-top: 14px;
   display: flex;
@@ -104,21 +114,6 @@
   font-family: var(--font-mono);
   color: var(--your-team-color);
 }
-
-/*
-#plan-view #timer {
-  margin-top: 3%;
-  font-family: var(--font-mono);
-  font-size: 16px;
-  color: var(--text-color);
-  background-color:rgba(000,000,000,.7);
-  border: 1px solid rgba(255,255,255,.4);
-  padding: 2px 10px;
-  min-width: 10%;
-  text-align: center;
-  border-radius: 5px;
-}
-*/
 
 #plan-view #available-actions {
   text-align: center;
@@ -156,19 +151,27 @@
   border-radius: 10px;
 }
 
-#plan-view .availableAction p {
+#plan-view #actions p {
   margin: 5px;
 }
 
-#plan-view .availableAction p.cooldown {
+#plan-view #actions .cooldown {
   margin-top: 5px;
 }
 
-#plan-view .aName {
-  font-weight: 800;
+#plan-view #actions .cooldown span {
+  font-weight: bold;
 }
 
-#plan-view .cooldown {
+#plan-view #actions .desc {
+  font-size: 14px;
+}
+
+#plan-view #actions .aName {
+  font-weight: bold;
+}
+
+#plan-view #actions .cooldown {
   font-family: var(--font-mono);
   font-size: 14px;
 }
@@ -198,4 +201,14 @@
 
 #plan-view #player-actions > div > p {
   margin: 0px;
+}
+
+#plan-view #player-actions .aName {
+  font-weight: normal;
+}
+
+#plan-view #player-actions .cooldown {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: bold;
 }

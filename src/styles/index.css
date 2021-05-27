@@ -57,6 +57,7 @@ body {
     transition: box-shadow 120ms ease;
     outline: none;
     box-sizing: border-box;
+    -webkit-appearance: none;
 }
 
 .pregame-input:hover,

@@ -34,12 +34,6 @@ function CreateView() {
       <div class='create-game-advanced'>
         <h2>Advanced Mode</h2>
         <label>
-          Duration of crew phase
-          <div id='advanced-crew' class='pregame-input create-game-inputs'></div>
-          <input class='create-game-inputs' id='create-game-crew-input' type='number' name='crewDuration' value='30' hidden>
-        </label>
-        <br>
-        <label>
           Duration of plan phase
           <div id='advanced-plan' class='pregame-input create-game-inputs'></div>
           <input class='create-game-inputs' id='create-game-plan-input' type='number' name='planDuration' value='60' hidden>
@@ -78,6 +72,15 @@ function CreateView() {
     </div>
   `;
 
+  // Crew phase HTML
+  // ===============
+  // <label>
+  //   Duration of crew phase
+  //   <div id='advanced-crew' class='pregame-input create-game-inputs'></div>
+  //   <input class='create-game-inputs' id='create-game-crew-input' type='number' name='crewDuration' value='30' hidden>
+  // </label>
+  // <br>
+
   // -------------------VARIABLES--------------------------------//
   const errorEl = el.querySelector('#error');
   const formEl = el.querySelector('form');
@@ -86,8 +89,8 @@ function CreateView() {
   const teamNrInput = el.querySelector('#create-game-nr-input');
   const teamNrDiv = el.querySelector('#create-game-nr-div');
   const teamNrDropDown = el.querySelector('#create-game-nr-drop');
-  const durationCrewInput = el.querySelector('#create-game-crew-input');
-  const durationCrewDiv = el.querySelector('#advanced-crew');
+  // const durationCrewInput = el.querySelector('#create-game-crew-input');
+  // const durationCrewDiv = el.querySelector('#advanced-crew');
   const durationPlanDiv = el.querySelector('#advanced-plan');
   const durationPlayDiv = el.querySelector('#advanced-play');
   const durationLandDiv = el.querySelector('#advanced-land');
@@ -110,7 +113,7 @@ function CreateView() {
       currentVal: 30,
     },
     planPhase: {
-      defaultValue: 60, // in seconds
+      defaultValue: 15, // in seconds
       maxValue: '59:00', // in minutes
       currentVal: 60,
     },
@@ -120,9 +123,9 @@ function CreateView() {
       currentVal: 300,
     },
     landingTime: {
-      defaultValue: 7, // in seconds
+      defaultValue: 5, // in seconds
       maxValue: '00:30', // in minutes
-      currentVal: 7,
+      currentVal: 5,
     },
   };
 
@@ -231,8 +234,8 @@ function CreateView() {
   // changes the input values for the payload
   function updateDurationDivValue(bool = false) {
     if (bool) { // the default values when chosen basic mode (calling with true)
-      durationCrewDiv.innerText = convertToMinutesSeconds(allValues.crewPhase.defaultValue);
-      durationCrewInput.value = allValues.crewPhase.defaultValue;
+      // durationCrewDiv.innerText = convertToMinutesSeconds(allValues.crewPhase.defaultValue);
+      // durationCrewInput.value = allValues.crewPhase.defaultValue;
 
       durationPlanDiv.innerText = convertToMinutesSeconds(allValues.planPhase.defaultValue);
       durationPlanInput.value = allValues.planPhase.defaultValue;
@@ -243,8 +246,8 @@ function CreateView() {
       durationLandDiv.innerText = convertToMinutesSeconds(allValues.landingTime.defaultValue);
       durationLandingInput.value = allValues.landingTime.defaultValue;
     } else {
-      durationCrewDiv.innerText = convertToMinutesSeconds(allValues.crewPhase.currentVal);
-      durationCrewInput.value = allValues.crewPhase.currentVal;
+      // durationCrewDiv.innerText = convertToMinutesSeconds(allValues.crewPhase.currentVal);
+      // durationCrewInput.value = allValues.crewPhase.currentVal;
 
       durationPlanDiv.innerText = convertToMinutesSeconds(allValues.planPhase.currentVal);
       durationPlanInput.value = allValues.planPhase.currentVal;
@@ -298,7 +301,7 @@ function CreateView() {
     advancedSettingsBtn.classList.remove('activeBtn');
     e.target.classList.add('activeBtn');
     // puts all the inputs back to default value
-    durationCrewInput.value = allValues.crewPhase.defaultValue;
+    // durationCrewInput.value = allValues.crewPhase.defaultValue;
     durationPlanInput.value = allValues.planPhase.defaultValue;
     durationPlayInput.value = allValues.playPhase.defaultValue;
     durationLandingInput.value = allValues.landingTime.defaultValue;

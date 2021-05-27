@@ -6,10 +6,27 @@ html {
     --comp-color-1: #660066;
     --comp-color-2: #291039;
     /* Team colors */
-    --team-color-1: #33ffff; /* neon */
-    --team-color-2: #ff3399; /* pink */
-    --team-color-3: #cc00ff; /* purple */
-    --team-color-4: #0066ff; /* blue */
+
+    /* 1. (original)
+    --team-color-1: #33ffff;
+    --team-color-2: #ff3399;
+    --team-color-3: #cc00ff;
+    --team-color-4: #0066ff;
+    */
+
+    /* 2. */
+    --team-color-1: #33ffff;
+    --team-color-2: #ff3399;
+    --team-color-3: #FFF500;
+    --team-color-4: #0066ff;
+
+    /* 3. (based on planets)
+    --team-color-1: #A49950;
+    --team-color-2: #F1A6A5;
+    --team-color-3: #875495;
+    --team-color-4: #74C8D9;
+    */
+
     /* Logo color */
     --logo-color: #ff00cc;
 

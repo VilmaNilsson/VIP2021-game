@@ -17,22 +17,14 @@ function Cargo(el, context) {
   `;
 
   const img = el.querySelector('img');
-  const teamColor = teams[team].color;
-
-  el.style.backgroundColor = teamColor;
-
-  // Get the team-number of the player's team and use it to set the
-  // background color of the element to the team's color
 
   // Whenever we receive the changes to our cargo
   el.subscribe('player:cargos', (e) => {
+    const { cargo } = e.detail;
     const { game } = context.getState();
     const { tokens } = game;
-    const { cargo } = e.detail;
 
-    const token = tokens[cargo.token]
-      ? tokens[cargo.token].name
-      : '-';
+    const token = tokens[cargo.token] ? tokens[cargo.token].name : '-';
 
     img.src = `/assets/${token}.png`;
     el.classList.remove('selected');

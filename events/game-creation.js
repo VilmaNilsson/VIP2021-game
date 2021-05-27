@@ -50,15 +50,9 @@ function gameCreate(context, payload) {
   // for now it dosnt take any arguments
   const tokens = utils.createTokens();
 
-  // Predefined team colors
-  const colors = ['#33ffff', '#ff3399', '#cc00ff', '#0066ff'];
-
   // Our teams (based off of `nrOfTeams`)
   const teams = Array.from({ length: nrOfTeams || 4 }).map((_, index) => {
-    return utils.createTeam({
-      name: `Team ${index + 1}`,
-      color: colors[index],
-    });
+    return utils.createTeam({ name: `Team ${index + 1}` });
   });
 
   // Randomized array of station names
@@ -137,8 +131,9 @@ function endPlayPhase(context) {
   // ==============================================================
   const playerIds = Object.keys(game.players);
   playerIds.forEach((id) => context.updatePlayerState({ gameId: null }, id));
+  const teams = game.teams.map(utils.filterTeam);
   context.removeGame(game.id);
-  context.broadcastTo(playerIds, 'game:over', {});
+  context.broadcastTo(playerIds, 'game:over', { teams });
 }
 
 // PLAY
