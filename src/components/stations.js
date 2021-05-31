@@ -64,6 +64,10 @@ function Stations(el, context) {
           return;
         }
 
+        if (div.classList.contains('active')) {
+          return;
+        }
+
         // Otherwise they wanted to login
         div.send('station:login', { station: i });
       }
