@@ -113,6 +113,32 @@ function Teams(el, context) {
     div.classList.remove('locked');
   });
 
+  el.subscribe('action:team:shake', (e) => {
+    const payload = e.detail;
+
+    const game = context.getState()
+    const playerTeam = game.player.team;
+
+    if (playerTeam !== payload.team) {
+      return;
+    }
+
+    document.body.classList.add('meteor-shower');
+  })
+
+  el.subscribe('action:team:shake:fade', (e) => {
+    const payload = e.detail;
+
+    const game = context.getState()
+    const playerTeam = game.player.team;
+
+    if (playerTeam !== payload.team) {
+      return;
+    }
+
+    document.body.classList.remove('meteor-shower');
+  })
+
   return el;
 }
 
