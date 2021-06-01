@@ -55,7 +55,7 @@ function gameScore(context, payload) {
 
 // When a game ends or you leave one
 function gameOver(context) {
-  context.setState({ player: null, game: null });
+  context.setState({ player: null, game: null, racks: [] });
   context.clearTimers();
 }
 

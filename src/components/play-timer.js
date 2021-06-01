@@ -20,6 +20,8 @@ function PlayTimer(el, context) {
       el.textContent = `${m}:${s}:${i}`;
     },
   }, 50);
+
+  return el;
 }
 
 export default PlayTimer;

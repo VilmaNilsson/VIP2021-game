@@ -153,6 +153,8 @@ function tokenSwap(context, payload) {
     station.properties.pointsMultiplier
   );
 
+  let scored = false;
+
   // All the tokens are the same = points!
   if (noEmptySlots && sameSlots) {
     game.teams[teamIndex].properties.score += (3 * multipliers);
@@ -161,6 +163,7 @@ function tokenSwap(context, payload) {
     // Broadcast the updated score
     const score = utils.getTeamScores(game);
     context.broadcastToGame('game:score', { score });
+    scored = true;
   } else {
     // Only unique slots in a rack also gives points
     const uniqueSlots = new Set(slots).size === slots.length;
@@ -172,6 +175,7 @@ function tokenSwap(context, payload) {
       // Broadcast the updated score
       const score = utils.getTeamScores(game);
       context.broadcastToGame('game:score', { score });
+      scored = true;
     }
   }
 
@@ -187,6 +191,7 @@ function tokenSwap(context, payload) {
     station: stationIndex,
     team: teamIndex,
     rack: station.racks[teamIndex],
+    scored,
   });
 
   // Send the players updated cargo

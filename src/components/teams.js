@@ -70,7 +70,13 @@ function Teams(el, context) {
     teams.forEach((teamEl, i) => {
       const newScore = score[i];
       const scoreEl = teamEl.querySelector('.score');
+      const currentScore = parseInt(scoreEl.textContent);
       scoreEl.textContent = utils.pad(newScore, 3);
+
+      if (newScore > currentScore) {
+        teamEl.classList.add('scored');
+        context.setTimeout(() => teamEl.classList.remove('scored'), 500);
+      }
     });
   });
 

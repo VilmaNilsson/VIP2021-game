@@ -16,7 +16,6 @@ function renderPlayerAction(action) {
   if (name !== '-') {
     div.click(() => {
       div.send('player:action:deselect', { event });
-      div.remove();
     });
   }
 

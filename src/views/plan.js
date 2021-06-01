@@ -23,6 +23,7 @@ function PlanView(context) {
   if (game && player) {
     const c = getComputedStyle(document.documentElement).getPropertyValue(`--team-color-${player.team + 1}`);
     document.documentElement.style.setProperty('--your-team-color', c);
+    document.documentElement.style.setProperty('--your-team-color-alpha', c + '40');
   }
 
   const teamsEl = el.querySelector('#teams');
@@ -49,6 +50,7 @@ function PlanView(context) {
     if (game && player) {
       const c = getComputedStyle(document.documentElement).getPropertyValue(`--team-color-${player.team + 1}`);
       document.documentElement.style.setProperty('--your-team-color', c);
+      document.documentElement.style.setProperty('--your-team-color-alpha', c + '40');
     }
 
     Teams(teamsEl, context);

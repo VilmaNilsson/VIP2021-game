@@ -1,11 +1,10 @@
 #plan-view {
   flex-grow: 1;
   height: 100vh;
-  background-image: url('/assets/background.png');
-  background-size: cover;
+  background-image: url('/assets/background-lines.png');
   background-repeat: no-repeat;
   background-position-x: center;
-  background-position-y: -126px;
+  background-position-y: -15px;
   padding: 0 10px;
   background-color: #151824; /* same as image */
   color: var(--text-color);
@@ -16,7 +15,7 @@
 #plan-view #teams {
   display: flex;  
   justify-content: space-around;
-  padding: 15px 0;
+  padding: 10px 0 10px 0;
 }
 
 #plan-view .team {
@@ -104,15 +103,18 @@
 }
 
 #plan-view #timer {
-  margin-top: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  grid-column: 2; 
-  grid-row: 1;
+  text-align: center;
   font-size: 21px;
   font-family: var(--font-mono);
   color: var(--your-team-color);
+  text-shadow: 1px 2px 1px #000;
+
+  background-color: #151824; /* same as image */
+  margin: 5px auto 0 auto;
+  padding: 5px 10px;
+  border-radius: 6px;
+
+  box-shadow: 0 0 6px 3px var(--your-team-color-alpha);
 }
 
 #plan-view #available-actions {
@@ -137,7 +139,7 @@
   flex-grow: 1;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 5px;
+  gap: 6px;
   overflow-y: scroll;
   padding: 5px;
   box-shadow: 0 0 5px 2px var(--your-team-color);
@@ -180,23 +182,29 @@
   border: 1px solid var(--your-team-color);
   border-radius: 10px;
   padding: 5px;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 10px;
   box-shadow: 0 0 5px 2px var(--your-team-color);
 }
 
 #plan-view #player-actions > div {
   border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-grow: 1;
+  flex-basis: 0;
+  flex-shrink: 1;
   text-align: center;
-  justify-content: center;
   padding: 5px;
   background-color: #fff;
   color: #000;
+}
+
+#plan-view #player-actions > div:first-child {
+  margin-right: 3px;
+}
+#plan-view #player-actions > div:last-child {
+  margin-left: 3px;
 }
 
 #plan-view #player-actions > div > p {
@@ -211,4 +219,22 @@
   font-family: var(--font-mono);
   font-size: 14px;
   font-weight: bold;
+}
+
+@media screen and (max-width: 340px) {
+  #plan-view #teams .team .score {
+    font-size: 14px;
+  }
+
+  #plan-view #actions .desc {
+    font-size: 13px;
+  }
+
+  #plan-view #actions .cooldown {
+    font-size: 12px;
+  }
+
+  #plan-view #player-actions .aName {
+    font-size: 14px;
+  }
 }

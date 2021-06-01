@@ -57,7 +57,7 @@ function renderSlot(slot, tokenIndex, teamIndex, context) {
 // Render a rack (and updates it when we receive updates)
 function renderRack(rack, teamIndex, context) {
   const div = document.createElement('div');
-  div.className = 'rack';
+  div.className = `rack team-${teamIndex + 1}`;
 
   const { player } = context.getState();
   const { team } = player;
@@ -77,7 +77,7 @@ function renderRack(rack, teamIndex, context) {
 
   // Whenever we receive a rack update to a station
   div.subscribe('station:rack', (e) => {
-    const { team, rack } = e.detail;
+    const { team, rack, scored } = e.detail;
 
     // If the update isnt for this team, dont do anything
     if (team !== teamIndex) {
@@ -85,6 +85,11 @@ function renderRack(rack, teamIndex, context) {
     }
 
     div.innerHTML = '';
+
+    if (scored) {
+      div.classList.add('scored');
+      context.setTimeout(() => div.classList.remove('scored'), 500);
+    }
 
     rack.slots.forEach((slot, tokenIndex) => {
       const slotElem = renderSlot(slot, tokenIndex, teamIndex, context);
@@ -148,6 +153,16 @@ function renderRack(rack, teamIndex, context) {
   return div;
 }
 
+function generateEmptyRacks(game) {
+  return Array.from({ length: game.teams.length }).map((r) => {
+    return {
+      slots: Array.from({ length: 6 }).map((s) => {
+        return { token: -1 };
+      })
+    };
+  });
+}
+
 function Racks(el, context) {
   const { game, player, racks } = context.getState();
 
@@ -159,15 +174,16 @@ function Racks(el, context) {
   el.innerHTML = '';
 
   // Racks gets changed with every login, this is the first ones
-  const initialRacks = racks ? racks : [];
+  const initialRacks = racks && racks.length ? racks : generateEmptyRacks(game);
+
+  console.log(initialRacks);
 
   // TODO: change into an image
-  if (initialRacks.length === 0) {
-    el.innerHTML = `
-      <div class="overlay no-racks">
-        Click on a planet in order to land on it
-      </div> 
-    `;
+  if (!racks || racks.length === 0) {
+    const overlay = document.createElement('div');
+    overlay.className = 'overlay no-racks';
+    overlay.textContent = 'Click on a planet in order to land on it';
+    el.append(overlay);
   }
 
   // Render each rack

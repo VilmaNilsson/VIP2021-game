@@ -50,6 +50,7 @@ function PlayView(context) {
     // const c = game.teams[player.team].color;
     const c = getComputedStyle(document.documentElement).getPropertyValue(`--team-color-${player.team + 1}`);
     document.documentElement.style.setProperty('--your-team-color', c);
+    document.documentElement.style.setProperty('--your-team-color-alpha', c + '40');
     document.documentElement.style.setProperty('--your-team-color-dark', utils.shadeColor(c, -30));
   }
 
@@ -60,6 +61,7 @@ function PlayView(context) {
     if (game && player) {
       const c = getComputedStyle(document.documentElement).getPropertyValue(`--team-color-${player.team + 1}`);
       document.documentElement.style.setProperty('--your-team-color', c);
+    document.documentElement.style.setProperty('--your-team-color-alpha', c + '40');
       document.documentElement.style.setProperty('--your-team-color-dark', utils.shadeColor(c, -30));
     }
 
