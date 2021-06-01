@@ -21,9 +21,7 @@ function shakeScreen(context, payload) {
     return { errorCode: 3 };
   }
 
-  // selectedTeam.properties.shaking.active = true;
-  // selectedTeam.properties.shaking.start = start;
-  // selectedTeam.properties.shaking.duration = duration;
+  selectedTeam.properties.shaking = true;
 
   game.teams[team] = selectedTeam;
   context.updateGameState(game);
@@ -31,20 +29,17 @@ function shakeScreen(context, payload) {
   context.broadcastToGame('action:team:shake', { team, start, duration });
 
   context.setTimeout(() => {
-    // selectedTeam.properties.shaking.active = false;
-    // delete selectedTeam.properties.shaking.start;
-    // delete selectedTeam.properties.shaking.duration;
+    delete selectedTeam.properties.shaking;
 
     game.teams[team] = selectedTeam;
     context.updateGameState(game);
 
     context.broadcastToGame('action:team:shake:fade', { team });
   }, duration);
-  
-  
 
+  return true;
 }
 
 module.exports = {
   'action:team:shake': shakeScreen,
-}
+};

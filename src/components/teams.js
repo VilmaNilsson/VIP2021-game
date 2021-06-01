@@ -50,7 +50,7 @@ function Teams(el, context) {
     div.subscribe('player:action:team', () => {
       // Don't make your own team selectable
       if (player.team !== i) {
-        setSelectable(true)
+        setSelectable(true);
       }
     });
 
@@ -66,7 +66,7 @@ function Teams(el, context) {
   // Score updates
   el.subscribe('game:score', (e) => {
     const { score } = e.detail;
-    
+
     teams.forEach((teamEl, i) => {
       const newScore = score[i];
       const scoreEl = teamEl.querySelector('.score');
@@ -99,7 +99,6 @@ function Teams(el, context) {
         div.classList.remove('locked');
       },
     });
-
   });
 
   el.subscribe('action:teams:unlocked', (e) => {
@@ -116,7 +115,7 @@ function Teams(el, context) {
   el.subscribe('action:team:shake', (e) => {
     const payload = e.detail;
 
-    const game = context.getState()
+    const game = context.getState();
     const playerTeam = game.player.team;
 
     if (playerTeam !== payload.team) {
@@ -124,12 +123,14 @@ function Teams(el, context) {
     }
 
     document.body.classList.add('meteor-shower');
-  })
+    const METEOR_SHOWER_DURATION = payload.duration / 2;
+    document.querySelector('.meteor-shower').style.animationDuration = `${METEOR_SHOWER_DURATION}ms`;
+  });
 
   el.subscribe('action:team:shake:fade', (e) => {
     const payload = e.detail;
 
-    const game = context.getState()
+    const game = context.getState();
     const playerTeam = game.player.team;
 
     if (playerTeam !== payload.team) {
@@ -137,7 +138,7 @@ function Teams(el, context) {
     }
 
     document.body.classList.remove('meteor-shower');
-  })
+  });
 
   return el;
 }

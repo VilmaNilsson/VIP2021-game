@@ -79,7 +79,7 @@ body {
 }
 
 .meteor-shower {
-    animation: meteor-shower 5s linear infinite;
+    animation: meteor-shower linear infinite;
     position: absolute;
     transition: all 30ms linear;
 }
