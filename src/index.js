@@ -20,7 +20,7 @@ Object.values(events).forEach((eventGroup) => {
   });
 });
 // Open a WebSocket connection
-PubSub.connect('ws://172.20.10.12:7001');
+PubSub.connect('ws://localhost:7001');
 
 // NOTE: for debugging purposes
 window.DEBUG = { PubSub, Router, Context };
