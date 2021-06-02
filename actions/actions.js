@@ -62,6 +62,13 @@ const actions = [
     target: 'player',
     cooldown: 2 * 60,
   },
+  {
+    event: 'action:player:fill-empty',
+    name: 'Fill Empty',
+    desc: 'Places random tokens in empty slots within the station',
+    target: 'player',
+    cooldown: 2 * 60,
+  }
   // {
   //   event: 'action:stations:half-points',
   //   name: 'Half All Points',
@@ -95,13 +102,6 @@ const actions = [
   //   name: 'Unlocks Team',
   //   desc: 'Unlocks your team',
   //   target: 'teams',
-  //   cooldown: 2 * 60,
-  // },
-  // {
-  //   event: 'action:station:fill-empty',
-  //   name: 'Fill Empty',
-  //   desc: 'Places a random token in selected slot within the station',
-  //   target: 'slot',
   //   cooldown: 2 * 60,
   // },
 ];

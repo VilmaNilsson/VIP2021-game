@@ -19,6 +19,7 @@ function PlanView(context) {
   `;
 
   const { game, player } = context.getState();
+  console.log(game.phase.actions);
 
   if (game && player) {
     const c = getComputedStyle(document.documentElement).getPropertyValue(`--team-color-${player.team + 1}`);
