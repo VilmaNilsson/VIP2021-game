@@ -21,6 +21,7 @@ const stationsX2 = require('./stations-x2');
 const stationLock = require('./station-lock');
 const stationUnlock = require('./station-unlock');
 const teamSlow = require('./team-slow');
+const shakeScreen = require('./team-shake-screen');
 
 // Combine the handlers
 const actionHandlers = {
@@ -31,6 +32,7 @@ const actionHandlers = {
   stationLock,
   stationUnlock,
   teamSlow,
+  shakeScreen,
   // NOTE: don't forget to add more here
 };
 

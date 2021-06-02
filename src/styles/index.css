@@ -77,3 +77,29 @@ body {
     padding: 15px;
     text-align: center;
 }
+
+.meteor-shower {
+    animation: meteor-shower linear infinite;
+    position: absolute;
+    transition: all 30ms linear;
+}
+
+@keyframes meteor-shower {
+    1% { left: 100px }
+    12% { top: 30px }
+    19% { left: 20px; top: 50px }
+    30% { left: -100px; top: 70px }
+    34% { left: 500px; top: 14px }
+    41% { left: 323px; top: -30px }
+    50% { left: 279px; top: 10px }
+    52% { left: 149px; top: 25px }
+    57% { left: 250px; top: 80px }
+    62% { left: 130px; top: 200px }
+    68% { left: -80px; top: 332px }
+    70% { left: -8px; top: 79px }
+    75% { left: 80px; top: -134px }
+    79% { left: 130px; top: -56px }
+    81% { left: 68px; top: 35px }
+    93% { left: 30px; top: 20px }
+    98% { left: -10px; top: 100px}
+}
