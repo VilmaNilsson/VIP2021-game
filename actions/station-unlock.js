@@ -27,6 +27,9 @@ function unlockStationSpell(context, payload) {
 
   // Can't unlock stations that arent locked
   if (station.properties.locked === false) {
+	//context.send('player:action:deselect', { errorCode: 3 });
+	// context.broadcastToGame('player:action:fail', { errorCode: 3 });
+	
     return { errorCode: 3 };
   }
 
@@ -38,6 +41,7 @@ function unlockStationSpell(context, payload) {
   context.updateGameState(game);
   // broadcast
   context.broadcastToGame('action:station:unlocked', { station: stationIndex });
+  
 
   return true;
 }

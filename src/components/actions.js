@@ -94,6 +94,7 @@ function Actions(el, context) {
         // Otherwise we'll pass on the action to the entity to handle it further
         context.setState({ action: { event, index: actionIndex } });
         div.publish(`player:action:${target}`);
+		
       }
     });
 
@@ -123,6 +124,17 @@ function Actions(el, context) {
           onCooldown = false;
         },
       });
+    });
+	
+	
+	div.subscribe('player:action:fail', () => {
+     
+	  console.log('tesstt message')
+
+     
+
+      div.classList.remove('selected');
+      
     });
 
     el.append(div);
