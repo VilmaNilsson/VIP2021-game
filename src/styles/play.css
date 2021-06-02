@@ -37,6 +37,10 @@
   margin-right: 10px;
 }
 
+#play-view .team.scored {
+  transition: box-shadow 500ms ease;
+}
+
 #play-view .team:last-child {
   margin-right: 0;
 }
@@ -55,16 +59,16 @@
 }
 
 #play-view .team.team-1.scored {
-  box-shadow: 0 0 5px 2px var(--team-color-1);
+  box-shadow: 0 0 8px 6px var(--team-color-1);
 }
 #play-view .team.team-2.scored {
-  box-shadow: 0 0 5px 2px var(--team-color-2);
+  box-shadow: 0 0 8px 6px var(--team-color-2);
 }
 #play-view .team.team-3.scored {
-  box-shadow: 0 0 5px 2px var(--team-color-3);
+  box-shadow: 0 0 8px 6px var(--team-color-3);
 }
 #play-view .team.team-4.scored {
-  box-shadow: 0 0 5px 2px var(--team-color-4);
+  box-shadow: 0 0 8px 6px var(--team-color-4);
 }
 
 
@@ -214,20 +218,20 @@
   transition: opacity 120ms ease, gap 120ms ease;
   margin-bottom: 2px;
   box-shadow: 0 0 10px 4px transparent;
-  transition: box-shadow 400ms ease;
+  transition: box-shadow 500ms ease;
 }
 
 #play-view .rack.team-1.scored {
-  box-shadow: 0 0 10px 4px var(--team-color-1);
+  box-shadow: 0 0 10px 6px var(--team-color-1);
 }
 #play-view .rack.team-2.scored {
-  box-shadow: 0 0 10px 4px var(--team-color-2);
+  box-shadow: 0 0 10px 6px var(--team-color-2);
 }
 #play-view .rack.team-3.scored {
-  box-shadow: 0 0 10px 4px var(--team-color-3);
+  box-shadow: 0 0 10px 6px var(--team-color-3);
 }
 #play-view .rack.team-4.scored {
-  box-shadow: 0 0 10px 4px var(--team-color-4);
+  box-shadow: 0 0 10px 6px var(--team-color-4);
 }
 
 #play-view .rack.other-team {

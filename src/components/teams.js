@@ -75,7 +75,7 @@ function Teams(el, context) {
 
       if (newScore > currentScore) {
         teamEl.classList.add('scored');
-        context.setTimeout(() => teamEl.classList.remove('scored'), 500);
+        context.setTimeout(() => teamEl.classList.remove('scored'), 550);
       }
     });
   });
