@@ -9,9 +9,9 @@ const actions = [
   {
     event: 'action:racks:swap',
     name: 'Swap Racks',
-    desc: `Swap your team's rack of bins with team's rack.`,
+    desc: "Swap your team's rack of bins with team's rack.",
     target: 'racks',
-    cooldown: 1 * 60,
+    cooldown: 2 * 60,
   },
   {
     event: 'action:station:x2',
@@ -23,7 +23,7 @@ const actions = [
   {
     event: 'action:stations:x2',
     name: 'All Planets x2',
-    desc: 'Doubles the amount of points handed out by all Plants. Lasts for 30 seconds.',
+    desc: 'Doubles the amount of points handed out by all Planets. Lasts for 30 seconds.',
     target: 'stations',
     cooldown: 1 * 60,
   },
@@ -53,6 +53,13 @@ const actions = [
     name: 'Meteor Shower',
     desc: 'Send a meteor shower towards another team and make their journey shakey',
     target: 'team',
+    cooldown: 2 * 60,
+  },
+  {
+    event: 'action:player:randomize-new',
+    name: 'Re-rack',
+    desc: "Replaces your team's rack with a new one in the planet you are in.",
+    target: 'player',
     cooldown: 2 * 60,
   },
   // {
