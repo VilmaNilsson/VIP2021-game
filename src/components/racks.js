@@ -78,7 +78,7 @@ function renderRack(rack, teamIndex, context) {
   // Whenever we receive a rack update to a station
   div.subscribe('station:rack', (e) => {
     const { team, rack, scored } = e.detail;
-
+    
     // If the update isnt for this team, dont do anything
     if (team !== teamIndex) {
       return;
