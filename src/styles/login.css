@@ -1,140 +1,75 @@
-@import 'variables.css';
-
-#home {
-  width: 100vw;
-  height: 100vh;
-
-  background-color: var(--background-color);
-
-  display: -webkit-box;
-
-  display: -ms-flexbox;
-
-  display: flex;
-  /* justify-content: center; */
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+#login-view {
+    height: 100vh;
+    flex-grow: 1;
+    background-color: var(--background-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--text-color);
+    padding: 0 30px;
 }
 
-#login-logo {
-  width: 100%;
-  
-  margin-bottom: 10%;
-}
-
-#error {
-  width: 90%;
-  height: 8%;
-
-  opacity: 1;
-
-  color: red;
-
-  text-align: center;
-  font-size: 1.5rem;
-
-  -webkit-transition: opacity 500ms ease;
-
-  -o-transition: opacity 500ms ease;
-
-  transition: opacity 500ms ease;
-}
-
-.login-error-active {
+#login-view .login-error-active {
   opacity: 0 !important;
-  -webkit-transition: opacity 500ms ease;
-  -o-transition: opacity 500ms ease;
   transition: opacity 500ms ease;
 }
 
-#login-field {
+#login-view #login-field {
   cursor: text;
-  -webkit-box-shadow: 0 0 10px 5px white;
-          box-shadow: 0 0 10px 5px white;
+  box-shadow: 0 0 10px 5px white;
   text-shadow: 0 0 5px white;
-
   border: none;
   border-radius: 20px;
-
   color: var(--text-color);
   background-color: var(--background-color);
-
   width: 90%;
   height: 8%;
-
   margin-bottom: 10%;
-
   font-size: 1.5rem;
-
   text-align: center;
-
   outline: none;
-
   font-family: var(--font-primary);
 }
 
-#login-field::-webkit-input-placeholder {
+#login-view #login-field::-webkit-input-placeholder {
   color: var(--text-color);
 }
 
-#login-field::-moz-placeholder {
+#login-view #login-field::-moz-placeholder {
   color: var(--text-color);
 }
 
-#login-field:-ms-input-placeholder {
+#login-view #login-field:-ms-input-placeholder {
   color: var(--text-color);
 }
 
-#login-field::-ms-input-placeholder {
+#login-view #login-field::-ms-input-placeholder {
   color: var(--text-color);
 }
 
-#login-field::placeholder {
+#login-view #login-field::placeholder {
   color: var(--text-color);
 }
 
-#login-button {
-  -webkit-box-shadow: 0 0 10px 5px white;
-          box-shadow: 0 0 10px 5px white;
-  text-shadow: 0 0 5px white;
-
-  border: none;
-  border-radius: 50px;
-
-  color: var(--text-color);
-  background-color: var(--background-color);
-
-  width: 50%;
-  height: 8%;
-
-  font-size: 1.5rem;
-
-  outline: none;
-
-  font-family: var(--font-secondary);
-}
-
-#login-button:hover, #login-button:focus, #login-field:hover, #login-field:focus, #login-field:active {
-  -webkit-box-shadow: 0 0 10px 5px var(--logo-color);
-          box-shadow: 0 0 10px 5px var(--logo-color);
+#login-view #login-button:hover,
+#login-view #login-button:focus,
+#login-view #login-field:hover,
+#login-view #login-field:focus,
+#login-view #login-field:active {
+  box-shadow: 0 0 10px 5px var(--logo-color);
 }
 
 @media(min-width: 800px) {
-  #login-logo {
+  #login-view #login-logo {
     height: 30%;
     margin-bottom: 2%;
   }
 
-  #login-field {
+  #login-view #login-field {
     width: 50%;
   }
 
-  #login-button {
+  #login-view #login-button {
     width: 30%;
   }
 }

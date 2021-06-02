@@ -147,25 +147,35 @@ function tokenSwap(context, payload) {
   const sameSlots = slots.every((slot) => slot === slots[0]);
   const noEmptySlots = slots.every((slot) => slot !== -1);
 
+  // Points multipliers
+  const multipliers = (
+    game.teams[teamIndex].properties.pointsMultiplier *
+    station.properties.pointsMultiplier
+  );
+
+  let scored = false;
+
   // All the tokens are the same = points!
   if (noEmptySlots && sameSlots) {
-    game.teams[teamIndex].properties.score += 3;
+    game.teams[teamIndex].properties.score += (3 * multipliers);
     station.racks[teamIndex].slots = utils.createRack(game.tokens.length);
 
     // Broadcast the updated score
     const score = utils.getTeamScores(game);
     context.broadcastToGame('game:score', { score });
+    scored = true;
   } else {
     // Only unique slots in a rack also gives points
     const uniqueSlots = new Set(slots).size === slots.length;
 
     if (noEmptySlots && uniqueSlots) {
-      game.teams[teamIndex].properties.score += 2;
+      game.teams[teamIndex].properties.score += (2 * multipliers);
       station.racks[teamIndex].slots = utils.createRack(game.tokens.length);
 
       // Broadcast the updated score
       const score = utils.getTeamScores(game);
       context.broadcastToGame('game:score', { score });
+      scored = true;
     }
   }
 
@@ -181,6 +191,7 @@ function tokenSwap(context, payload) {
     station: stationIndex,
     team: teamIndex,
     rack: station.racks[teamIndex],
+    scored,
   });
 
   // Send the players updated cargo

@@ -171,11 +171,14 @@ function createRacks(nrOfTeams, nrOfTokens) {
 }
 
 // Create tokens.....for now it dosnt take any arguments
-function createTokens() {
-  // Our tokes (for now) is just a simple array of { name: letter }
-  const tokens = 'ABCDEF'.split('').map((letter) => {
+function createTokens(nrOfTokens = 6) {
+  // Shuffle an array of predefined letters and take a slice out of it
+  const letters = shuffle('ABCDEFGHIJ'.split('')).slice(0, 6);
+  // Our tokes is just a simple array of { name: letter }
+  const tokens = letters.map((letter) => {
     return { name: letter };
   });
+
   return tokens;
 }
 
@@ -233,13 +236,14 @@ function createPlayer(state = {}) {
 // Returns a shuffled array of station names
 function getStationNames() {
   return shuffle([
-    'Uranus',
     'Blandito',
-    'Margreth',
-    'Urmom',
-    'Pluto',
-    'Moo',
+    'Earth',
     'Kim',
+    'Margeret',
+    'Moo',
+    'Pluto',
+    'Uranus',
+    'Your Mom',
   ]);
 }
 
@@ -273,23 +277,29 @@ function filterPlayer(player) {
   return { team, ...properties };
 }
 
+// Filter out unecessary keys of a team
+function filterTeam(team)  {
+  return { name: team.name, score: team.properties.score, };
+}
+
 // Calculate the login time for a station
 function getLoginTime(gameState, playerId, stationIndex) {
   // Unpack the needed properties from the gamestate
-  const { stations, players } = gameState;
+  const { stations, players, teams } = gameState;
 
   // Get the specified objects
   const station = stations[stationIndex];
   const player = players[playerId];
+  const team = teams[player.team];
 
   // Calculate the logintime based on the station's and the player's properties
   const loginTime = (
-    (station.properties.loginTime * station.properties.loginMultiplier)
-    * player.properties.loginMultiplier
+    station.properties.loginTime
+    * (station.properties.loginMultiplier * team.properties.loginMultiplier)
   );
 
-  // Return it
-  return loginTime;
+  // Make login times whole numbers
+  return Math.round(loginTime);
 }
 
 // Get all team scores as [team 1 score, team 2 score, ...]
@@ -322,6 +332,66 @@ function getPlayersInStation(game, stationIndex) {
     });
 }
 
+// Returns an array of player Ids for a given team
+function getPlayersInTeam(game, teamId) {
+  return Object.entries(game.players)
+    .filter((entry) => {
+      const player = entry[1];
+
+      if (player.team === null) {
+        return false;
+      }
+
+      return player.team === teamId;
+    })
+    .map((entry) => {
+      const id = entry[0];
+      return id;
+    });
+}
+  
+// Returns true if station rack (for a specific team) is full
+function isRackFull(station, teamId) {
+  return station.rack[teamId].slots.every((s) => s.token === -1);
+}
+
+// Checks and broadcast score for a given context, game, station and teamIndex
+function checkActionForScore(context, game, station, teamIndex) {
+  // This is how you get points:
+  // ===========================
+
+  // Check if the action means a rack has a row of same tokens
+  const slots = station.racks[teamIndex].slots.map((slot) => slot.token);
+  const sameSlots = slots.every((slot) => slot === slots[0]);
+  const noEmptySlots = slots.every((slot) => slot !== -1);
+
+  // Points multipliers
+  const multipliers = (
+    game.teams[teamIndex].properties.pointsMultiplier *
+    station.properties.pointsMultiplier
+  );
+
+  // All the tokens are the same = points!
+  if (noEmptySlots && sameSlots) {
+    game.teams[teamIndex].properties.score += (3 * multipliers);
+
+    // Broadcast the updated score
+    const score = getTeamScores(game);
+    context.broadcastToGame('game:score', { score });
+  } else {
+    // Only unique slots in a rack also gives points
+    const uniqueSlots = new Set(slots).size === slots.length;
+
+    if (noEmptySlots && uniqueSlots) {
+      game.teams[teamIndex].properties.score += (2 * multipliers);
+
+      // Broadcast the updated score
+      const score = getTeamScores(game);
+      context.broadcastToGame('game:score', { score });
+    }
+  }
+}
+
 module.exports = {
   randomHex,
   generateUUID,
@@ -341,8 +411,12 @@ module.exports = {
   createPlayer,
   filterGame,
   filterPlayer,
+  filterTeam,
   getStationNames,
   getLoginTime,
   getTeamScores,
   getPlayersInStation,
+  getPlayersInTeam,
+  isRackFull,
+  checkActionForScore,
 };

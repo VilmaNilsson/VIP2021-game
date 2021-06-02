@@ -53,7 +53,7 @@ function playAction(context, payload) {
   const success = actionHandler(context, rest);
 
   // If the action was cast, we'll start the cooldown timer
-  if (success) {
+  if (success === true) {
     const start = Date.now();
     const duration = playerAction.cooldown * 1000;
 
@@ -77,6 +77,10 @@ function playAction(context, payload) {
     // Only update the key `players` (NOTE: this used to overwrite the timers)
     context.updateGameState({ players: game.players });
     context.send('player:action:cooldown', { index, start, duration });
+  // Something went wrong
+  } else if (typeof success === 'object') {
+    const { errorCode } = success;
+    context.send('player:action:fail', { event, errorCode });
   }
 }
 
@@ -100,7 +104,7 @@ function selectAction(context, payload) {
 
   // NOTE: this is where we assign the max limit of actions to own
   // Too many actions
-  if (player.properties.actions.length >= 4) {
+  if (player.properties.actions.length >= 2) {
     context.send('player:action:select:fail', { errorCode: 2 });
     return;
   }

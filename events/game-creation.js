@@ -7,8 +7,10 @@ function gameCreate(context, payload) {
     name,
     nrOfTeams,
     nrOfStations,
+    crewDuration,
     planDuration,
     playDuration,
+    loginTimer,
   } = payload;
 
   // A game must have a name
@@ -50,9 +52,7 @@ function gameCreate(context, payload) {
 
   // Our teams (based off of `nrOfTeams`)
   const teams = Array.from({ length: nrOfTeams || 4 }).map((_, index) => {
-    return utils.createTeam({
-      name: `Team ${index + 1}`,
-    });
+    return utils.createTeam({ name: `Team ${index + 1}` });
   });
 
   // Randomized array of station names
@@ -63,9 +63,13 @@ function gameCreate(context, payload) {
   const stations = Array.from({ length: nrOfStations || 6 }).map((_, index) => {
     const racks = utils.createRacks(teams.length, tokens.length);
 
+    // Default login time
+    const defaults = loginTimer === undefined ? {} : { loginTime: loginTimer };
+
     return utils.createStation({
       name: stationNames[index],
       racks,
+      defaults,
     });
   });
 
@@ -127,8 +131,9 @@ function endPlayPhase(context) {
   // ==============================================================
   const playerIds = Object.keys(game.players);
   playerIds.forEach((id) => context.updatePlayerState({ gameId: null }, id));
+  const teams = game.teams.map(utils.filterTeam);
   context.removeGame(game.id);
-  context.broadcastTo(playerIds, 'game:over', {});
+  context.broadcastTo(playerIds, 'game:over', { teams });
 }
 
 // PLAY

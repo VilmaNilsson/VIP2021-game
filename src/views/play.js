@@ -1,6 +1,6 @@
+import utils from '../utils';
 import {
   Teams,
-  PlayTimer,
   Stations,
   Cargo,
   SecretCargo,
@@ -10,26 +10,25 @@ import {
 
 function PlayView(context) {
   const el = document.createElement('div');
+  el.id = 'play-view';
 
   el.innerHTML = `
-    <h1>Play</h1>
-    <div id="timer"></div>
-    <h2>Teams</h2>
     <div id="teams"></div>
-    <h2>Stations</h2>
     <div id="stations"></div>
-    <h2>Racks</h2>
     <div id="racks"></div>
-    <h2>Cargo</h2>
-    <div id="cargo"></div>
-    <div id="secret-cargo"></div>
-    <h3>Your actions</h3>
-    <div id="actions"></div>
-    <button id="quit">Quit</button>
-    <button id="menu">Menu</button>
+    <div id="bottom">
+      <div id="actions"></div>
+      <div id="cargo-container">
+        <div id="cargo"></div>
+        <div id="secret-cargo"></div>
+      </div>
+    </div>
+    <div id="misc">
+      <button id="menu">Quit</button>
+    </div>
   `;
 
-  const timerEl = el.querySelector('#timer');
+  // const timerEl = el.querySelector('#timer');
   const teamsEl = el.querySelector('#teams');
   const stationsEl = el.querySelector('#stations');
   const racksEl = el.querySelector('#racks');
@@ -38,7 +37,6 @@ function PlayView(context) {
   const actionsEl = el.querySelector('#actions');
 
   // Render all of our components
-  PlayTimer(timerEl, context);
   Teams(teamsEl, context);
   Stations(stationsEl, context);
   Racks(racksEl, context);
@@ -46,9 +44,27 @@ function PlayView(context) {
   SecretCargo(secretCargoEl, context);
   Actions(actionsEl, context);
 
+  const { game, player } = context.getState();
+
+  if (game && player) {
+    // const c = game.teams[player.team].color;
+    const c = getComputedStyle(document.documentElement).getPropertyValue(`--team-color-${player.team + 1}`);
+    document.documentElement.style.setProperty('--your-team-color', c);
+    document.documentElement.style.setProperty('--your-team-color-alpha', c + '40');
+    document.documentElement.style.setProperty('--your-team-color-dark', utils.shadeColor(c, -30));
+  }
+
   // We have to rerender them when e player reconnects
   el.subscribe('player:reconnect', () => {
-    PlayTimer(timerEl, context);
+    const { game, player } = context.getState();
+
+    if (game && player) {
+      const c = getComputedStyle(document.documentElement).getPropertyValue(`--team-color-${player.team + 1}`);
+      document.documentElement.style.setProperty('--your-team-color', c);
+    document.documentElement.style.setProperty('--your-team-color-alpha', c + '40');
+      document.documentElement.style.setProperty('--your-team-color-dark', utils.shadeColor(c, -30));
+    }
+
     Teams(teamsEl, context);
     Stations(stationsEl, context);
     Racks(racksEl, context);
@@ -57,33 +73,46 @@ function PlayView(context) {
     Actions(actionsEl, context);
   });
 
-  // Super simple "Game Over" view
-  el.subscribe('game:phase', () => {
-    const { game } = context.getState();
-    game.teams.sort((a, b) => a.score - b.score);
+  el.click('#menu', () => {
+    if (window.confirm('Are you sure?')) {
+      el.send('game:leave');
+      el.navigate('/');
+    }
+  });
 
+  // Super simple "Game Over" view
+  el.subscribe('game:over', (e) => {
+    const { teams } = e.detail;
+
+    const ts = teams
+      .map((team, i) => {
+        return {
+          score: team.score,
+          html: `
+            <div class="team-score team-${i + 1}">
+              <span class="points">${team.score}</span>
+            </div>
+          `
+        };
+      })
+      .sort((a, b) => b.score - a.score)
+      .map((team) => team.html)
+      .join('');
+
+    // TODO: highlight your own team
     el.innerHTML = `
-      <h1>Game over</h1>
-      <h2>Scores</h2>
-      <div>
-        ${game.teams.map((team) => `${team.name}: ${team.score}`).join('<br>')}
+      <div id="game-over">
+        <h1>Game Over</h1>
+        <h3>Team Scores</h3>
+        <div class="team-scores">${ts}</div>
+        <button id="leave">Exit</button>
       </div>
-      <button id="leave">Leave</button>
     `;
 
     el.click('#leave', () => {
       el.navigate('/');
     });
   });
-
-  el.click('#quit', () => {
-    el.send('game:leave');
-    el.navigate('/');
-  });
-
-  // el.click('#menu', () => {
-  //   console.log('You pressed the menu button');
-  // });
 
   return el;
 }

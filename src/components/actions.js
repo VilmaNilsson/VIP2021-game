@@ -1,5 +1,4 @@
-const CONVERT_MINUTES = 60;
-const CONVERT_SECONDS = 60;
+import utils from '../utils';
 
 function Actions(el, context) {
   const { player } = context.getState();
@@ -11,89 +10,88 @@ function Actions(el, context) {
 
   // Could possibly break out this into a function
   player.actions.forEach((action, actionIndex) => {
-    const {
-      name,
-      event,
-      target,
-      cooldown,
-      start,
-    } = action;
+    const { name, event, target, cooldown, start, } = action;
+    // Milliseconds
+    const duration = cooldown * 1000;
 
     const div = document.createElement('div');
-    el.classList.add('game-action-bar');
-    div.classList.add('game-action-button');
+    div.className = 'action';
 
-    let cdMinutes = Math.floor(cooldown / CONVERT_MINUTES);
-    let cdSec = cooldown - (cdMinutes * CONVERT_SECONDS);
+    const secs = cooldown % 60;
+    const mins = (cooldown - secs) / 60;
+    // Original cooldown time
+    const cooldownTime = `${utils.pad(mins)}:${utils.pad(secs)}`;
 
-    if (cdSec === 60) {
-      cdSec = 0;
-    }
+    div.innerHTML = `
+      <div class="name">${name}</div>
+      <div class="cooldown">${cooldownTime}</div>
+    `;
 
-    let convertedCooldown;
-    if (cdSec === 0) {
-      convertedCooldown = `0${cdMinutes}:0${cdSec}`;
-    } else {
-      convertedCooldown = `0${cdMinutes}:${cdSec}`;
-    }
+    const cdEl = div.querySelector('.cooldown');
 
-    let canBeCanceled = true;
+    let onCooldown = false;
 
-    // NOTE: We might need to calculate what time is left in order to reduce
-    // risk for erros
-
-    // The action is on cooldown
+    // The action is already on cooldown (upon initial render)
     if (start) {
-      // NOTE: should cooldowns be stored in milliseconds instead?
-      const end = start + (cooldown * 1000);
-      div.classList.add('game-action-on-cooldown');
-      canBeCanceled = false;
+      div.classList.add('on-cooldown');
+      onCooldown = true;
 
-      cdMinutes -= 1;
-
-      const interval = context.setInterval(() => {
-        const now = Date.now();
-        let sec = ((end - now) / 1000).toFixed(0);
-        sec = sec - cdMinutes * CONVERT_SECONDS - 1;
-        if (sec < 10) div.innerHTML = `<span>${name}</span> <span>0${cdMinutes}:0${sec}</span>`;
-        else div.innerHTML = `<span>${name}</span> <span>0${cdMinutes}:${sec}</span>`;
-        if (sec <= 0) cdMinutes -= 1;
-
-        if (cdMinutes < 0) {
-          if (sec <= 0) {
-            clearInterval(interval);
-            canBeCanceled = true;
-            div.classList.remove('game-action-on-cooldown');
-            cdMinutes = cooldown / CONVERT_MINUTES;
-            div.innerHTML = `<span>${name}</span> <span>${convertedCooldown}</span>`;
-          }
-        }
-      }, 1000);
-    } else {
-      // Otherwise display the standard text
-      div.innerHTML = `<span>${name}</span> <span>${convertedCooldown}</span>`;
+      context.setInterval({
+        start,
+        duration,
+        onTick: (time) => {
+          const m = utils.pad(time.minutes);
+          const s = utils.pad(time.seconds);
+          cdEl.textContent = `${m}:${s}`;
+        },
+        onEnd: () => {
+          cdEl.textContent = `${cooldownTime}`;
+          onCooldown = false;
+          div.classList.remove('on-cooldown');
+        },
+      });
     }
 
     div.click(() => {
-      const { action } = context.getState();
-
-      const otherSelectedAction = document.querySelector('.game-action-selected');
-      if (otherSelectedAction) otherSelectedAction.classList.remove('game-action-selected');
-
-      // Cancel a active action thats about to be cast
-      if (action !== null && action !== undefined) {
-        div.classList.remove('game-action-selected');
-        context.setState({ action: null });
-        div.publish('player:action:cancel');
+      if (onCooldown) {
         return;
       }
-      if (canBeCanceled) div.classList.add('game-action-selected');
 
-      // When they target themselves we dont need to select anything
-      if (target === 'player') {
+      const { action } = context.getState();
+      // Save previous selections
+      const otherSelectedActions = el.querySelectorAll('.selected');
+      // Select this action
+      div.classList.add('selected');
+
+      // Another action is already selected
+      if (action !== null && action !== undefined) {
+        // First unset the current one
+        context.setState({ action: null });
+        div.publish('player:action:cancel');
+
+        // If they clicked the same action twice
+        if (action.index === actionIndex) {
+          // We'll deselect it
+          div.classList.remove('selected');
+          return;
+        }
+      }
+
+      // Clear previous selections
+      if (otherSelectedActions) {
+        Array.from(otherSelectedActions).forEach((a) => {
+          a.classList.remove('selected');
+        });
+      }
+
+      // Some actions affect all entities (or yourself) of some sort, in that
+      // case we'll activate the action immediately
+      if (['player', 'stations', 'teams'].includes(target)) {
         context.setState({ action: null });
         div.send('player:action', { event, index: actionIndex });
+        div.classList.remove('selected');
       } else {
+        // Otherwise we'll pass on the action to the entity to handle it further
         context.setState({ action: { event, index: actionIndex } });
         div.publish(`player:action:${target}`);
       }
@@ -106,29 +104,25 @@ function Actions(el, context) {
       if (actionIndex !== index) {
         return;
       }
-      div.classList.remove('game-action-selected');
-      div.classList.add('game-action-on-cooldown');
-      canBeCanceled = false;
 
-      const end = start + duration;
-      cdMinutes -= 1;
-      const interval = context.setInterval(() => {
-        const now = Date.now();
-        let sec = ((end - now) / 1000).toFixed(0);
-        sec = sec - cdMinutes * CONVERT_SECONDS - 1;
-        if (sec < 10) div.innerHTML = `<span>${name}</span> <span>0${cdMinutes}:0${sec}</span>`;
-        else div.innerHTML = `<span>${name}</span> <span>0${cdMinutes}:${sec}</span>`;
-        if (sec <= 0) cdMinutes -= 1;
-        if (cdMinutes < 0) {
-          if (sec <= 0) {
-            clearInterval(interval);
-            canBeCanceled = true;
-            div.classList.remove('game-action-on-cooldown');
-            cdMinutes = cooldown / CONVERT_MINUTES;
-            div.innerHTML = `<span>${name}</span> <span>${convertedCooldown}</span>`;
-          }
-        }
-      }, 1000);
+      div.classList.remove('selected');
+      div.classList.add('on-cooldown');
+      onCooldown = true;
+
+      context.setInterval({
+        start,
+        duration,
+        onTick: (time) => {
+          const m = utils.pad(time.minutes);
+          const s = utils.pad(time.seconds);
+          cdEl.textContent = `${m}:${s}`;
+        },
+        onEnd: () => {
+          cdEl.textContent = `${cooldownTime}`;
+          div.classList.remove('on-cooldown');
+          onCooldown = false;
+        },
+      });
     });
 
     el.append(div);

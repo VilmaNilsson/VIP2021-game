@@ -53,6 +53,11 @@ function stationLogin(context, payload) {
   // After the defined time the user is allowed into the station
   const timeout = context.setTimeout(() => {
     const game = context.getGameState();
+
+    if (!game) {
+      return;
+    }
+
     const { racks } = game.stations[stationIndex];
     context.send('station:login:done', { station: stationIndex, racks });
   }, duration);

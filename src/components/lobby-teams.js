@@ -8,13 +8,17 @@ function LobbyTeams(el, context) {
   // This could possibly be broken into a function (to increase readability)
   game.teams.forEach((team, teamIndex) => {
     const div = document.createElement('div');
+    div.className = `teamDiv team-${teamIndex + 1}`;
+
+    // div.classList.add('teamDiv');
+    // div.style.backgroundColor = team.color;
 
     div.innerHTML = `
-      <p>${team.name}</p>
-      <div class="players"></div>
+      <p id="teamName">${team.name}</p>
+      <div id="players"></div>
     `;
 
-    const playersEl = div.querySelector('.players');
+    const playersEl = div.querySelector('#players');
 
     // Lets go through all players and see if they have joined a team
     Object.entries(game.players).forEach((entry) => {
@@ -24,17 +28,33 @@ function LobbyTeams(el, context) {
       // They've joined this team
       if (player.team === teamIndex) {
         const newPlayer = document.createElement('div');
+        newPlayer.id = 'playerDiv';
         // We'll store the player ID on this div so we can filter out them when
         // they switch teams
         newPlayer.dataset.id = id;
-        newPlayer.textContent = player.username;
+        newPlayer.innerHTML = player.username;
+        const verticalLine = document.createElement('span');
+        newPlayer.append(verticalLine);
         playersEl.append(newPlayer);
+
+        // Highlight your current team upon rendering
+        div.classList.add('markedTeam');
       }
     });
 
     // Join a team when you click on it
     div.click(() => {
-      div.send('team:join', { team: teamIndex });
+      const teamDivs = el.querySelectorAll('.teamDiv');
+
+      teamDivs.forEach((element) => {
+        element.classList.remove('markedTeam');
+      });
+
+      div.classList.add('markedTeam');
+
+      if (player.team !== teamIndex) {
+        div.send('team:join', { team: teamIndex });
+      }
     });
 
     // Whenever someone joins a team
@@ -52,10 +72,13 @@ function LobbyTeams(el, context) {
       } else {
         // Otherwise they joined this team
         const newPlayer = document.createElement('div');
+        newPlayer.id = 'playerDiv';
         // We'll store the player ID on this div so we can filter out them when
         // they switch teams
         newPlayer.dataset.id = playerId;
-        newPlayer.textContent = username;
+        newPlayer.innerHTML = username;
+        const verticalLine = document.createElement('span');
+        newPlayer.append(verticalLine);
         playersEl.append(newPlayer);
       }
     });

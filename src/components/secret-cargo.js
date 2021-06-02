@@ -1,3 +1,5 @@
+import utils from '../utils';
+
 function SecretCargo(el, context) {
   const { game, player } = context.getState();
 
@@ -6,15 +8,48 @@ function SecretCargo(el, context) {
     return el;
   }
 
-  const { tokens } = game;
-  const { secretCargo } = player;
+  // Get the team-number of the player's team and use it to set the
+  // background color of the element to the team's color
+  const { tokens, teams } = game;
+  const { secretCargo, team } = player;
+  const token = tokens[secretCargo.token] ? tokens[secretCargo.token].name : '-';
 
-  const token = tokens[secretCargo.token]
-    ? tokens[secretCargo.token].name
-    : '-';
+  el.innerHTML = `
+    <div class="token">
+      <img src="/assets/${token}.png">
+    </div>
+    <div class="timer">
+      01:00
+    </div>
+  `;
 
-  // TODO: check if the cargo is activated (then display that timer as well)
-  el.textContent = `Secret: ${token}`;
+  const img = el.querySelector('img');
+  const timerEl = el.querySelector('.timer');
+
+  // If our secret cargo isn't locked, display the timer
+  if (!secretCargo.locked) {
+    const { start, duration } = secretCargo;
+
+    if (start && duration) {
+      context.setInterval({
+        start,
+        duration,
+        onTick: (time) => {
+          const m = utils.pad(time.minutes);
+          const s = utils.pad(time.seconds);
+          timerEl.textContent = `${m}:${s}`;
+          el.classList.remove('locked');
+        },
+        onEnd: () => {
+          timerEl.textContent = '01:00';
+          el.classList.add('locked');
+        },
+      });
+    }
+  } else {
+    // Otherwise show it as locked
+    el.classList.add('locked');
+  }
 
   // Whenever we receive the changes to our cargo
   el.subscribe('player:cargos', (e) => {
@@ -26,11 +61,17 @@ function SecretCargo(el, context) {
       ? tokens[secretCargo.token].name
       : '-';
 
-    el.textContent = `Secret: ${token}`;
+    img.src = `/assets/${token}.png`;
+    el.classList.remove('selected');
   });
 
   el.click(() => {
     const state = context.getState();
+
+    // Dont do anything if the secret cargo is locked
+    if (state.player && state.player.secretCargo.locked) {
+      return;
+    }
 
     // If nothing is in our cargo
     if (state.tokenSelection === null || state.tokenSelection === undefined) {
@@ -48,6 +89,13 @@ function SecretCargo(el, context) {
       state.tokenSelection = null;
     }
 
+    // Visuals for (de)selecting
+    if (state.tokenSelection === null) {
+      el.classList.remove('selected');
+    } else {
+      el.classList.add('selected');
+    }
+
     // Update our client state with our selection
     context.setState({ tokenSelection: state.tokenSelection });
   });
@@ -55,31 +103,30 @@ function SecretCargo(el, context) {
   // Whenever someone plays the activate secret cargo action
   el.subscribe('action:player:secret-cargo', (e) => {
     const { start, duration } = e.detail;
-    // The end time (ie. 'that many seconds far ahead')
-    const end = start + duration;
+    const { player } = context.getState();
 
-    const interval = context.setInterval(() => {
-      const { game, player } = context.getState();
-      const { tokens } = game;
-      const { secretCargo } = player;
+    player.secretCargo.locked = false;
+    context.setState({ player });
 
-      // First get our current token
-      const token = tokens[secretCargo.token]
-        ? tokens[secretCargo.token].name
-        : '-';
+    context.setInterval({
+      start,
+      duration,
+      onTick: (time) => {
+        const m = utils.pad(time.minutes);
+        const s = utils.pad(time.seconds);
+        timerEl.textContent = `${m}:${s}`;
+        el.classList.remove('locked');
+      },
+      onEnd: () => {
+        timerEl.textContent = '01:00';
+        el.classList.add('locked');
+      },
+    });
+  });
 
-      // We take a timestamp ('now' in seconds)
-      const now = Date.now();
-      // Calculate how many seconds are left
-      const sec = ((end - now) / 1000).toFixed(1);
-      el.textContent = `Secret: ${token} (${sec}s)`;
-
-      // If none are, stop our interval
-      if (sec <= 0) {
-        clearInterval(interval);
-        el.textContent = `Secret: ${token}`;
-      }
-    }, 100);
+  // Whenever the active cargo action fades
+  el.subscribe('action:player:secret-cargo:faded', () => {
+    el.classList.add('locked');
   });
 
   return el;

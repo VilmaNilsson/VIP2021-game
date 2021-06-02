@@ -1,34 +1,105 @@
 @import "variables.css";
+@import "login.css";
+@import "main.css";
+@import "join.css";
+@import "create.css";
+@import "plan.css";
+@import "lobby.css";
+@import "play.css";
 
 body {
     margin: 0;
+    font-family: var(--font-primary);
+    color: var(--text-color);
+    background-color: var(--background-color);
 }
 
-#teams div:hover,
-#actions div:hover,
-#player-actions div:hover,
-#stations div:hover,
-#racks div:last-child span:hover,
-#pocket:hover,
-#temporary-pocket:hover {
+#root {
+    display: flex;
+}
+
+.pregame-btn {
+    font-family: var(--font-primary);
+    font-weight: 600;
+    font-size: 22px;
+    text-align: center;
+    color: var(--text-color);
+    width: 100%;
+    padding: 15px 10px;
+    margin: 20px 0;
+    border-radius: 20px;
+    border: none;
+    background-color: transparent;
+    box-shadow: 0 0 15px var(--text-color);
+    transition: box-shadow 120ms ease;
+    box-sizing: border-box;
+}
+
+.pregame-btn:hover,
+.pregame-btn:active {
+    box-shadow: 0 0 10px 5px var(--logo-color);
     cursor: pointer;
-    background: #ddd;
 }
 
-#racks div span {
-    display: inline-block;
-    padding: 3px;
-    margin: 0 2px;
-    background: #eee;
+.pregame-input {
+    font-family: var(--font-primary);
+    font-weight: 600;
+    font-size: 22px;
+    text-align: center;
+    color: var(--text-color);
+    width: 100%;
+    padding: 15px 10px;
+    margin: 20px 0;
+    border-radius: 20px;
+    border: none;
+    background-color: transparent;
+    box-shadow: 0 0 15px var(--text-color);
+    transition: box-shadow 120ms ease;
+    outline: none;
+    box-sizing: border-box;
+    -webkit-appearance: none;
 }
 
-#menu {
-    width: 18vw;
-    border-radius: 7px;
+.pregame-input:hover,
+.pregame-input:active {
+    box-shadow: 0 0 10px 5px var(--logo-color);
+    cursor: pointer;
+}
 
-    background-color: white;
+.pregame-input::placeholder {
+    color: #f484de;
+    opacity: 1;
+}
 
+.pregame-errmsg {
+    font-family: var(--font-primary);
+    color: #ff5e5e;
+    padding: 15px;
+    text-align: center;
+}
+
+.meteor-shower {
+    animation: meteor-shower linear infinite;
     position: absolute;
-    bottom: 2vw;
-    right: 2vw;
+    transition: all 30ms linear;
+}
+
+@keyframes meteor-shower {
+    1% { left: 100px }
+    12% { top: 30px }
+    19% { left: 20px; top: 50px }
+    30% { left: -100px; top: 70px }
+    34% { left: 500px; top: 14px }
+    41% { left: 323px; top: -30px }
+    50% { left: 279px; top: 10px }
+    52% { left: 149px; top: 25px }
+    57% { left: 250px; top: 80px }
+    62% { left: 130px; top: 200px }
+    68% { left: -80px; top: 332px }
+    70% { left: -8px; top: 79px }
+    75% { left: 80px; top: -134px }
+    79% { left: 130px; top: -56px }
+    81% { left: 68px; top: 35px }
+    93% { left: 30px; top: 20px }
+    98% { left: -10px; top: 100px}
 }

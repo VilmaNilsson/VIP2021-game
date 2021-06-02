@@ -106,7 +106,7 @@ const Router = {
       this.root.appendChild(el);
       return true;
     } catch (err) {
-      console.warn(`Unable to mount the view [${view.name}]`, err.message);
+      console.warn(`Unable to mount the view [${view.name}]`, err);
       return false;
     }
   },

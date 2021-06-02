@@ -1,16 +1,17 @@
 function LoginView() {
   const el = document.createElement('div');
-  el.id = 'home';
+  el.id = 'login-view';
 
   el.innerHTML = `
-    <img id="login-logo" src="/assets/logo.svg" alt="LOGO">
-    <div id="error"></div>
-    <input type="text" id="login-field" placeholder="username"><br>
-    <button id="login-button">Login</button>
+    <img src="/assets/logo.svg" alt="Logotype">
+    <h2>Enter your player name</h2>
+    <div class="pregame-errmsg" id="error"></div>
+    <input class="pregame-input" type="text" placeholder="Your name...">
+    <button class="pregame-btn" id="login-button">Login</button>
   `;
 
   const errorEl = el.querySelector('#error');
-  const inputEl = el.querySelector('#login-field');
+  const inputEl = el.querySelector('input');
 
   inputEl.addEventListener('keyup', (e) => {
     if (e.key !== 'Enter' || e.target.value.length < 2) {
@@ -23,9 +24,14 @@ function LoginView() {
 
   el.click('#login-button', () => {
     if (inputEl.value.length < 2) {
+      errorEl.textContent = 'Player name is to short';
+      return;
+    } else if (inputEl.value.length > 10) {
+      errorEl.innerText = 'Your name exceeds the maximum of 10 characters';
       return;
     }
 
+    errorEl.textContent = '';
     const username = inputEl.value;
     el.send('player:login', { username });
   });
@@ -34,8 +40,12 @@ function LoginView() {
     el.navigate('/');
   });
 
-  el.subscribe('player:login:fail', () => {
-    errorEl.textContent = 'Username already taken';
+  const errorMessages = ['That player name is already taken'];
+
+  el.subscribe('player:login:fail', (e) => {
+    const payload = e.detail;
+    const message = errorMessages[payload.errorCode];
+    errorEl.textContent = message;
   });
 
   return el;

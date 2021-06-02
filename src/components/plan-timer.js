@@ -1,5 +1,7 @@
+import utils from '../utils';
+
 function PlanTimer(el, context) {
-  const { game } = context.getState();
+  const { game, player } = context.getState();
 
   // If there is no game we cant render anything
   if (!game) {
@@ -7,22 +9,19 @@ function PlanTimer(el, context) {
   }
 
   const { start, duration } = game.phase;
-  // The end time (ie. 'that many seconds far ahead')
-  const end = start + duration;
 
-  const interval = context.setInterval(() => {
-    // We take a timestamp ('now' in seconds)
-    const now = Date.now();
-    // Calculate how many seconds are left
-    const sec = ((end - now) / 1000).toFixed(1);
+  context.setInterval({
+    start,
+    duration,
+    onTick: (time) => {
+      const m = utils.pad(time.minutes);
+      const s = utils.pad(time.seconds);
+      const i = utils.pad(Math.floor(time.milliseconds / 10));
+      el.textContent = `${m}:${s}:${i}`;
+    },
+  }, 50);
 
-    el.textContent = `${sec}s`;
-
-    // If none are, stop our interval
-    if (sec <= 0) {
-      clearInterval(interval);
-    }
-  });
+  return el;
 }
 
 export default PlanTimer;

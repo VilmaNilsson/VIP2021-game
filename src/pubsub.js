@@ -40,19 +40,13 @@ const PubSub = {
         } catch (err) {
           console.warn(`Event handler for [${event}] failed with`, err);
         }
-      } else if (event === 'player:reconnect') {
-        // This just makes sure that events listening to this event gets added
-        // to the end of the event loop, in order for updates to the state to
-        // be properly available
+      } else {
+        // Element listeners has to be run at the end of the event loop in order
+        // for regular event handlers to run before
         setTimeout(() => {
           const e = new CustomEvent(event, { detail: payload });
           listener.dispatchEvent(e);
         }, 0);
-      } else {
-        // Otherwise we'll dispatch a CustomEvent, `CustomEvent` is a way of
-        // creating our own "click"-like events
-        const e = new CustomEvent(event, { detail: payload });
-        listener.dispatchEvent(e);
       }
     });
   },

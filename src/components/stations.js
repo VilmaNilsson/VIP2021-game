@@ -1,3 +1,5 @@
+import PlayTimer from './play-timer';
+
 function Stations(el, context) {
   const { game, player } = context.getState();
 
@@ -5,10 +7,30 @@ function Stations(el, context) {
     return el;
   }
 
+  el.innerHTML = `<div id="timer"></div>`;
+
+  const timerEl = el.querySelector('#timer');
+
+  PlayTimer(timerEl, context);
+
+  // RENDER ALL STATIONS
+  // ===================
+
   // This should most likely be broken into functions
-  game.stations.forEach((station, i) => {
+  const stations = game.stations.map((station, i) => {
     const div = document.createElement('div');
-    div.textContent = station.name;
+    div.className = 'station';
+
+    const src = station.name.toLowerCase().replace(/\s/g, '');
+
+    div.innerHTML = `
+      <img src="/assets/${src}.png">
+      <div class="name">${station.name}</div>
+    `;
+
+    if (station.locked) {
+      div.classList.add('locked');
+    }
 
     // When a player selects a station for a action
     let selectable = false;
@@ -19,16 +41,13 @@ function Stations(el, context) {
 
       if (s) {
         div.classList.add('selectable');
-        div.style.color = 'green';
       } else {
         div.classList.remove('selectable');
-        div.style.color = 'black';
       }
     }
 
     div.click(() => {
-      const { action } = context.getState();
-      console.log(action);
+      const { action, game } = context.getState();
 
       // If our client state contains a action and our stations can be selected
       if (action && selectable) {
@@ -40,13 +59,24 @@ function Stations(el, context) {
         // Deselect the action in our client state
         context.setState({ action: null });
       } else {
+        // Don't allow login if the station is locked
+        if (game.stations[i].locked) {
+          return;
+        }
+
+        if (div.classList.contains('active')) {
+          return;
+        }
+
         // Otherwise they wanted to login
         div.send('station:login', { station: i });
       }
     });
 
+    // div.subscribe('player:action:stations', () => setSelectable(true));
+
     // When the station is selectable for actions (all station-actions)
-    div.subscribe('player:action:stations', () => setSelectable(true));
+    div.subscribe('player:action:station', () => setSelectable(true));
     // Otherwise remove the selection
     div.subscribe('player:action:cooldown', () => setSelectable(false));
     div.subscribe('player:action:cancel', () => setSelectable(false));
@@ -54,178 +84,102 @@ function Stations(el, context) {
 
     // Highlight the station you're in
     if (player.inStation && player.inStation.station === i) {
-      div.style.background = '#ddd';
+      div.classList.add('active');
     }
 
-    // When the station gets locked
-    div.subscribe('action:station:locked', (e) => {
-      const payload = e.detail;
-
-      // If the lock action wasn't for this station, do nothing
-      if (payload.station !== i) {
-        return;
-      }
-
-      // The timer could be some component that we can reuse instead
-      const { start, duration } = payload;
-      // The end time (ie. 'that many seconds far ahead')
-      const end = start + duration;
-
-      const interval = context.setInterval(() => {
-        // We take a timestamp ('now' in seconds)
-        const now = Date.now();
-        // Calculate how many seconds are left
-        const sec = ((end - now) / 1000).toFixed(1);
-        div.textContent = `${station.name} (Locked ${sec}s)`;
-
-        // If none are, stop our interval
-        if (sec <= 0) {
-          clearInterval(interval);
-          div.textContent = station.name;
-        }
-      }, 100);
-    });
-
-    div.subscribe('action:station:double-points', (e) => {
-      const payload = e.detail;
-
-      if (payload.station !== i) {
-        return;
-      }
-
-      const { start, duration } = payload;
-
-      const end = start + duration;
-
-      const interval = context.setInterval(() => {
-        const now = Date.now();
-        const sec = ((end - now) / 1000).toFixed(1);
-
-        div.textContent = `${station.name} (Double ${sec}s)`;
-
-        if (sec <= 0) {
-          clearInterval(interval);
-          div.textContent = station.name;
-        }
-      }, 100);
-    });
-
-    div.subscribe('action:station:half-points', (e) => {
-      const payload = e.detail;
-
-      if (payload.station !== i) {
-        return;
-      }
-
-      const { start, duration } = payload;
-
-      const end = start + duration;
-
-      const interval = context.setInterval(() => {
-        const now = Date.now();
-        const sec = ((end - now) / 1000).toFixed(1);
-
-        div.textContent = `${station.name} (Half ${sec}s)`;
-
-        if (sec <= 0) {
-          clearInterval(interval);
-          div.textContent = station.name;
-        }
-      }, 100);
-    });
-
-    div.subscribe('action:stations:double-points', (e) => {
-      const payload = e.detail;
-
-      const { start, duration } = payload;
-
-      const end = start + duration;
-
-      const interval = context.setInterval(() => {
-        const now = Date.now();
-        const sec = ((end - now) / 1000).toFixed(1);
-
-        div.textContent = `${station.name} (Double ${sec}s)`;
-
-        if (sec <= 0) {
-          clearInterval(interval);
-          div.textContent = station.name;
-        }
-      }, 100);
-    });
-
-    div.subscribe('action:stations:half-points', (e) => {
-      const payload = e.detail;
-
-      const { start, duration } = payload;
-
-      const end = start + duration;
-
-      const interval = context.setInterval(() => {
-        const now = Date.now();
-        const sec = ((end - now) / 1000).toFixed(1);
-
-        div.textContent = `${station.name} (Half ${sec}s)`;
-
-        if (sec <= 0) {
-          clearInterval(interval);
-          div.textContent = station.name;
-        }
-      }, 100);
-    });
-
-    // We need to store our login interval outside because they can click on
-    // another station _while_ logging into another, this makes it resettable
-    let loginInterval = null;
-
-    // TODO: we should check from the start if a station is being logged in to
-    // and then display a timer as well
-
-    div.subscribe('station:login:wait', (e) => {
-      const payload = e.detail;
-
-      // If the login-wait event isnt for this station
-      if (payload.station !== i) {
-        // But we had an interval going, lets clear it
-        if (loginInterval) {
-          clearInterval(loginInterval);
-          div.textContent = station.name;
-        }
-
-        return;
-      }
-
-      // Here we go again with the timer-component-to-be
-      const { start, duration } = payload;
-      const end = start + duration;
-
-      clearInterval(loginInterval);
-
-      loginInterval = context.setInterval(() => {
-        const now = Date.now();
-        const sec = ((end - now) / 1000).toFixed(1);
-        div.textContent = `${station.name} (Logging in ${sec}s)`;
-
-        if (sec <= 0) {
-          clearInterval(loginInterval);
-          div.textContent = station.name;
-          div.style.background = '#ddd';
-        }
-      }, 100);
-    });
-
-    // When they log into another station lets clear the bg
-    div.subscribe('station:login:done', (e) => {
-      const payload = e.detail;
-      player.inStation = payload;
-      context.setState({ player });
-      if (payload.station !== i) {
-        div.style.background = 'white';
-      }
-    });
+    // TODO: upon initial render, we need to check what active actions we have
 
     el.append(div);
+    return div;
   });
+
+  // ACTION LISTENERS
+  // ================
+  
+  // When they log into another station lets clear the bg
+  el.subscribe('station:login:done', (e) => {
+    const payload = e.detail;
+    player.inStation = payload;
+    context.setState({ player });
+
+    stations.forEach((s, i) => {
+      if (payload.station === i) {
+        s.classList.add('active');
+      } else {
+        s.classList.remove('active');
+      }
+    });
+  });
+
+  // Only show the border on the planet you're logging into
+  el.subscribe('station:login:wait', (e) => {
+    const payload = e.detail;
+
+    stations.forEach((s, i) => {
+      if (payload.station === i) {
+        s.classList.add('active');
+      } else {
+        s.classList.remove('active');
+      }
+    });
+  });
+
+  // When the station gets locked
+  el.subscribe('action:station:locked', (e) => {
+    const { station } = e.detail;
+    const { game } = context.getState();
+    game.stations[station].locked = true;
+    context.setState({ game });
+
+    const stationEl = stations[station];
+    stationEl.classList.add('locked');
+  });
+
+  // When the lock action fades
+  el.subscribe('action:station:locked:faded', (e) => {
+    const { station } = e.detail;
+    const { game } = context.getState();
+    game.stations[station].locked = false;
+    context.setState({ game });
+
+    const stationEl = stations[station];
+    stationEl.classList.remove('locked');
+  });
+
+  // Station gets unlocked
+  el.subscribe('action:station:unlocked', (e) => {
+    const { station } = e.detail;
+    const { game } = context.getState();
+    game.stations[station].locked = false;
+    context.setState({ game });
+
+    const stationEl = stations[station];
+    stationEl.classList.remove('locked');
+  });
+
+  // Double points for a Planet
+  el.subscribe('action:station:x2', (e) => {
+    const { station } = e.detail;
+    console.log('x2' , station);
+  });
+
+  // Double points for a Planet
+  el.subscribe('action:station:x2:faded', (e) => {
+    const { station } = e.detail;
+  });
+
+  // Double points for all Planets
+  el.subscribe('action:stations:x2', (e) => {
+    // const payload = e.detail;
+    console.log('x2 all');
+  });
+
+  // Double points for all Planets faded
+  el.subscribe('action:stations:x2:faded', (e) => {
+    // const payload = e.detail;
+  });
+
+  return el;
 }
 
 export default Stations;

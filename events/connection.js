@@ -35,16 +35,25 @@ function playerReconnect(context, payload) {
 
   // We first try to connect this new WebSocket ID with an old player
   if (!reconnected) {
+    context.send('player:reconnect:fail', { errorCode: 0 });
     return;
   }
 
-  const game = context.getGameState();
-
-  if (game === null) {
-    return;
-  }
+  context.updatePlayerState({ online: true });
 
   const playerState = context.getPlayerState();
+  const game = context.getGameState();
+
+  // They're not in an active game
+  if (game === null) {
+    context.send('player:reconnect', {
+      id: playerState.id,
+      username: playerState.username,
+    });
+
+    return;
+  }
+
   const player = game.players[id];
 
   // If they're inside of a game and in a station

@@ -7,14 +7,12 @@ function lockStationAction(context, payload) {
 
   // We're not in a game
   if (game === null) {
-    context.send('action:station:lock:fail', { errorCode: 0 });
-    return false;
+    return { errorCode: 0 };
   }
 
   // We're not in the play phase
   if (game.properties.phase.type !== 2) {
-    context.send('action:station:lock:fail', { errorCode: 1 });
-    return false;
+    return { errorCode: 1 };
   }
 
   // In this action we'll receive the station index (the one to be locked)
@@ -24,8 +22,7 @@ function lockStationAction(context, payload) {
 
   // They tried targeting an unknown station
   if (station === undefined) {
-    context.send('action:station:lock:fail', { errorCode: 2 });
-    return false;
+    return { errorCode: 2 };
   }
 
   // 30 seconds

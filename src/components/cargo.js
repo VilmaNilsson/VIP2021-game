@@ -6,20 +6,28 @@ function Cargo(el, context) {
     return el;
   }
 
-  const { tokens } = game;
-  const { cargo } = player;
+  const { tokens, teams } = game;
+  const { cargo, team } = player;
   const token = tokens[cargo.token] ? tokens[cargo.token].name : '-';
 
-  el.textContent = `Cargo: ${token}`;
+  el.innerHTML = `
+    <div class="token">
+      <img src="/assets/${token}.png">
+    </div>
+  `;
+
+  const img = el.querySelector('img');
 
   // Whenever we receive the changes to our cargo
   el.subscribe('player:cargos', (e) => {
+    const { cargo } = e.detail;
     const { game } = context.getState();
     const { tokens } = game;
-    const { cargo } = e.detail;
+
     const token = tokens[cargo.token] ? tokens[cargo.token].name : '-';
 
-    el.textContent = `Cargo: ${token}`;
+    img.src = `/assets/${token}.png`;
+    el.classList.remove('selected');
   });
 
   el.click(() => {
@@ -39,6 +47,13 @@ function Cargo(el, context) {
       const from = state.tokenSelection;
       el.send('token:swap', { to, from });
       state.tokenSelection = null;
+    }
+
+    // Visuals for (de)selecting
+    if (state.tokenSelection === null) {
+      el.classList.remove('selected');
+    } else {
+      el.classList.add('selected');
     }
 
     // Update our client state with our selection
