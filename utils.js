@@ -392,6 +392,26 @@ function checkActionForScore(context, game, station, teamIndex) {
   }
 }
 
+// Gets the amount of points awarded based on team size
+function getPointsByTeamSize(game, teamId) {
+  const players = getPlayersInTeam(game, teamId);
+
+  switch (players.length) {
+    case 1:
+      return 20;
+    case 2:
+      return 10;
+    case 3:
+      return 7;
+    case 4:
+      return 5;
+    case 5:
+      return 4;
+    default:
+      return 0;
+  }
+}
+
 module.exports = {
   randomHex,
   generateUUID,
@@ -419,4 +439,5 @@ module.exports = {
   getPlayersInTeam,
   isRackFull,
   checkActionForScore,
+  getPointsByTeamSize,
 };
