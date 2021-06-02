@@ -21,6 +21,7 @@ const stationsX2 = require('./stations-x2');
 const stationLock = require('./station-lock');
 const stationUnlock = require('./station-unlock');
 const teamSlow = require('./team-slow');
+const shakeScreen = require('./team-shake-screen');
 const reRack = require('./player-random-new');
 
 // Combine the handlers
@@ -33,6 +34,8 @@ const actionHandlers = {
   stationUnlock,
   teamSlow,
   reRack,
+  shakeScreen,
+
   // NOTE: don't forget to add more here
 };
 
