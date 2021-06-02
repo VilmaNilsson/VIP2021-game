@@ -74,7 +74,7 @@ function Actions(el, context) {
           // We'll deselect it
           div.classList.remove('selected');
           return;
-        } 
+        }
       }
 
       // Clear previous selections

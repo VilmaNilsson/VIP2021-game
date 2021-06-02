@@ -26,6 +26,9 @@ function LoginView() {
     if (inputEl.value.length < 2) {
       errorEl.textContent = 'Player name is to short';
       return;
+    } else if (inputEl.value.length > 10) {
+      errorEl.innerText = 'Your name exceeds the maximum of 10 characters';
+      return;
     }
 
     errorEl.textContent = '';

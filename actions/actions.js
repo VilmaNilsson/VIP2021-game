@@ -49,6 +49,13 @@ const actions = [
     cooldown: 1 * 60,
   },
   {
+    event: 'action:team:shake',
+    name: 'Meteor Shower',
+    desc: 'Send a meteor shower towards another team and make their journey shakey',
+    target: 'team',
+    cooldown: 2 * 60,
+  },
+  {
     event: 'action:player:randomize-new',
     name: 'Re-rack',
     desc: "Replaces your team's rack with a new one in the planet you are in.",
