@@ -88,7 +88,7 @@ function renderRack(rack, teamIndex, context) {
 
     if (scored) {
       div.classList.add('scored');
-      context.setTimeout(() => div.classList.remove('scored'), 500);
+      context.setTimeout(() => div.classList.remove('scored'), 550);
     }
 
     rack.slots.forEach((slot, tokenIndex) => {
