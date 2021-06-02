@@ -23,7 +23,7 @@ const actions = [
   {
     event: 'action:stations:x2',
     name: 'All Planets x2',
-    desc: 'Doubles the amount of points handed out by all Plantes. Lasts for 30 seconds.',
+    desc: 'Doubles the amount of points handed out by all Planets. Lasts for 30 seconds.',
     target: 'stations',
     cooldown: 1 * 60,
   },
