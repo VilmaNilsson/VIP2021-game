@@ -18,10 +18,10 @@ function CreateView() {
       </div>
       <div id='create-game-teams'>
         <div id='create-game-nr-div' class="pregame-btn">
-          <span>Number of teams (4 by default)</span>
+          <span>Number of teams: 2</span>
           <div id='create-game-nr-drop' class='create-game-nr-drop'></div>
         </div>
-        <input id='create-game-nr-input' type='number' name='nrOfTeams' value='4' hidden>
+        <input id='create-game-nr-input' type='number' name='nrOfTeams' value='2' hidden>
       </div>
       <div id='create-game-mode'>
         <h3>Mode Settings</h3>
@@ -36,7 +36,7 @@ function CreateView() {
         <label>
           Duration of plan phase
           <div id='advanced-plan' class='pregame-input create-game-inputs'></div>
-          <input class='create-game-inputs' id='create-game-plan-input' type='number' name='planDuration' value='60' hidden>
+          <input class='create-game-inputs' id='create-game-plan-input' type='number' name='planDuration' value='20' hidden>
         </label>
         <br>
         <label>
@@ -48,7 +48,7 @@ function CreateView() {
         <label>
           Landing Time
           <div id='advanced-land' class='pregame-input create-game-inputs'></div>
-          <input class='create-game-inputs' id='create-game-landing-input' type='number' name='loginTimer' value='7' hidden>
+          <input class='create-game-inputs' id='create-game-landing-input' type='number' name='loginTimer' value='5' hidden>
         </label>
         <br>
       </div>
@@ -113,18 +113,18 @@ function CreateView() {
       currentVal: 30,
     },
     planPhase: {
-      defaultValue: 60, // in seconds
-      maxValue: '59:00', // in minutes
-      currentVal: 60,
+      defaultValue: 20, // in seconds
+      maxValue: '20:00', // in minutes
+      currentVal: 20,
     },
     playPhase: {
       defaultValue: 300, // in seconds
-      maxValue: '60:00', // in minutes
+      maxValue: '59:59', // in minutes
       currentVal: 300,
     },
     landingTime: {
       defaultValue: 5, // in seconds
-      maxValue: '00:30', // in minutes
+      maxValue: '01:00', // in minutes
       currentVal: 5,
     },
   };
@@ -189,7 +189,7 @@ function CreateView() {
       nDiv.classList.add('team-divs');
       nDiv.addEventListener('click', (e) => {
         e.preventDefault();
-        teamNrDiv.firstElementChild.innerText = `Teams: ${e.target.innerText}`;
+        teamNrDiv.firstElementChild.innerText = `Number of teams: ${e.target.innerText}`;
         teamNrInput.value = e.target.innerText;
         allValues.nrTeams.currentVal = e.target.innerText;
       });
