@@ -160,7 +160,6 @@ function Stations(el, context) {
   // Double points for a Planet
   el.subscribe('action:station:x2', (e) => {
     const { station } = e.detail;
-    console.log('x2' , station);
   });
 
   // Double points for a Planet
@@ -170,13 +169,10 @@ function Stations(el, context) {
 
   // Double points for all Planets
   el.subscribe('action:stations:x2', (e) => {
-    // const payload = e.detail;
-    console.log('x2 all');
   });
 
   // Double points for all Planets faded
   el.subscribe('action:stations:x2:faded', (e) => {
-    // const payload = e.detail;
   });
 
   return el;

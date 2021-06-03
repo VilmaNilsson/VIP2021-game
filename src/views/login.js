@@ -6,7 +6,7 @@ function LoginView() {
     <img src="/assets/logo.svg" alt="Logotype">
     <h2>Enter your player name</h2>
     <div class="pregame-errmsg" id="error"></div>
-    <input class="pregame-input" type="text" placeholder="Your name...">
+    <input class="pregame-input" type="text" placeholder="Your name..." maxLength="20">
     <button class="pregame-btn" id="login-button">Login</button>
   `;
 

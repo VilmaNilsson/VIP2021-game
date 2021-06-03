@@ -150,11 +150,21 @@ function createStation(state = {}) {
 
 // Generate a rack
 function createRack(nrOfTokens) {
-  return Array.from({ length: nrOfTokens }).map(() => {
+  const newRack = Array.from({ length: nrOfTokens }).map(() => {
     return {
       token: Math.floor(Math.random() * nrOfTokens),
     };
   });
+
+  const tokens = newRack.map((slot) => slot.token);
+  const sameTokens = tokens.every((token) => token === tokens[0]);
+  const uniqueTokens = new Set(tokens).size === tokens.length;
+
+  if (sameTokens || uniqueTokens) {
+    return createRack(nrOfTokens);
+  }
+
+  return newRack;
 }
 
 // Create racks for a station based on the number of teams and tokens
