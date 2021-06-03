@@ -126,15 +126,9 @@ function Actions(el, context) {
       });
     });
 	
-	
-	div.subscribe('player:action:fail', () => {
-     
-	  console.log('tesstt message')
 
-     
-
+    div.subscribe('player:action:fail', () => {
       div.classList.remove('selected');
-      
     });
 
     el.append(div);
