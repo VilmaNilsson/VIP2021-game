@@ -357,39 +357,60 @@ function isRackFull(station, teamId) {
 
 // Checks and broadcast score for a given context, game, station and teamIndex
 function checkActionForScore(context, game, station, teamIndex) {
-  // This is how you get points:
-  // ===========================
-
-  // Check if the action means a rack has a row of same tokens
+  // Check if the token swap means a rack has a row of same tokens
   const slots = station.racks[teamIndex].slots.map((slot) => slot.token);
   const sameSlots = slots.every((slot) => slot === slots[0]);
   const noEmptySlots = slots.every((slot) => slot !== -1);
 
-  // Points multipliers
+  // Point multipliers
   const multipliers = (
     game.teams[teamIndex].properties.pointsMultiplier *
     station.properties.pointsMultiplier
   );
 
+  // Number of points awarded based on team size
+  const points = utils.getPointsByTeamSize(game, teamIndex);
+
+  let scored = false;
+
   // All the tokens are the same = points!
   if (noEmptySlots && sameSlots) {
-    game.teams[teamIndex].properties.score += (3 * multipliers);
+    game.teams[teamIndex].properties.score += (points * multipliers);
+    station.racks[teamIndex].slots = utils.createRack(game.tokens.length);
 
     // Broadcast the updated score
-    const score = getTeamScores(game);
+    const score = utils.getTeamScores(game);
     context.broadcastToGame('game:score', { score });
+    scored = true;
   } else {
     // Only unique slots in a rack also gives points
     const uniqueSlots = new Set(slots).size === slots.length;
 
     if (noEmptySlots && uniqueSlots) {
-      game.teams[teamIndex].properties.score += (2 * multipliers);
+      game.teams[teamIndex].properties.score += (points * multipliers);
+      station.racks[teamIndex].slots = utils.createRack(game.tokens.length);
 
       // Broadcast the updated score
-      const score = getTeamScores(game);
+      const score = utils.getTeamScores(game);
       context.broadcastToGame('game:score', { score });
+      scored = true;
     }
   }
+
+  // ===========================
+
+  // Update the game state
+  game.stations[stationIndex] = station;
+  game.players[playerId] = player;
+  context.updateGameState(game);
+
+  // Broadcast the updated rack
+  context.broadcastTo(playerIds, 'station:rack', {
+    station: stationIndex,
+    team: teamIndex,
+    rack: station.racks[teamIndex],
+    scored,
+  });
 }
 
 // Gets the amount of points awarded based on team size
