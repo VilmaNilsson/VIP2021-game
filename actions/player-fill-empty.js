@@ -63,7 +63,7 @@ function fillEmpty(context) {
   });
 
   // check if action updates the score
-  utils.checkActionForScore(context, game, station, yourTeam);
+  utils.checkActionForScore(context);
 
   return true;
 }

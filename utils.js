@@ -356,7 +356,14 @@ function isRackFull(station, teamId) {
 }
 
 // Checks and broadcast score for a given context, game, station and teamIndex
-function checkActionForScore(context, game, station, teamIndex) {
+function checkActionForScore(context) {
+  const game = context.getGameState();
+  const playerId = context.id();
+  const player = game.players[playerId];
+  const teamIndex = player.team;
+  const stationIndex = player.properties.inStation.station;
+  const station = game.stations[stationIndex];
+
   // Check if the token swap means a rack has a row of same tokens
   const slots = station.racks[teamIndex].slots.map((slot) => slot.token);
   const sameSlots = slots.every((slot) => slot === slots[0]);
