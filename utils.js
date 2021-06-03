@@ -352,7 +352,7 @@ function getPlayersInTeam(game, teamId) {
   
 // Returns true if station rack (for a specific team) is full
 function isRackFull(station, teamId) {
-  return station.rack[teamId].slots.every((s) => s.token === -1);
+  return station.racks[teamId].slots.every((slot) => slot.token !== -1);
 }
 
 // Checks and broadcast score for a given context, game, station and teamIndex
