@@ -3,17 +3,6 @@ const utils = require('../utils');
 
 function fillEmpty(context) {
   const game = context.getGameState();
-  // The correct phase
-  const gamePhase = game.properties.phase.type;
-  // The players id
-  const playerId = context.id();
-  // Get the player's object with information about fx team
-  const player = game.players[playerId];
-  // Get the players team
-  const yourTeam = player.team;
-  // The current planet
-  const stationIndex = player.properties.inStation.station;
-  const station = game.stations[stationIndex];
 
   // there is no game
   if (game === null) {
@@ -21,14 +10,25 @@ function fillEmpty(context) {
   }
 
   // not in the play phase
-  if (gamePhase !== 2) {
+  if (game.properties.phase.type !== 2) {
     return { errorCode: 1 };
   }
 
+  // The players id
+  const playerId = context.id();
+  // Get the player's object with information about fx team
+  const player = game.players[playerId];
+  // Get the players team
+  const yourTeam = player.team;
+
   // Fail if player is not landed on a planet
-  if (station === null) {
+  if (player.properties.inStation === null) {
     return { errorCode: 2 };
   }
+  
+  // The current planet
+  const stationIndex = player.properties.inStation.station;
+  const station = game.stations[stationIndex];
 
   if (utils.isRackFull(station, yourTeam)) {
     return { errorCode: 3 };
@@ -57,7 +57,9 @@ function fillEmpty(context) {
 
   // Broadcast event to everyone within the station
   context.broadcastTo(playerIds, 'station:rack', {
-    station: stationIndex, team: yourTeam, rack: station.racks[yourTeam], scored: false,
+    station: stationIndex,
+    team: yourTeam,
+    rack: station.racks[yourTeam],
   });
 
   // check if action updates the score

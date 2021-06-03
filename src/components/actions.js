@@ -126,7 +126,6 @@ function Actions(el, context) {
       });
     });
 	
-
     div.subscribe('player:action:fail', () => {
       div.classList.remove('selected');
     });

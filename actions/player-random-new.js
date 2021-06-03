@@ -40,6 +40,9 @@ function randomNewRack(context, payload) {
   // Broadcast event to everyone within the station
   context.broadcastTo(playerIds, 'station:rack', { team: yourTeam, rack: newRack , scored: false });
 
+  // check if action updates the score
+  utils.checkActionForScore(context, game, station, yourTeam);
+
   return true;
 }
 

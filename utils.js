@@ -369,17 +369,17 @@ function checkActionForScore(context, game, station, teamIndex) {
   );
 
   // Number of points awarded based on team size
-  const points = utils.getPointsByTeamSize(game, teamIndex);
+  const points = getPointsByTeamSize(game, teamIndex);
 
   let scored = false;
 
   // All the tokens are the same = points!
   if (noEmptySlots && sameSlots) {
     game.teams[teamIndex].properties.score += (points * multipliers);
-    station.racks[teamIndex].slots = utils.createRack(game.tokens.length);
+    station.racks[teamIndex].slots = createRack(game.tokens.length);
 
     // Broadcast the updated score
-    const score = utils.getTeamScores(game);
+    const score = getTeamScores(game);
     context.broadcastToGame('game:score', { score });
     scored = true;
   } else {
@@ -388,29 +388,30 @@ function checkActionForScore(context, game, station, teamIndex) {
 
     if (noEmptySlots && uniqueSlots) {
       game.teams[teamIndex].properties.score += (points * multipliers);
-      station.racks[teamIndex].slots = utils.createRack(game.tokens.length);
+      station.racks[teamIndex].slots = createRack(game.tokens.length);
 
       // Broadcast the updated score
-      const score = utils.getTeamScores(game);
+      const score = getTeamScores(game);
       context.broadcastToGame('game:score', { score });
       scored = true;
     }
   }
 
-  // ===========================
+  if (scored) {
+    const playerIds = getPlayersInStation(game, stationIndex);
 
-  // Update the game state
-  game.stations[stationIndex] = station;
-  game.players[playerId] = player;
-  context.updateGameState(game);
+    // Update the game state
+    game.stations[stationIndex] = station;
+    context.updateGameState(game);
 
-  // Broadcast the updated rack
-  context.broadcastTo(playerIds, 'station:rack', {
-    station: stationIndex,
-    team: teamIndex,
-    rack: station.racks[teamIndex],
-    scored,
-  });
+    // Broadcast the updated rack
+    context.broadcastTo(playerIds, 'station:rack', {
+      station: stationIndex,
+      team: teamIndex,
+      rack: station.racks[teamIndex],
+      scored,
+    });
+  }
 }
 
 // Gets the amount of points awarded based on team size
