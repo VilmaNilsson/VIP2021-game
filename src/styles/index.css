@@ -7,7 +7,12 @@
 @import "lobby.css";
 @import "play.css";
 
+html {
+    height: 100%;
+}
+
 body {
+    height: 100%;
     margin: 0;
     font-family: var(--font-primary);
     color: var(--text-color);
@@ -15,7 +20,8 @@ body {
 }
 
 #root {
-    display: flex;
+    /* display: flex; */
+    height: 100%;
 }
 
 .pregame-btn {
