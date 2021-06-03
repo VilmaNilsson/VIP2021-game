@@ -1,13 +1,13 @@
 #play-view {
-  flex-grow: 1;
-  height: 100vh;
+  /* flex-grow: 1; */
+  height: 100%;
   background-image: url('/assets/background-lines.png');
   background-color: #151824; /* same as image */
   /* background-color: var(--background-color); */
   background-repeat: no-repeat;
   background-position-x: center;
   background-position-y: top;
-  background-size: cover;
+  background-size: 100% auto;
   padding: 0 10px;
 
   display: flex;
@@ -20,7 +20,8 @@
   align-items: center;
   /* padding: 10px 0 10px 0; */
 
-  flex: 1 1 0;
+  margin-top: 1vh;
+  flex: 0 0 5vh;
 }
 
 #play-view .team {
@@ -104,8 +105,8 @@
 }
 
 #play-view #stations {
-  margin-top: 8px;
-  flex: 1 1 0;
+  margin-top: 2vh;
+  /* flex: 1 1 0; */
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 5px;
@@ -205,7 +206,7 @@
 }
 
 #play-view #racks {
-  flex: 1 1 0;
+  /* flex: 1 1 0; */
   position: relative;
   /*
   grid-auto-rows: 58px;
@@ -343,7 +344,7 @@
   display: flex;
   padding-top: 4px;
 
-  flex: 1 1 0;
+  /* flex: 1 1 0; */
 }
 
 #play-view #actions {
