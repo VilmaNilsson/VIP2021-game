@@ -18,10 +18,10 @@ function CreateView() {
       </div>
       <div id='create-game-teams'>
         <div id='create-game-nr-div' class="pregame-btn">
-          <span>Number of teams: 2</span>
+          <span>Number of teams: 4</span>
           <div id='create-game-nr-drop' class='create-game-nr-drop'></div>
         </div>
-        <input id='create-game-nr-input' type='number' name='nrOfTeams' value='2' hidden>
+        <input id='create-game-nr-input' type='number' name='nrOfTeams' value='4' hidden>
       </div>
       <div id='create-game-mode'>
         <h3>Mode Settings</h3>
@@ -36,7 +36,7 @@ function CreateView() {
         <label>
           Duration of plan phase
           <div id='advanced-plan' class='pregame-input create-game-inputs'></div>
-          <input class='create-game-inputs' id='create-game-plan-input' type='number' name='planDuration' value='20' hidden>
+          <input class='create-game-inputs' id='create-game-plan-input' type='number' name='planDuration' value='60' hidden>
         </label>
         <br>
         <label>
@@ -103,9 +103,9 @@ function CreateView() {
 
   const allValues = {
     nrTeams: {
-      defaultValue: 2,
+      defaultValue: 4,
       maxValue: 4,
-      currentVal: 2,
+      currentVal: 4,
     },
     crewPhase: {
       defaultValue: 30, // in seconds
@@ -113,9 +113,10 @@ function CreateView() {
       currentVal: 30,
     },
     planPhase: {
-      defaultValue: 20, // in seconds
+      defaultValue: 60, // in seconds
       maxValue: '20:00', // in minutes
-      currentVal: 20,
+      currentVal: 60,
+      minValue: 20, // in this case it was requested to have another minvalue than the default
     },
     playPhase: {
       defaultValue: 300, // in seconds
@@ -212,7 +213,7 @@ function CreateView() {
       case 'advanced-plan':
         maxVal = allValues.planPhase.maxValue;
         chosenPhase = 'Plan Phase';
-        minVal = convertToMinutesSeconds(allValues.planPhase.defaultValue);
+        minVal = convertToMinutesSeconds(allValues.planPhase.minValue);
         break;
       case 'advanced-play':
         maxVal = allValues.playPhase.maxValue;
