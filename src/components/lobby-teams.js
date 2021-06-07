@@ -28,7 +28,7 @@ function LobbyTeams(el, context) {
       // They've joined this team
       if (player.team === teamIndex) {
         const newPlayer = document.createElement('div');
-        newPlayer.id = 'playerDiv';
+        newPlayer.className = 'playerDiv';
         // We'll store the player ID on this div so we can filter out them when
         // they switch teams
         newPlayer.dataset.id = id;
@@ -44,6 +44,13 @@ function LobbyTeams(el, context) {
 
     // Join a team when you click on it
     div.click(() => {
+      const playerAmount = Array.from(div.querySelectorAll('.playerDiv')).length;
+
+      if (playerAmount >= 5) {
+        window.alert('Max 5 players per team is allowed');
+        return;
+      }
+
       const teamDivs = el.querySelectorAll('.teamDiv');
 
       teamDivs.forEach((element) => {
@@ -72,7 +79,7 @@ function LobbyTeams(el, context) {
       } else {
         // Otherwise they joined this team
         const newPlayer = document.createElement('div');
-        newPlayer.id = 'playerDiv';
+        newPlayer.className = 'playerDiv';
         // We'll store the player ID on this div so we can filter out them when
         // they switch teams
         newPlayer.dataset.id = playerId;

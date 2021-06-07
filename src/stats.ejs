@@ -1,0 +1,245 @@
+<!doctype html>
+<html>
+  <head>
+    <title>VIP 2021</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.gstatic.com"> 
+    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+<style>
+
+#wrapper {
+  display: flex;
+}
+
+#stats, #games-container {
+  flex: 1 1 0;
+}
+
+#create {
+  flex: 1 1 0;
+    margin-left: 20px;
+}
+
+#stats {
+  margin-right: 10px;
+}
+
+#games-container {
+  margin-left: 10px;
+}
+
+#stats .game {
+  padding: 10px;
+  background: #eee;
+  margin-bottom: 10px;
+}
+
+#stats .game > .name,
+#games .game > .name {
+  font-size: 21px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+#stats .score {
+}
+
+#stats .score .team {
+  display: flex;
+  margin-right: 10px;
+}
+
+#stats .score .pts {
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+#games .game {
+  padding: 10px;
+  background: #eee;
+  margin-bottom: 10px;
+}
+
+</style>
+  </head>
+  <body>
+    <h1>Admin</h1>
+
+    <div id="wrapper">
+
+    <div id="stats">
+      <h2>Statistics</h2>
+      <% stats.forEach(function(stat) { %>
+        <div class="game">
+          <div class="name">Game: <%= stat.name %></div>
+          <div class="score">
+            <% stat.score.forEach(function(s, i) { %>
+              <div class="team">
+                <div class="name">Team <%= (i + 1) %>:</div>
+                <div class="pts"><%= s %></div>
+              </div>
+            <% }); %>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+
+    <div id="games-container">
+      <h2>Active games</h2>
+      <div id="games">
+      </div>
+    </div>
+
+    <form id="create">
+      <h2>Create a game</h2>
+      <label>
+        Name
+        <input type="text" name="name" placeholder="Name of the game">
+      </label>
+      <br>
+
+      <label>
+        Nr of teams
+        <input type="text" value="4" name="nrOfTeams">
+      </label>
+      <br>
+
+      <label>
+        Nr of planets
+        <input type="text" value="6" name="nrOfPlanets">
+      </label>
+      <br>
+
+      <label>
+        Plan Duration (seconds)
+        <input type="text" value="60" name="planDuration">
+      </label>
+      <br>
+
+      <label>
+        Play Duration (seconds)
+        <input type="text" value="300" name="playDuration">
+      </label>
+      <br>
+
+      <label>
+        Login Timer (seconds)
+        <input type="text" value="5" name="loginTimer">
+      </label>
+      <br>
+
+      <button type="submit">
+        Create game
+      </button>
+    </form>
+    </div>
+
+    <script>
+      const listeners = {
+        'debug:state': (payload) => {
+          
+          const gamesEl = document.querySelector('#games');
+          gamesEl.innerHTML = '';
+
+          Object.values(payload.games).forEach((game) => {
+            // Might be a stale game
+            // if (Object.keys(game.players).length <= 1 &&
+            //   game.properties.phase.type === 0) {
+            //   return;
+            // }
+
+            const div = document.createElement('div');
+            div.className = 'game';
+
+            const phaseType = game.properties.phase.type;
+            const phase = ['Lobby', 'Plan', 'Play', 'Game Over'][phaseType];
+
+            const canStart = (
+              phaseType === 0 && game.admin === 'SUPERUSER'
+            );
+
+            div.innerHTML = `
+              <div class="name">Game: ${game.name || ''}</div>
+              <div class="phase">Phase: ${phase}</div>
+            `;
+
+            // if (canStart) {
+            //   div.innerHTML = `
+            //     <div class="name">${game.name || ''}</div>
+            //     <div class="name">Phase: ${phase}</div>
+            //     <button class="start-game">Start</button>
+            //   `;
+
+            //   div.querySelector('.start-game').addEventListener('click', (e) => {
+            //     send('game:start', { name: game.name, su: true });
+            //     send('debug:state');
+            //   });
+            // } else {
+            //   div.innerHTML = `
+            //     <div class="name">${game.name || ''}</div>
+            //     <div class="name">Phase: ${phase}</div>
+            //   `;
+            // }
+
+            gamesEl.append(div);
+          });
+        },
+        'game:yours': (payload) => {
+          document.querySelector('#create').reset();
+          window.alert('Game created');
+        }
+      };
+
+      const socket = new WebSocket('ws://localhost:7001/');
+      // const socket = new WebSocket('ws://138.197.184.194:7575/');
+
+      function send(event, payload = {}) {
+        const message = JSON.stringify({ event, payload });
+        socket.send(message);
+      }
+
+      socket.addEventListener('message', (e) => {
+        try {
+          const { event, payload } = JSON.parse(e.data);
+
+          if (listeners[event] !== undefined) {
+            listeners[event](payload);
+          }
+        } catch (err) {
+          console.warn(err);
+        }
+      });
+
+      socket.addEventListener('open', () => {
+        send('debug:state');
+        // Update game info each second
+        const int = setInterval(() => {
+          send('debug:state');
+        }, 2000);
+      });
+
+      function serializeForm(form) {
+        const formData = new FormData(form);
+        const data = {};
+
+        for (const key of formData.keys()) {
+          data[key] = formData.get(key);
+        }
+
+        return data;
+      }
+
+      const form = document.querySelector('#create');
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const data = serializeForm(form);
+        data.su = true;
+        send('game:create', data);
+        setTimeout(() => send('debug:state'), 200);
+      });
+
+    </script>
+  </body>
+</html>

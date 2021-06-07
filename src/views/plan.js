@@ -36,6 +36,20 @@ function PlanView(context) {
   PlanActions(actionsEl, context);
   PlanPlayerActions(playerActionsEl, context);
 
+  // Position background to get crosshair on timer
+  // Need to wait until timer is in place and has content
+  let intervalID = context.setInterval(() => {
+    let timerEl = document.querySelector("#timer");
+    if (timerEl && timerEl.innerHTML) {
+      let timerBox = timerEl.getBoundingClientRect();
+      let _y = timerBox.y + timerBox.height / 2;
+      let vw = parseInt(getComputedStyle(document.documentElement).getPropertyValue("width")); // in px
+      let posy = -190 * (vw / 910) + _y;
+      el.style.backgroundPositionY = `${posy}px`;
+      clearInterval(intervalID);
+    }
+  }, 30);
+
   if (game && player) {
     const teamIndex = player.team;
     const teamEl = el.querySelector(`#teams .team:nth-child(${teamIndex + 1})`);

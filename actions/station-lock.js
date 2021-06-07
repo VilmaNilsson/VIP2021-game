@@ -25,8 +25,8 @@ function lockStationAction(context, payload) {
     return { errorCode: 2 };
   }
 
-  // 30 seconds
-  const duration = 30 * 1000;
+  // 45 seconds
+  const duration = 45 * 1000;
   const start = Date.now();
 
   // We always use the `properties` key for changing values

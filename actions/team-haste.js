@@ -1,4 +1,4 @@
-function teamSlow(context, payload) {
+function teamHaste(context, payload) {
   const game = context.getGameState();
 
   // We're not in a game
@@ -14,33 +14,33 @@ function teamSlow(context, payload) {
   const duration = 30 * 1000;
   const start = Date.now();
 
-  const { team } = payload;
-
-  // Invalid payload
-  if (team === undefined || team > 4) {
-    return { errorCode: 2 };
-  }
+  // Get the player's id
+  const playerId = context.id();
+  // Get the player's object so that we can get their team
+  const player = game.players[playerId];
+  const team = player.team;
 
   // Team doesnt exist
   if (game.teams[team] === undefined) {
     return { errorCode: 3 };
   }
 
-  game.teams[team].properties.loginMultiplier = 1.75;
+  game.teams[team].properties.loginMultiplier = 0.5;
 
   context.updateGameState(game);
-  context.broadcastToGame('action:team:slow', { team, start, duration });
+  context.broadcastToGame('action:team:haste', { team, start, duration });
 
   context.setTimeout(() => {
     const game = context.getGameState();
     game.teams[team].properties.loginMultiplier = game.teams[team].defaults.loginMultiplier;
     context.updateGameState(game);
-    context.broadcastToGame('action:teams:slow:faded');
+    context.broadcastToGame('action:teams:haste:faded');
   }, duration);
 
   return true;
 }
 
 module.exports = {
-  'action:team:slow': teamSlow,
+  'action:team:haste': teamHaste,
 };
+

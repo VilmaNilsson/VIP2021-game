@@ -437,7 +437,7 @@ function getPointsByTeamSize(game, teamId) {
 
   switch (players.length) {
     case 1:
-      return 20;
+      return 15;
     case 2:
       return 10;
     case 3:

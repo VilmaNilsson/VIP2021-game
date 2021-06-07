@@ -2,8 +2,7 @@
   /* flex-grow: 1; */
   height: 100%;
   background-image: url('/assets/background-lines.png');
-  background-color: #151824; /* same as image */
-  /* background-color: var(--background-color); */
+  background-color: var(--background-color);
   background-repeat: no-repeat;
   background-position-x: center;
   background-position-y: top;
@@ -129,10 +128,10 @@
   color: var(--your-team-color);
   text-shadow: 1px 2px 1px #000;
 
-  background-color: #151824;
+  background-color: var(--background-color);
   padding: 5px 10px;
   border-radius: 6px;
-  box-shadow: 0 0 6px 3px var(--your-team-color-alpha);
+  box-shadow: 0 0 6px 6px var(--background-color);
 }
 
 #play-view .station {
@@ -322,8 +321,8 @@
   right: 0;
   bottom: 0;
   z-index: 10;
-  background-color: rgba(255, 255, 255, 0.98);
-  color: #000;
+  background-color: rgba(0, 0, 0, 0.98);
+  color: var(--your-team-color);
   font-size: 21px;
   display: flex;
   align-items: center;
@@ -332,12 +331,30 @@
   text-align: center;
   padding: 0 15px;
   transition: background-color 120ms ease;
-  text-shadow: 0 0 10px #fff;
+  text-shadow: 0 0 10px var(--your-team-color);
   font-weight: bold;
 }
 
 #play-view #racks .overlay.no-racks {
-  /* background: rgba(255, 255, 255, 0.4); */
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#play-view #racks .overlay.no-racks.no-racks-0 {
+  background-image: url('/assets/no-planet-0.png');
+}
+
+#play-view #racks .overlay.no-racks.no-racks-1 {
+  background-image: url('/assets/no-planet-1.png');
+}
+
+#play-view #racks .overlay.no-racks.no-racks-2 {
+  background-image: url('/assets/no-planet-2.png');
+}
+
+#play-view #racks .overlay.no-racks.no-racks-3 {
+  background-image: url('/assets/no-planet-3.png');
 }
 
 #play-view #bottom {

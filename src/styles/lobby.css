@@ -103,12 +103,12 @@
     font-size: 25px;
 }
 
-#lobby #playerDiv {
+#lobby .playerDiv {
     margin-top: 5px;
     color: #353338;
 }
 
-#lobby #playerDiv > span {
+#lobby .playerDiv > span {
     width: 1px;
     height: 11px;
     background-color: rgb(37, 36, 36);

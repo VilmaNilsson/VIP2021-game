@@ -1,3 +1,4 @@
+const fs = require('fs');
 const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
@@ -7,9 +8,6 @@ const useragent = require('express-useragent');
 // Set a default port unless invoked with `$ HTTP_PORT=XXXX node http-server.js`
 const port = process.env.HTTP_PORT || 7000;
 const app = express();
-
-// All of our routes (ie. endpoint + router)
-const routes = require('./routes');
 
 app.set('views', './src');
 app.set('view engine', 'ejs');
@@ -21,10 +19,20 @@ app.use('/assets', express.static('assets'));
 app.use(morgan('combined'));
 app.use(useragent.express());
 
-// `routes` is an object of { endpoint: router, ... }
-Object.entries(routes).forEach((entry) => {
-  const [endpoint, router] = entry;
-  app.use(endpoint, router);
+app.get('/admin', (req, res) => {
+  fs.readFile('statistics.json', (err, data) => {
+    if (err) {
+      res.render('stats', { stats: [] });
+    } else {
+      const stats = JSON.parse(data);
+      res.render('stats', {
+        stats: stats.map((stat) => {
+          stat.score = stat.score.sort().reverse();
+          return stat;
+        }).reverse()
+      });
+    }
+  });
 });
 
 // Captures all routes which hasn't been defined

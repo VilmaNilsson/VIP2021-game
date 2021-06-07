@@ -176,15 +176,14 @@ function Racks(el, context) {
   // Racks gets changed with every login, this is the first ones
   const initialRacks = racks && racks.length ? racks : generateEmptyRacks(game);
 
-  console.log(initialRacks);
-
-  // TODO: change into an image
   if (!racks || racks.length === 0) {
     const overlay = document.createElement('div');
-    overlay.className = 'overlay no-racks';
-    overlay.textContent = 'Click on a planet in order to land on it';
+    const rand = Math.floor(Math.random() * 4);
+    overlay.className = `overlay no-racks no-racks-${rand}`;
     el.append(overlay);
   }
+
+  // TODO: Should check if the player is currently logging in...
 
   // Render each rack
   const rackElements = initialRacks.map((rack, teamIndex) => {
@@ -239,7 +238,7 @@ function Racks(el, context) {
         `;
 
         const alpha = (time.timestamp / duration).toFixed(2);
-        overlay.style.backgroundColor = `rgba(255, 255, 255, ${alpha}`;
+        overlay.style.backgroundColor = `rgba(0, 0, 0, ${alpha}`;
       },
       onEnd: () => {
         overlay.remove();

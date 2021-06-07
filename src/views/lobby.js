@@ -23,7 +23,8 @@ function LobbyView(context) {
   LobbyTeams(teamsEl, context);
 
   // If you're the admin
-  if (game && id === game.admin) {
+  // if (game && id === game.admin) {
+  if (game) {
     const startBtn = document.createElement('button');
     startBtn.id = 'startBtn';
     startBtn.className = 'pregame-btn';
@@ -44,7 +45,8 @@ function LobbyView(context) {
     LobbyTeams(teamsEl, context);
 
     // If you're the admin
-    if (game && id === game.admin) {
+    // if (game && id === game.admin) {
+    if (game) {
       const startBtn = document.createElement('button');
       startBtn.id = 'startBtn';
       startBtn.className = 'pregame-btn';

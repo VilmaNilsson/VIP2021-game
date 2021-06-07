@@ -46,7 +46,7 @@ function PlayView(context) {
 
   // Position background to get crosshair on timer
   // Need to wait until timer is in place and has content
-  let intervalID = setInterval(() => {
+  let intervalID = context.setInterval(() => {
     let timerEl = document.querySelector("#timer");
     if (timerEl && timerEl.innerHTML) {
       let timerBox = timerEl.getBoundingClientRect();
@@ -57,8 +57,6 @@ function PlayView(context) {
       clearInterval(intervalID);
     }
   }, 30);
-  
-  
 
   const { game, player } = context.getState();
 
@@ -77,7 +75,7 @@ function PlayView(context) {
     if (game && player) {
       const c = getComputedStyle(document.documentElement).getPropertyValue(`--team-color-${player.team + 1}`);
       document.documentElement.style.setProperty('--your-team-color', c);
-    document.documentElement.style.setProperty('--your-team-color-alpha', c + '40');
+      document.documentElement.style.setProperty('--your-team-color-alpha', c + '40');
       document.documentElement.style.setProperty('--your-team-color-dark', utils.shadeColor(c, -30));
     }
 

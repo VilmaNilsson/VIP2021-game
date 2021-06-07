@@ -17,8 +17,8 @@ function planetsDoublePoints(context) {
     station.properties.pointsMultiplier = 2;
   });
 
-  // 30 seconds
-  const duration = 30 * 1000;
+  // 15 seconds
+  const duration = 15 * 1000;
   const start = Date.now();
 
   // Update the gamestate

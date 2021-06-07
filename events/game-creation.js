@@ -1,3 +1,4 @@
+const fs = require('fs');
 const utils = require('../utils');
 const actions = require('../actions');
 
@@ -11,6 +12,7 @@ function gameCreate(context, payload) {
     planDuration,
     playDuration,
     loginTimer,
+    su,
   } = payload;
 
   // A game must have a name
@@ -19,12 +21,14 @@ function gameCreate(context, payload) {
     return;
   }
 
-  const player = context.getPlayerState();
+  if (!su) {
+    const player = context.getPlayerState();
 
-  // Can't start a game if you're in one (or not connected)
-  if (!player || player.gameId !== null) {
-    context.send('game:create:fail', { errorCode: 1 });
-    return;
+    // Can't start a game if you're in one (or not connected)
+    if (!player || player.gameId !== null) {
+      context.send('game:create:fail', { errorCode: 1 });
+      return;
+    }
   }
 
   const gameExists = context.getGameState({ name });
@@ -75,10 +79,12 @@ function gameCreate(context, payload) {
 
   // All players are stored within an object as `{ playerId: playerObject }`
   const players = {};
+
   // We'll grab our own ID
-  const id = context.id();
+  const id = !su ? context.id() : 'SUPERUSER';
+
   // Add our own username to our player
-  const { username } = context.getPlayerState();
+  const { username } = !su ? context.getPlayerState() : { username: 'SUPERUSER' };
   // And then add ourselves as the first player
   const newPlayer = utils.createPlayer({ username });
   players[id] = newPlayer;
@@ -90,17 +96,20 @@ function gameCreate(context, payload) {
     tokens,
     stations,
     teams,
-    players,
+    players: !su ? players : {},
     defaults,
   });
 
   // Add the newly created game to the server state
   context.addGame(newGame.id, newGame);
-  // Lets assign ourselves to the game
-  context.updatePlayerState({ gameId: newGame.id });
 
-  // Lets send back the newly created game and yourself
-  context.send('player:you', { player: utils.filterPlayer(newPlayer) });
+  if (!su) {
+    // Lets assign ourselves to the game
+    context.updatePlayerState({ gameId: newGame.id });
+    // Lets send back the newly created game and yourself
+    context.send('player:you', { player: utils.filterPlayer(newPlayer) });
+  }
+
   context.send('game:yours', { game: utils.filterGame(newGame) });
 }
 
@@ -126,6 +135,53 @@ function endPlayPhase(context) {
   // Broadcast the last phase
   context.broadcastToGame('game:score', { score });
   context.broadcastToGame('game:phase', game.properties.phase);
+
+  // Save game statistics to file
+  // ============================
+  const stats = { name: game.name, score };
+
+  fs.readFile('statistics.json', (err, data) => {
+    if (err) {
+      console.log('[WS]: Unable to read the statistics file');
+
+      try {
+        console.log('[WS]: Creating a new one');
+
+        const newStatistics = [stats];
+
+        fs.writeFile('statistics.json', JSON.stringify(newStatistics), 'utf8', (err) => {
+          if (err) {
+            console.log('[WS]: Unable to write to the statistics file');
+          } else {
+            console.log('[WS]: Statistics updated');
+          }
+        });
+
+      } catch (jsonErr) {
+        console.log(jsonErr);
+      }
+
+      return;
+    }
+
+    try {
+      console.log('[WS]: Statistics loaded');
+
+      const statistics = JSON.parse(data);
+      const newStatistics = [...statistics, stats];
+
+      fs.writeFile('statistics.json', JSON.stringify(newStatistics), 'utf8', (err) => {
+        if (err) {
+          console.log('[WS]: Unable to write to the statistics file');
+        } else {
+          console.log('[WS]: Statistics updated');
+        }
+      });
+
+    } catch (jsonErr) {
+      console.log(jsonErr);
+    }
+  });
 
   // This disconnects all players from the game and then removes it
   // ==============================================================
@@ -163,7 +219,7 @@ function startPlayPhase(context) {
 }
 
 // Event handler that starts an existing game
-function gameStart(context) {
+function gameStart(context, payload) {
   const game = context.getGameState();
 
   // No exists game, we can't start anything
@@ -173,10 +229,10 @@ function gameStart(context) {
   }
 
   // Only the admin (creator) can start the game
-  if (game.admin !== context.id()) {
-    context.send('game:start:fail', { errorCode: 1 });
-    return;
-  }
+  // if (game.admin !== context.id()) {
+  //   context.send('game:start:fail', { errorCode: 1 });
+  //   return;
+  // }
 
   // The game cannot be started when it is done
   if (game.properties.phase.type === 3) {
